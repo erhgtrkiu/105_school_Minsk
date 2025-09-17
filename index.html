@@ -28,16 +28,18 @@
                 </div>
             </div>
             
-            <ul>
-                <li class="menu-item" data-page="teachers">Учителя</li>
-                <li class="menu-item" data-page="students">Ученики</li>
-                <li class="menu-item" data-page="groups">Группы</li>
-                <li class="menu-item" data-page="lessons">Занятия</li>
-                <li class="menu-item" data-page="extra">Доп. занятия</li>
-                <li class="menu-item" data-page="translator">Переводчик</li>
-                <li class="menu-item" id="login-btn">Войти</li>
-                <li class="menu-item" id="register-btn">Регистрация</li>
-            </ul>
+<!-- В меню удаляем пункт "Ученики" -->
+<ul>
+    <li class="menu-item" data-page="teachers">Учителя</li>
+    <li class="menu-item" data-page="groups">Группы</li>
+    <li class="menu-item" data-page="lessons">Занятия</li>
+    <li class="menu-item" data-page="extra">Доп. занятия</li>
+    <li class="menu-item" data-page="translator">Переводчик</li>
+    <li class="menu-item" id="login-btn">Войти</li>
+    <li class="menu-item" id="register-btn">Регистрация</li>
+</ul>
+
+<!-- Удаляем всю секцию students -->
         </aside>
         
         <main class="content">
@@ -319,4 +321,5 @@
 
     <script src="script.js"></script>
 </body>
+
 </html>
