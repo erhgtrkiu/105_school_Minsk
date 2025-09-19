@@ -1,370 +1,426 @@
-/* =========================================================================
-   style.css — Часть 1 из 2 (~550 строк)
-   ========================================================================= */
-
-/* ============================
-   СБРОС И БАЗА
-   ============================ */
-*,
-*::before,
-*::after {
+/* =========================================================================/* ===========================================================
+   БАЗОВЫЕ СТИЛИ
+   =========================================================== */
+* {
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
 }
 
-html, body {
-  height: 100%;
-  font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background: #ffffff;
+body {
+  font-family: "Segoe UI", sans-serif;
+  background: #fdfdfd;
   color: #222;
-  line-height: 1.45;
-  font-size: 16px;
+  line-height: 1.6;
 }
 
-.container {
-  width: 100%;
-  max-width: 1100px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 18px;
-  padding-right: 18px;
-}
-
-.hidden { display: none !important; }
-.button-reset {
-  border: none;
-  background: transparent;
-  padding: 0;
-  margin: 0;
-  font: inherit;
-  cursor: pointer;
-}
-
-/* =========================================================================
-   HERO (гостевая секция) — китайская тема
-   ========================================================================= */
-.hero {
-  width: 100%;
-  background: linear-gradient(90deg, #ffbf00 0%, #ff6a00 60%, #de2910 100%);
-  color: #111;
-  padding: 28px 0;
-  box-shadow: inset 0 -10px 40px rgba(0,0,0,0.06);
-}
-.hero .hero-content {
-  display: flex;
-  gap: 18px;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 16px;
-  border-radius: 10px;
-}
-.hero h1 {
-  font-size: 32px;
-  color: #07101a;
-  margin-bottom: 6px;
+h1, h2, h3 {
   font-weight: 700;
+  margin-bottom: 12px;
 }
-.hero h2 {
-  font-size: 18px;
-  color: #de2910;
-  margin-bottom: 8px;
-  font-weight: 700;
+
+p {
+  margin-bottom: 10px;
 }
-.hero p {
-  color: rgba(0,0,0,0.65);
-  max-width: 720px;
-  font-size: 15px;
-}
-.hero .hero-actions {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-}
+
 .btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 9px 14px;
-  border-radius: 10px;
-  background: #ffffff;
-  color: #de2910;
-  font-weight: 700;
-  border: 2px solid rgba(0,0,0,0.04);
-  cursor: pointer;
-  transition: transform .12s ease, box-shadow .12s ease;
-}
-.btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-}
-.btn.secondary {
-  background: transparent;
-  color: #07101a;
-  border: 2px solid rgba(255,255,255,0.16);
-}
-
-/* =========================================================================
-   HEADER / NAVIGATION
-   ========================================================================= */
-header {
-  position: sticky;
-  top: 0;
-  z-index: 900;
-  background: #fff;
-  border-bottom: 1px solid rgba(0,0,0,0.04);
-  box-shadow: 0 2px 8px rgba(0,0,0,0.02);
-}
-.header-inner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 8px 18px;
-}
-nav ul.menu {
-  list-style: none;
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  padding-left: 0;
-  margin: 0;
-}
-nav ul.menu li.menu-item {
-  padding: 8px 10px;
-  border-radius: 8px;
-  cursor: pointer;
-  color: #111;
-  font-weight: 600;
-  transition: background .12s, color .12s;
-}
-nav ul.menu li.menu-item:hover {
-  background: rgba(0,0,0,0.03);
-}
-nav ul.menu li.menu-item.active {
-  background: linear-gradient(90deg, rgba(222,41,16,0.06), rgba(222,41,16,0.02));
-  color: #de2910;
-}
-.notification-badge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 20px;
-  height: 20px;
-  padding: 0 6px;
-  border-radius: 12px;
+  display: inline-block;
   background: #de2910;
   color: #fff;
-  font-size: 12px;
-  font-weight: 700;
-  margin-left: 8px;
-}
-#theme-toggle {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 6px;
-  border-radius: 50%;
-  background: transparent;
+  border: none;
+  padding: 10px 16px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: background .12s;
-}
-#theme-toggle:hover {
-  background: rgba(0,0,0,0.06);
+  font-weight: 600;
+  transition: background 0.3s ease;
 }
 
-/* =========================================================================
-   СТРАНИЦЫ (учителя, ученики, группы, расписание, занятия)
-   ========================================================================= */
+.btn:hover {
+  background: #b71d0f;
+}
+
+.btn.secondary {
+  background: #fff;
+  border: 1px solid #ccc;
+  color: #333;
+}
+
+.btn.secondary:hover {
+  background: #f7f7f7;
+}
+
+/* ===========================================================
+   HERO (гостевой экран)
+   =========================================================== */
+.hero {
+  background: linear-gradient(90deg, #de2910, #ff4c33, #ffd700);
+  color: #fff;
+  padding: 60px 20px;
+}
+
+.hero-content {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.hero h1 {
+  font-size: 36px;
+  margin-bottom: 12px;
+}
+
+.hero h2 {
+  font-size: 22px;
+  margin-bottom: 8px;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 12px;
+}
+
+/* ===========================================================
+   HEADER / NAVIGATION
+   =========================================================== */
+header {
+  background: #fff;
+  border-bottom: 1px solid #eee;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.header-inner {
+  max-width: 1000px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+}
+
+nav ul.menu {
+  display: flex;
+  gap: 16px;
+  list-style: none;
+}
+
+nav ul.menu li.menu-item {
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: background 0.3s ease;
+}
+
+nav ul.menu li.menu-item:hover {
+  background: rgba(0,0,0,0.05);
+}
+
+nav ul.menu li.menu-item.active {
+  background: #de2910;
+  color: #fff;
+}
+
+.user-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+#user-info {
+  font-weight: 600;
+}
+
+#theme-toggle {
+  background: transparent;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+/* ===========================================================
+   СТРАНИЦЫ
+   =========================================================== */
 .page {
   display: none;
-  padding: 30px 18px;
-  animation: fadeIn .3s ease;
+  max-width: 1000px;
+  margin: 20px auto;
+  padding: 0 16px;
 }
-.page.active { display: block; }
+
+.page.active {
+  display: block;
+}
+
 .page h2 {
   margin-bottom: 16px;
-  font-size: 22px;
-  font-weight: 700;
   color: #de2910;
 }
 
-/* =========================================================================
-   КАРТОЧКИ УЧИТЕЛЕЙ
-   ========================================================================= */
-.teacher-list {
+/* ===========================================================
+   КАРТОЧКИ
+   =========================================================== */
+.teacher-list, .student-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px,1fr));
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 16px;
 }
-.teacher-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
+
+.teacher-card, .student-card {
   background: #fff;
-  border: 1px solid rgba(0,0,0,0.06);
-  border-radius: 12px;
+  border: 1px solid #eee;
+  border-radius: 10px;
   padding: 14px;
-  transition: transform .15s, box-shadow .15s;
-  cursor: pointer;
+  text-align: center;
+  transition: transform 0.2s ease;
 }
-.teacher-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 22px rgba(0,0,0,0.08);
+
+.teacher-card:hover, .student-card:hover {
+  transform: translateY(-3px);
 }
-.teacher-card img.teacher-photo {
-  width: 72px;
-  height: 72px;
-  border-radius: 50%;
+
+.teacher-photo {
+  width: 100%;
+  height: 160px;
   object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 8px;
 }
+
 .teacher-card h3 {
-  font-size: 17px;
-  font-weight: 700;
-  margin-top: 8px;
+  font-size: 18px;
+  margin-bottom: 6px;
 }
+
 .teacher-card p {
   font-size: 14px;
   color: #555;
 }
 
-/* =========================================================================
-   КАРТОЧКИ УЧЕНИКОВ
-   ========================================================================= */
-.student-list {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px,1fr));
-  gap: 14px;
-}
-.student-card {
-  background: #fff;
+/* ===========================================================
+   ГРУППЫ
+   =========================================================== */
+.group-card {
+  background: #fffdf5;
+  border: 1px solid #eee;
+  border-radius: 8px;
   padding: 12px;
-  border-radius: 10px;
-  border: 1px solid rgba(0,0,0,0.05);
-  font-size: 14px;
-  transition: transform .15s, box-shadow .15s;
-}
-.student-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+  margin-bottom: 12px;
+  cursor: pointer;
+  transition: background 0.2s ease;
 }
 
-/* =========================================================================
-   МОДАЛКИ (универсальные)
-   ========================================================================= */
+.group-card:hover {
+  background: #fff6e5;
+}
+
+/* ===========================================================
+   РАСПИСАНИЕ
+   =========================================================== */
+.schedule-controls {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.schedule-controls button {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: center;
+}
+
+/* ===========================================================
+   ДОП. ЗАНЯТИЯ
+   =========================================================== */
+.extra-lessons {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.extra-card {
+  background: #fff;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.extra-card h3 {
+  font-size: 16px;
+  margin-bottom: 6px;
+}
+
+/* ===========================================================
+   FOOTER
+   =========================================================== */
+footer {
+  background: #fafafa;
+  padding: 20px;
+  text-align: center;
+  color: #666;
+  border-top: 1px solid #eee;
+}
+
+/* ===========================================================
+   МОДАЛКИ
+   =========================================================== */
 .modal {
   display: none;
   position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  background: rgba(0,0,0,0.45);
+  inset: 0;
+  background: rgba(0,0,0,0.5);
   align-items: center;
   justify-content: center;
-  z-index: 1000;
+  z-index: 200;
 }
+
 .modal-content {
   background: #fff;
+  border-radius: 10px;
   padding: 20px;
-  border-radius: 12px;
-  max-width: 500px;
-  width: 90%;
-  box-shadow: 0 10px 28px rgba(0,0,0,0.15);
-  animation: scaleIn .25s ease;
+  width: 400px;
+  max-height: 80%;
+  overflow-y: auto;
+  position: relative;
 }
-.modal .close {
+
+.close {
   position: absolute;
-  top: 14px; right: 16px;
-  font-size: 20px;
-  font-weight: bold;
-  color: #444;
+  right: 12px;
+  top: 8px;
+  cursor: pointer;
+  font-size: 22px;
+}
+
+/* Авторизация */
+#auth-modal .tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+#auth-modal .tab {
+  flex: 1;
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  background: #f7f7f7;
   cursor: pointer;
 }
-@keyframes scaleIn {
-  from { transform: scale(0.9); opacity: 0; }
-  to   { transform: scale(1); opacity: 1; }
-}
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
-/* =========================================================================
-   NIGHT THEME
-   ========================================================================= */
-body.dark {
-  background: #0d0d0d;
-  color: #eee;
-}
-body.dark header {
-  background: #1a1a1a;
-  border-bottom: 1px solid rgba(255,255,255,0.08);
-}
-body.dark nav ul.menu li.menu-item {
-  color: #eee;
-}
-body.dark nav ul.menu li.menu-item:hover {
-  background: rgba(255,255,255,0.08);
-}
-body.dark nav ul.menu li.menu-item.active {
-  background: linear-gradient(90deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
-  color: #ff6347;
-}
-body.dark .page h2 {
-  color: #ff6347;
-}
-body.dark .teacher-card,
-body.dark .student-card,
-body.dark .modal-content {
-  background: #1c1c1c;
-  color: #eee;
-  border: 1px solid rgba(255,255,255,0.1);
-}
-body.dark .btn {
-  background: #2a2a2a;
-  color: #ff6347;
-}
-body.dark .btn.secondary {
-  border-color: rgba(255,255,255,0.3);
-  color: #eee;
-}
-body.dark .hero {
-  background: linear-gradient(90deg, #111, #222, #333);
-  color: #eee;
-}
-body.dark .hero h2 { color: #ff6347; }
 
-/* =========================================================================
-   TRANSLATOR WIDGET
-   ========================================================================= */
+#auth-modal .tab.active {
+  background: #de2910;
+  color: #fff;
+}
+
+#auth-modal input, #auth-modal select {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+/* Вопрос-ответ */
+.question-card {
+  background: #fafafa;
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.answer-block {
+  margin-top: 6px;
+  padding: 6px;
+  border-left: 3px solid #de2910;
+  background: #fff;
+}
+
+.answer-actions {
+  margin-top: 8px;
+}
+
+.answer-actions button {
+  padding: 6px 10px;
+  border: none;
+  border-radius: 6px;
+  background: #de2910;
+  color: #fff;
+  cursor: pointer;
+}
+
+/* Заявки учителей */
+.request-item {
+  background: #fafafa;
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.request-actions button {
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+  border: none;
+  margin-left: 6px;
+}
+
+.request-approve { background: #1a7f37; color: #fff; }
+.request-deny { background: #d33; color: #fff; }
+
+/* ===========================================================
+   TEACHER DETAIL
+   =========================================================== */
+.teacher-detail-photo {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+  object-fit: cover;
+}
+
+/* ===========================================================
+   TRANSLATOR
+   =========================================================== */
 .translator {
-  margin-top: 20px;
+  max-width: 800px;
+  margin: 20px auto;
   padding: 14px;
+  border: 1px solid #eee;
   border-radius: 10px;
   background: #fafafa;
-  border: 1px solid rgba(0,0,0,0.05);
 }
-body.dark .translator {
-  background: #1a1a1a;
-  border-color: rgba(255,255,255,0.08);
-}
+
 .translator textarea {
   width: 100%;
   min-height: 80px;
   border-radius: 8px;
-  border: 1px solid rgba(0,0,0,0.1);
+  border: 1px solid #ccc;
   padding: 8px;
+  margin-bottom: 8px;
   font-family: inherit;
-  resize: vertical;
 }
-.translator .translate-btn {
-  margin-top: 10px;
-  display: inline-block;
+
+.translate-btn {
   background: #de2910;
   color: #fff;
   border: none;
@@ -372,6 +428,7 @@ body.dark .translator {
   border-radius: 8px;
   cursor: pointer;
 }
+
 .translator .result {
   margin-top: 12px;
   padding: 10px;
@@ -379,146 +436,109 @@ body.dark .translator {
   background: #fff5f5;
   font-size: 14px;
 }
-body.dark .translator .result {
-  background: #262626;
-}
 
-/* =========================================================================
-   TEACHER DETAIL MODAL
-   ========================================================================= */
-#teacher-detail-modal .modal-content {
-  text-align: center;
-}
-.teacher-detail-photo {
-  width: 100px;
-  height: 100px;
+/* ===========================================================
+   NOTIFICATION BADGE
+   =========================================================== */
+.notification-badge {
+  background: #de2910;
+  color: #fff;
+  font-size: 12px;
+  padding: 2px 6px;
   border-radius: 50%;
-  margin-bottom: 12px;
-  object-fit: cover;
-}
-.teacher-detail-name {
-  font-size: 20px;
-  font-weight: 700;
-  margin-bottom: 6px;
-}
-.teacher-detail-subject,
-.teacher-detail-experience {
-  font-size: 15px;
-  color: #666;
-  margin-bottom: 6px;
-}
-body.dark .teacher-detail-subject,
-body.dark .teacher-detail-experience {
-  color: #bbb;
-}
-
-/* =========================================================================
-   TEACHER REQUESTS MODAL (админ)
-   ========================================================================= */
-#teacher-requests-modal .modal-content {
-  max-height: 400px;
-  overflow-y: auto;
-}
-.request-item {
-  display: flex;
+  position: relative;
+  top: -6px;
+  left: 4px;
+  display: inline-flex;
   align-items: center;
-  justify-content: space-between;
-  background: #f9f9f9;
-  border-radius: 8px;
-  padding: 10px;
-  margin-bottom: 8px;
+  justify-content: center;
 }
-body.dark .request-item {
-  background: #222;
-}
-.request-info {
-  font-size: 14px;
-}
-.request-actions {
-  display: flex;
-  gap: 8px;
-}
-.request-actions button {
-  border: none;
-  padding: 6px 10px;
-  border-radius: 6px;
-  cursor: pointer;
-}
-.request-approve { background: #1a7f37; color: #fff; }
-.request-deny { background: #d33; color: #fff; }
 
-/* =========================================================================
-   NOTIFICATION AREA
-   ========================================================================= */
+/* ===========================================================
+   TOAST NOTIFICATIONS
+   =========================================================== */
 #notification-area {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  z-index: 1500;
+  z-index: 300;
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
+
 .notification {
   background: #333;
   color: #fff;
   padding: 10px 14px;
   border-radius: 8px;
   font-size: 14px;
-  box-shadow: 0 6px 14px rgba(0,0,0,0.25);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
   animation: fadeIn 0.3s ease;
 }
 
-/* =========================================================================
-   EXTRA LESSONS
-   ========================================================================= */
-.extra-lessons {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px,1fr));
-  gap: 16px;
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
-.extra-card {
-  background: #fffdf5;
-  border: 1px solid rgba(0,0,0,0.05);
-  border-radius: 10px;
-  padding: 12px;
+
+/* ===========================================================
+   НОЧНАЯ ТЕМА
+   =========================================================== */
+body.dark {
+  background: #0d0d0d;
+  color: #eee;
 }
+
+body.dark header {
+  background: #1a1a1a;
+  border-bottom-color: rgba(255,255,255,0.08);
+}
+
+body.dark nav ul.menu li.menu-item {
+  color: #eee;
+}
+
+body.dark nav ul.menu li.menu-item.active {
+  background: #ff4c33;
+  color: #fff;
+}
+
+body.dark .page h2 { color: #ff6347; }
+
+body.dark .teacher-card,
+body.dark .student-card,
+body.dark .modal-content {
+  background: #1c1c1c;
+  color: #eee;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+
+body.dark .btn {
+  background: #2a2a2a;
+  color: #ff6347;
+}
+
 body.dark .extra-card {
   background: #2a2a2a;
   border-color: rgba(255,255,255,0.1);
 }
-.extra-card h3 {
-  font-size: 16px;
-  font-weight: 600;
-  margin-bottom: 6px;
-}
-.extra-card p {
-  font-size: 14px;
-  color: #555;
-}
-body.dark .extra-card p { color: #ccc; }
 
-/* =========================================================================
-   FOOTER
-   ========================================================================= */
-footer {
-  margin-top: 30px;
-  padding: 20px 16px;
-  text-align: center;
-  border-top: 1px solid rgba(0,0,0,0.06);
-  font-size: 14px;
-  color: #666;
+body.dark .translator {
+  background: #1a1a1a;
+  border-color: rgba(255,255,255,0.08);
 }
+
 body.dark footer {
-  border-top-color: rgba(255,255,255,0.1);
+  background: #111;
   color: #aaa;
 }
 
-/* =========================================================================
+/* ===========================================================
    RESPONSIVE
-   ========================================================================= */
+   =========================================================== */
 @media (max-width: 768px) {
-  .hero .hero-content {
+  .hero-content {
     flex-direction: column;
     text-align: center;
   }
@@ -530,9 +550,12 @@ body.dark footer {
     grid-template-columns: repeat(auto-fill, minmax(160px,1fr));
   }
 }
+
 @media (max-width: 480px) {
   .hero h1 { font-size: 24px; }
   .hero h2 { font-size: 16px; }
   .btn { padding: 8px 12px; font-size: 14px; }
   .notification { font-size: 12px; }
 }
+
+
