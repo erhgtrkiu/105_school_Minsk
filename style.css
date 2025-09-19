@@ -4,7 +4,125 @@
     box-sizing: border-box;
     font-family: 'Arial', sans-serif;
 }
+/* Добавляем эти стили в начало файла */
+.china-text {
+    display: flex;
+    gap: 30px;
+}
 
+.china-text span {
+    font-size: 2.2rem;
+    font-weight: bold;
+    background: linear-gradient(90deg, #ffde00, #fff, #de2910, #ffde00);
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: shimmer 5s infinite linear, float 3s ease-in-out infinite;
+    padding: 0 10px;
+}
+/* Замедляем анимацию */
+.china-text span {
+    font-size: 2.2rem;
+    font-weight: bold;
+    background: linear-gradient(90deg, #ffde00, #fff, #de2910, #ffde00);
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: shimmer 8s infinite linear, float 4s ease-in-out infinite;
+    padding: 0 10px;
+}
+
+@keyframes shimmer {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 300% 50%; }
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
+
+/* Адаптация для телефонов */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        padding: 10px;
+        text-align: center;
+    }
+    
+    .china-text {
+        flex-direction: column;
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+    
+    .china-text span {
+        font-size: 1.5rem;
+        animation: shimmer 10s infinite linear, float 5s ease-in-out infinite;
+    }
+    
+    .container {
+        flex-direction: column;
+    }
+    
+    .sidebar {
+        width: 100%;
+        order: 2;
+    }
+    
+    .content {
+        order: 1;
+    }
+    
+    .groups-container {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    .translator-row {
+        flex-direction: column;
+    }
+    
+    .menu-item {
+        padding: 10px 15px;
+        font-size: 14px;
+    }
+    
+    .teacher-list, .student-list {
+        grid-template-columns: 1fr;
+    }
+    
+    table {
+        font-size: 12px;
+    }
+    
+    th, td {
+        padding: 8px;
+    }
+}
+
+/* Остальные стили остаются без изменений */
+.china-text span:nth-child(2) {
+    animation-delay: 0.5s;
+}
+
+.china-text span:nth-child(3) {
+    animation-delay: 1s;
+}
+
+@keyframes shimmer {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 300% 50%; }
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+}
+
+/* Остальные стили остаются без изменений */
 body {
     background-color: #f9f9f9;
     color: #333;
@@ -825,3 +943,4 @@ footer {
     border-radius: 3px;
     cursor: pointer;
 }
+
