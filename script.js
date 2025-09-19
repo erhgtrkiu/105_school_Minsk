@@ -98,8 +98,7 @@ class SchoolSystem {
         localStorage.setItem('school_current_user', JSON.stringify(this.currentUser));
         this.saveToServer();
     }
-
-    loadFromStorage() {
+loadFromStorage() {
         this.teachers = JSON.parse(localStorage.getItem('school_teachers') || '[]');
         this.students = JSON.parse(localStorage.getItem('school_students') || '[]');
         this.requests = JSON.parse(localStorage.getItem('school_requests') || '[]');
@@ -230,8 +229,7 @@ class SchoolSystem {
             experience,
             role: 'teacher'
         });
-
-        this.saveToStorage();
+this.saveToStorage();
         this.updateUI();
         return { username, password };
     }
@@ -318,7 +316,7 @@ class SchoolSystem {
 
         while (this.teachers.some(t => t.username === username) || 
                this.students.some(s => s.username === username)) {
-            username = `${base}${counter}`;
+            username = ${base}${counter};
             counter++;
         }
 
@@ -351,7 +349,6 @@ class SchoolSystem {
             this.showHolidayModal(currentHoliday.title, currentHoliday.message);
         }
     }
-
     // ========== UI МЕТОДЫ ==========
     showSyncIndicator(show) {
         const indicator = document.getElementById('sync-indicator');
@@ -371,7 +368,7 @@ class SchoolSystem {
 
     showToast(message, type = 'info') {
         const toast = document.createElement('div');
-        toast.className = `toast ${type}`;
+        toast.className = toast ${type};
         toast.textContent = message;
         document.body.appendChild(toast);
 
@@ -408,9 +405,9 @@ class SchoolSystem {
         for (let i = 0; i < 50; i++) {
             const firework = document.createElement('div');
             firework.className = 'firework';
-            firework.style.setProperty('--x', `${Math.random() * 200 - 100}px`);
-            firework.style.setProperty('--y', `${Math.random() * 200 - 100}px`);
-            firework.style.animationDelay = `${Math.random() * 2}s`;
+            firework.style.setProperty('--x', ${Math.random() * 200 - 100}px);
+            firework.style.setProperty('--y', ${Math.random() * 200 - 100}px);
+            firework.style.animationDelay = ${Math.random() * 2}s;
             container.appendChild(firework);
 
             setTimeout(() => {
@@ -436,12 +433,12 @@ class SchoolSystem {
         const teacherControls = document.querySelectorAll('.teacher-controls');
 
         if (this.currentUser) {
-            loginBtn.textContent = `Выйти (${this.currentUser.fullName})`;
+            loginBtn.textContent = Выйти (${this.currentUser.fullName});
             registerBtn.style.display = 'none';
             
             // Обновляем класс body для стилей
             document.body.className = '';
-            document.body.classList.add(`role-${this.currentUser.role}`);
+            document.body.classList.add(role-${this.currentUser.role});
 
             // Показываем/скрываем элементы управления
             if (this.currentUser.role === 'admin') {
@@ -462,25 +459,24 @@ class SchoolSystem {
             teacherControls.forEach(ctrl => ctrl.classList.add('hidden'));
         }
     }
-
-    updateTeachersList() {
+updateTeachersList() {
         const container = document.querySelector('.teacher-list');
         if (!container) return;
 
-        container.innerHTML = this.teachers.map(teacher => `
+        container.innerHTML = this.teachers.map(teacher => 
             <div class="teacher-card">
                 <h3>${teacher.fullName}</h3>
                 <p>${teacher.subject || 'Китайский язык'}</p>
                 <p>Стаж: ${teacher.experience || 'Не указан'}</p>
             </div>
-        `).join('');
+        ).join('');
     }
 
     updateRequestsList() {
         const container = document.querySelector('.requests-list');
         if (!container) return;
 
-        container.innerHTML = this.requests.map((request, index) => `
+        container.innerHTML = this.requests.map((request, index) => 
             <div class="request-item ${request.status}">
                 <h4>${request.fullName}</h4>
                 <p>Логин: ${request.username}</p>
@@ -489,14 +485,14 @@ class SchoolSystem {
                     <span class="status-indicator status-${request.status}"></span>
                     ${this.getStatusText(request.status)}
                 </p>
-                ${request.status === 'pending' && this.currentUser?.role === 'admin' ? `
+                ${request.status === 'pending' && this.currentUser?.role === 'admin' ? 
                     <div class="request-buttons">
                         <button onclick="schoolSystem.approveRequest(${index})">Принять</button>
                         <button onclick="schoolSystem.rejectRequest(${index})">Отклонить</button>
                     </div>
-                ` : ''}
+                 : ''}
             </div>
-        `).join('');
+        ).join('');
     }
 
     getStatusText(status) {
@@ -514,40 +510,40 @@ class SchoolSystem {
 
         if (userQuestions) {
             const userQ = this.questions.filter(q => q.username === this.currentUser?.username);
-            userQuestions.innerHTML = userQ.map(question => `
+            userQuestions.innerHTML = userQ.map(question => 
                 <div class="question-item ${question.answered ? '' : 'unanswered'}">
                     <div class="question-text">${question.question}</div>
                     <div class="question-date">${new Date(question.timestamp).toLocaleDateString()}</div>
-                    ${question.answered ? `
+                    ${question.answered ? 
                         <div class="answer-text">
                             <strong>Ответ (${question.answeredBy}):</strong><br>
                             ${question.answer}
                         </div>
-                    ` : '<div class="answer-text">Ожидает ответа...</div>'}
+                     : '<div class="answer-text">Ожидает ответа...</div>'}
                 </div>
-            `).join('');
+            ).join('');
         }
 
         if (allQuestions && (this.currentUser?.role === 'teacher' || this.currentUser?.role === 'admin')) {
-            allQuestions.innerHTML = this.questions.map(question => `
+            allQuestions.innerHTML = this.questions.map(question => 
                 <div class="question-item ${question.answered ? '' : 'unanswered'}">
                     <div class="question-text">${question.question}</div>
                     <div class="question-meta">
                         От: ${question.fullName} • 
                         ${new Date(question.timestamp).toLocaleDateString()}
                     </div>
-                    ${question.answered ? `
+                    ${question.answered ? 
                         <div class="answer-text">
                             <strong>Ответ (${question.answeredBy}):</strong><br>
                             ${question.answer}
                         </div>
-                    ` : `
+                     : 
                         <button class="answer-btn" onclick="schoolSystem.openAnswerModal(${question.id})">
                             Ответить
                         </button>
-                    `}
+                    }
                 </div>
-            `).join('');
+            ).join('');
         }
     }
 
@@ -562,8 +558,7 @@ class SchoolSystem {
     updateNotificationBadge() {
         const badge = document.querySelector('.notification-badge');
         if (!badge) return;
-
-        const unansweredCount = this.questions.filter(q => 
+const unansweredCount = this.questions.filter(q => 
             !q.answered && (this.currentUser?.role === 'teacher' || this.currentUser?.role === 'admin')
         ).length;
 
@@ -582,10 +577,10 @@ class SchoolSystem {
         const question = this.questions.find(q => q.id === questionId);
 
         if (question) {
-            questionContent.innerHTML = `
+            questionContent.innerHTML = 
                 <p><strong>Вопрос от ${question.fullName}:</strong></p>
                 <p>${question.question}</p>
-            `;
+            ;
             modal.dataset.questionId = questionId;
             modal.style.display = 'flex';
         }
@@ -678,8 +673,7 @@ class SchoolSystem {
         // Создаем индикатор синхронизации
         this.createSyncIndicator();
     }
-
-    createSyncIndicator() {
+createSyncIndicator() {
         const indicator = document.createElement('div');
         indicator.id = 'sync-indicator';
         indicator.className = 'sync-indicator';
@@ -750,7 +744,7 @@ class SchoolSystem {
 
         if (fullName) {
             const credentials = this.addTeacher(fullName, subject, experience);
-            this.showToast(`Учитель добавлен! Логин: ${credentials.username}, Пароль: ${credentials.password}`, 'success');
+            this.showToast(Учитель добавлен! Логин: ${credentials.username}, Пароль: ${credentials.password}, 'success');
             document.getElementById('teacher-modal').style.display = 'none';
         }
     }
@@ -780,7 +774,7 @@ class SchoolSystem {
             },
             'ru-cn': {
                 'Здравствуйте': '你好',
-                'Спасибо': '谢谢',
+'Спасибо': '谢谢',
                 'До свидания': '再见',
                 'Учитель': '老师',
                 'Ученик': '学生',
@@ -822,7 +816,7 @@ class SchoolSystem {
         });
 
         const page = document.getElementById(pageName);
-        const menuItem = document.querySelector(`[data-page="${pageName}"]`);
+        const menuItem = document.querySelector([data-page="${pageName}"]);
         
         if (page) page.classList.add('active');
         if (menuItem) menuItem.classList.add('active');
@@ -843,7 +837,7 @@ class SchoolSystem {
         });
 
         document.getElementById(tab).classList.add('active');
-        document.querySelector(`[data-tab="${tab}"]`).classList.add('active');
+        document.querySelector([data-tab="${tab}"]).classList.add('active');
     }
 
     openQAModal() {
@@ -889,7 +883,7 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
 
     const factElement = document.getElementById('china-fact');
-    if (factElement) {
+if (factElement) {
         let currentFact = 0;
         
         setInterval(() => {
