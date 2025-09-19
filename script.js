@@ -6,16 +6,21 @@ document.addEventListener('DOMContentLoaded', function() {
     let unansweredQuestions = 0;
     let currentQuestionId = null;
 
-    // База данных пользователей (только админ)
+    // База данных пользователей (только админ по умолчанию)
     const usersDatabase = {
-        'admin': { password: 'admin123', role: 'admin', name: 'Администратор', approved: true }
+        'admin': { 
+            password: 'admin123', 
+            role: 'admin', 
+            name: 'Администратор', 
+            approved: true 
+        }
     };
 
     // Запросы на регистрацию учителей
     const teacherRequests = [];
 
     // Данные приложения
-    const appData = {
+    let appData = {
         questions: [],
         students: [
             { id: 1, name: "Рудый Михаил Игоревич", group: "A", class: "10A" },
@@ -35,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function() {
         ],
         groups: {
             'A': ["Рудый Михаил Игоревич", "Сидоров Петр", "Федорова Елена"],
-            'B': ["Иванов Иван Иванович", "Козлова Ольга", "Васильев Алексей"],
+            'B': ["Иванов Иван Иванович", "Козлова Ольga", "Васильев Алексей"],
             'C': ["Петрова Анна Сергеевна", "Николаев Дмитрий", "Павлова Мария"],
             'D': [],
             'E': []
@@ -45,9 +50,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 'Понедельник': {
                     '9:00-10:00': 'Китайский язык (101)',
                     '10:15-11:15': 'Математика (205)'
-                },
-                'Вторник': {
-                    '9:00-10:00': 'История Китая (301)'
                 }
             },
             '6A': {},
@@ -75,7 +77,8 @@ document.addEventListener('DOMContentLoaded', function() {
             '03-08': { title: 'Международный женский день', message: 'С 8 Марта! 三八妇女节快乐!' },
             '05-01': { title: 'День труда', message: 'С Днем труда! 劳动节快乐!' },
             '10-01': { title: 'День образования КНР', message: 'С Днем образования КНР! 国庆节快乐!' }
-        }
+        },
+        lastModified: Date.now()
     };
 
     // Инициализация приложения
@@ -88,6 +91,9 @@ document.addEventListener('DOMContentLoaded', function() {
         loadTheme();
         checkAutoLogin();
         
+        // Запускаем синхронизацию каждые 3 секунды
+        setInterval(syncData, 3000);
+        
         changePage('teachers');
         document.querySelector('.menu-item[data-page="teachers"]').classList.add('active');
         
@@ -98,42 +104,95 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 100);
     }
 
-    // Проверка автоматического входа
-    function checkAutoLogin() {
-        const savedUser = localStorage.getItem('chinese_school_current_user');
-        if (savedUser) {
-            currentUser = JSON.parse(savedUser);
-            updateUIForUser();
+    // Синхронизация данных между устройствами
+    function syncData() {
+        try {
+            const serverData = localStorage.getItem('chinese_school_server_data');
+            
+            if (serverData) {
+                const server = JSON.parse(serverData);
+                
+                // Если данные на сервере новее, загружаем их
+                if (server.lastModified > appData.lastModified) {
+                    appData = { ...server };
+                    saveAllData();
+                    initData();
+                    if (currentUser) {
+                        showNotification('Данные обновлены');
+                    }
+                }
+                // Если наши данные новее, сохраняем на сервер
+                else if (appData.lastModified > server.lastModified) {
+                    localStorage.setItem('chinese_school_server_data', JSON.stringify({
+                        ...appData,
+                        lastModified: appData.lastModified
+                    }));
+                }
+            } else {
+                // Первая инициализация сервера
+                localStorage.setItem('chinese_school_server_data', JSON.stringify({
+                    ...appData,
+                    lastModified: appData.lastModified
+                }));
+            }
+        } catch (error) {
+            console.error('Ошибка синхронизации:', error);
         }
     }
 
     // Загрузка всех данных
     function loadAllData() {
-        const savedData = localStorage.getItem('chinese_school_data');
-        if (savedData) {
-            const data = JSON.parse(savedData);
-            Object.assign(appData, data.appData);
-            Object.assign(usersDatabase, data.usersDatabase);
-            teacherRequests.push(...data.teacherRequests || []);
-        }
+        try {
+            // Загружаем данные сервера
+            const serverData = localStorage.getItem('chinese_school_server_data');
+            if (serverData) {
+                const server = JSON.parse(serverData);
+                appData = { ...server };
+            }
 
-        const savedUser = localStorage.getItem('chinese_school_current_user');
-        if (savedUser) {
-            currentUser = JSON.parse(savedUser);
+            // Загружаем локальные данные пользователей
+            const savedUsers = localStorage.getItem('chinese_school_users');
+            if (savedUsers) {
+                const users = JSON.parse(savedUsers);
+                Object.keys(users).forEach(key => {
+                    usersDatabase[key] = users[key];
+                });
+            }
+
+            const savedRequests = localStorage.getItem('chinese_school_requests');
+            if (savedRequests) {
+                const requests = JSON.parse(savedRequests);
+                teacherRequests.length = 0;
+                teacherRequests.push(...requests);
+            }
+
+            const savedUser = localStorage.getItem('chinese_school_current_user');
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+            }
+        } catch (error) {
+            console.error('Ошибка загрузка данных:', error);
         }
     }
 
     // Сохранение всех данных
     function saveAllData() {
-        const dataToSave = {
-            appData: appData,
-            usersDatabase: usersDatabase,
-            teacherRequests: teacherRequests
-        };
-        
-        localStorage.setItem('chinese_school_data', JSON.stringify(dataToSave));
-        if (currentUser) {
-            localStorage.setItem('chinese_school_current_user', JSON.stringify(currentUser));
+        try {
+            // Обновляем время изменения
+            appData.lastModified = Date.now();
+            
+            // Сохраняем на сервер
+            localStorage.setItem('chinese_school_server_data', JSON.stringify(appData));
+            
+            // Сохраняем локальные данные
+            localStorage.setItem('chinese_school_users', JSON.stringify(usersDatabase));
+            localStorage.setItem('chinese_school_requests', JSON.stringify(teacherRequests));
+            
+            if (currentUser) {
+                localStorage.setItem('chinese_school_current_user', JSON.stringify(currentUser));
+            }
+        } catch (error) {
+            console.error('Ошибка сохранения данных:', error);
         }
     }
 
@@ -177,6 +236,15 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
 
+        // Клик вне модального окна
+        document.querySelectorAll('.modal').forEach(modal => {
+            modal.addEventListener('click', function(event) {
+                if (event.target === this) {
+                    hideModal(this);
+                }
+            });
+        });
+
         // Формы авторизации
         document.getElementById('login-submit').addEventListener('click', login);
         document.getElementById('register-submit').addEventListener('click', register);
@@ -188,9 +256,23 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
 
-        // Остальные обработчики...
+        // Кнопка темы
         document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
+
+        // Кнопка вопрос-ответ
         document.getElementById('qa-button').addEventListener('click', handleQAClick);
+
+        // Вкладки QA
+        document.querySelectorAll('.qa-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                switchQATab(this.getAttribute('data-tab'));
+            });
+        });
+
+        // QA действия
+        document.getElementById('submit-question').addEventListener('click', submitQuestion);
+        document.getElementById('submit-answer').addEventListener('click', submitAnswer);
+        document.getElementById('close-holiday').addEventListener('click', () => hideModal(document.getElementById('holiday-modal')));
 
         // Переводчик
         document.getElementById('translation-direction').addEventListener('change', updateTranslatorDirection);
@@ -211,10 +293,17 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         
         document.getElementById('save-teacher').addEventListener('click', addTeacher);
-        document.getElementById('edit-teachers').addEventListener('click', () => {
+        
+        document.getElementById('edit-teachers').addEventListener('click', () {
             if (!checkAdminAccess()) return;
             showModal(document.getElementById('edit-teachers-modal'));
             initTeachersEditList();
+        });
+        
+        document.getElementById('view-requests').addEventListener('click', () => {
+            if (!checkAdminAccess()) return;
+            showModal(document.getElementById('requests-modal'));
+            initRequestsList();
         });
         
         document.getElementById('add-student').addEventListener('click', () => {
@@ -223,6 +312,7 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         
         document.getElementById('save-student').addEventListener('click', addStudent);
+        
         document.getElementById('manage-groups').addEventListener('click', () => {
             if (!checkTeacherAccess()) return;
             changePage('groups');
@@ -234,10 +324,10 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         
         document.getElementById('save-lesson').addEventListener('click', addLesson);
+        
         document.getElementById('edit-lesson').addEventListener('click', () => {
             if (!checkTeacherAccess()) return;
-            showModal(document.getElementById('edit-lesson-modal'));
-            initLessonEditList();
+            showNotification('Редактирование расписания в разработке');
         });
         
         document.getElementById('add-extra').addEventListener('click', () => {
@@ -306,7 +396,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 setTimeout(() => page.classList.add('active'), 10);
             } else {
                 page.classList.remove('active');
-                setTimeout(() => page.style.display = 'none', 300);
+                setTimeout(() => {
+                    if (!page.classList.contains('active')) {
+                        page.style.display = 'none';
+                    }
+                }, 300);
             }
         });
     }
@@ -400,21 +494,100 @@ document.addEventListener('DOMContentLoaded', function() {
                 input.addEventListener('change', function() {
                     const field = this.getAttribute('data-field');
                     teacher[field] = this.value;
-                    saveAllData();
-                    initTeachers();
+                    updateData();
                 });
             });
             
             item.querySelector('.delete-teacher').addEventListener('click', function() {
                 const id = parseInt(this.getAttribute('data-id'));
                 appData.teachers = appData.teachers.filter(t => t.id !== id);
-                saveAllData();
-                initTeachers();
-                initTeachersEditList();
+                updateData();
             });
             
             editList.appendChild(item);
         });
+    }
+
+    function initRequestsList() {
+        const requestsList = document.querySelector('.requests-list');
+        if (!requestsList) return;
+        
+        requestsList.innerHTML = '';
+        
+        if (teacherRequests.length === 0) {
+            requestsList.innerHTML = '<p>Нет активных запросов</p>';
+            return;
+        }
+        
+        teacherRequests.forEach((request, index) => {
+            const requestItem = document.createElement('div');
+            requestItem.className = 'request-item';
+            requestItem.innerHTML = `
+                <div class="request-info">
+                    <h4>${request.name}</h4>
+                    <p><strong>Логин:</strong> ${request.login}</p>
+                    <p><strong>Пароль:</strong> ${request.password}</p>
+                    <p><strong>Дата:</strong> ${new Date(request.timestamp).toLocaleString()}</p>
+                </div>
+                <div class="request-actions">
+                    <button class="btn-accept" data-index="${index}">Принять</button>
+                    <button class="btn-reject" data-index="${index}">Отклонить</button>
+                </div>
+            `;
+            
+            requestsList.appendChild(requestItem);
+        });
+        
+        // Обработчики для кнопок
+        document.querySelectorAll('.btn-accept').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const index = parseInt(this.getAttribute('data-index'));
+                acceptTeacherRequest(index);
+            });
+        });
+        
+        document.querySelectorAll('.btn-reject').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const index = parseInt(this.getAttribute('data-index'));
+                rejectTeacherRequest(index);
+            });
+        });
+    }
+
+    // Принятие запроса учителя
+    function acceptTeacherRequest(index) {
+        const request = teacherRequests[index];
+        
+        // Создаем учетную запись учителя
+        usersDatabase[request.login] = {
+            password: request.password,
+            role: 'teacher',
+            name: request.name,
+            approved: true
+        };
+        
+        // Добавляем учителя в список
+        appData.teachers.push({
+            id: Date.now(),
+            name: request.name,
+            subject: 'Новый преподаватель',
+            experience: '0 лет'
+        });
+        
+        // Удаляем запрос
+        teacherRequests.splice(index, 1);
+        
+        updateData();
+        showNotification('Учитель успешно добавлен');
+    }
+
+    // Отклонение запроса учителя
+    function rejectTeacherRequest(index) {
+        const request = teacherRequests[index];
+        request.status = 'rejected';
+        teacherRequests.splice(index, 1);
+        updateData();
+        showNotification('Запрос отклонен');
     }
 
     function initSchedule() {
@@ -425,21 +598,20 @@ document.addEventListener('DOMContentLoaded', function() {
         const days = ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница'];
         const times = ['9:00-10:00', '10:15-11:15', '11:30-12:30', '13:00-14:00', '14:15-15:15'];
         
-        let headerRow = '<tr><th>Время</th>';
-        days.forEach(day => headerRow += `<th>${day}</th>`);
-        headerRow += '</tr>';
-        table.innerHTML = headerRow;
+        let html = '<tr><th>Время</th>';
+        days.forEach(day => html += `<th>${day}</th>`);
+        html += '</tr>';
         
         times.forEach(time => {
-            let row = `<tr><td>${time}</td>`;
+            html += `<tr><td>${time}</td>`;
             days.forEach(day => {
                 const lesson = appData.schedule[selectedClass]?.[day]?.[time] || '';
-                row += `<td>${lesson}</td>`;
+                html += `<td>${lesson}</td>`;
             });
-            row += '</tr>';
-            table.innerHTML += row;
+            html += '</tr>';
         });
         
+        table.innerHTML = html;
         updateWeekDisplay();
     }
 
@@ -447,7 +619,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const table = document.querySelector('.extra-table');
         if (!table) return;
         
-        table.innerHTML = `
+        let html = `
             <tr>
                 <th>День</th>
                 <th>Время</th>
@@ -459,31 +631,40 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
         
         appData.extraLessons.forEach(lesson => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>${lesson.day}</td>
-                <td>${lesson.time}</td>
-                <td>${lesson.subject}</td>
-                <td>${lesson.teacher}</td>
-                <td>${lesson.classroom}</td>
-                ${currentUser?.role === 'admin' || currentUser?.role === 'teacher' ? 
-                    `<td>
-                        <button class="edit-extra" data-id="${lesson.id}">✏️</button>
-                        <button class="delete-extra" data-id="${lesson.id}">🗑️</button>
-                    </td>` : ''}
+            html += `
+                <tr>
+                    <td>${lesson.day}</td>
+                    <td>${lesson.time}</td>
+                    <td>${lesson.subject}</td>
+                    <td>${lesson.teacher}</td>
+                    <td>${lesson.classroom}</td>
+                    ${currentUser?.role === 'admin' || currentUser?.role === 'teacher' ? 
+                        `<td>
+                            <button class="edit-extra" data-id="${lesson.id}">✏️</button>
+                            <button class="delete-extra" data-id="${lesson.id}">🗑️</button>
+                        </td>` : ''}
+                </tr>
             `;
-            
-            if (currentUser?.role === 'admin' || currentUser?.role === 'teacher') {
-                row.querySelector('.edit-extra').addEventListener('click', (e) => {
-                    editExtraLesson(lesson.id);
-                });
-                row.querySelector('.delete-extra').addEventListener('click', (e) => {
-                    deleteExtraLesson(lesson.id);
-                });
-            }
-            
-            table.appendChild(row);
         });
+        
+        table.innerHTML = html;
+        
+        // Добавляем обработчики для кнопок редактирования и удаления
+        if (currentUser?.role === 'admin' || currentUser?.role === 'teacher') {
+            document.querySelectorAll('.edit-extra').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const id = parseInt(this.getAttribute('data-id'));
+                    editExtraLesson(id);
+                });
+            });
+            
+            document.querySelectorAll('.delete-extra').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const id = parseInt(this.getAttribute('data-id'));
+                    deleteExtraLesson(id);
+                });
+            });
+        }
     }
 
     function editExtraLesson(id) {
@@ -495,7 +676,10 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('extra-teacher').value = lesson.teacher;
             document.getElementById('extra-classroom').value = lesson.classroom;
             
-            document.getElementById('save-extra').setAttribute('data-edit-id', id);
+            const saveButton = document.getElementById('save-extra');
+            saveButton.setAttribute('data-edit-id', id);
+            saveButton.textContent = 'Обновить';
+            
             showModal(document.getElementById('extra-modal'));
         }
     }
@@ -503,8 +687,7 @@ document.addEventListener('DOMContentLoaded', function() {
     function deleteExtraLesson(id) {
         if (confirm('Удалить это занятие?')) {
             appData.extraLessons = appData.extraLessons.filter(l => l.id !== id);
-            saveAllData();
-            initExtraLessons();
+            updateData();
             showNotification('Занятие удалено');
         }
     }
@@ -537,7 +720,16 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         if (!user.approved) {
-            showNotification('Ваш аккаунт ожидает подтверждения администратора');
+            // Проверяем, не был ли запрос отклонен
+            const rejectedRequest = teacherRequests.find(req => 
+                req.login === loginName && req.status === 'rejected'
+            );
+            
+            if (rejectedRequest) {
+                showNotification('Администратор отклонил ваш запрос на регистрацию');
+            } else {
+                showNotification('Ваш аккаунт ожидает подтверждения администратора');
+            }
             return;
         }
         
@@ -551,6 +743,10 @@ document.addEventListener('DOMContentLoaded', function() {
         hideModal(document.getElementById('auth-modal'));
         showNotification(`Добро пожаловать, ${user.name}!`);
         saveAllData();
+        
+        // Очищаем форму
+        document.getElementById('login-name').value = '';
+        document.getElementById('login-password').value = '';
     }
 
     function register() {
@@ -576,6 +772,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         if (role === 'teacher') {
+            // Для учителей отправляем запрос администратору
             teacherRequests.push({
                 login: loginName,
                 password: password,
@@ -584,8 +781,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 timestamp: new Date().toISOString()
             });
             
-            showNotification('Запрос на регистрацию учителя отправлен администратору');
+            showNotification('Запрос на регистрацию учителя отправлен администратору. Ожидайте подтверждения.');
         } else {
+            // Для учеников сразу создаем аккаунт
             usersDatabase[loginName] = {
                 password: password,
                 role: role,
@@ -603,8 +801,14 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         hideModal(document.getElementById('auth-modal'));
-        saveAllData();
+        updateData();
         updateUIForUser();
+        
+        // Очищаем форму
+        document.getElementById('register-name').value = '';
+        document.getElementById('register-password').value = '';
+        document.getElementById('register-confirm').value = '';
+        document.getElementById('register-fullname').value = '';
     }
 
     function logout() {
@@ -752,16 +956,21 @@ document.addEventListener('DOMContentLoaded', function() {
         } catch (error) {
             showNotification('Ошибка перевода. Попробуйте снова.');
             
+            // Fallback словарь
             const simpleDict = {
                 'cn-ru': {
                     '你好': 'Привет',
                     '谢谢': 'Спасибо',
-                    '再见': 'До свидания'
+                    '再见': 'До свидания',
+                    '学校': 'Школа',
+                    '老师': 'Учитель'
                 },
                 'ru-cn': {
                     'Привет': '你好',
                     'Спасибо': '谢谢',
-                    'До свидания': '再见'
+                    'До свидания': '再见',
+                    'Школа': '学校',
+                    'Учитель': '老师'
                 }
             };
             
@@ -804,7 +1013,7 @@ document.addEventListener('DOMContentLoaded', function() {
         };
         
         appData.questions.push(newQuestion);
-        saveAllData();
+        updateData();
         document.getElementById('question-text').value = '';
         showNotification('Вопрос отправлен!');
         updateQAContent();
@@ -825,7 +1034,7 @@ document.addEventListener('DOMContentLoaded', function() {
             question.answeredBy = currentUser.name;
             question.answerDate = new Date().toLocaleDateString();
             
-            saveAllData();
+            updateData();
             hideModal(document.getElementById('answer-modal'));
             showNotification('Ответ отправлен!');
             updateQAContent();
@@ -833,6 +1042,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function updateQAContent() {
+        // Мои вопросы
         const myQuestions = appData.questions.filter(q => q.student === currentUser?.name);
         const myQuestionsList = document.querySelector('#questions-tab .questions-list');
         if (myQuestionsList) {
@@ -840,6 +1050,7 @@ document.addEventListener('DOMContentLoaded', function() {
             myQuestions.forEach(q => myQuestionsList.appendChild(createQuestionItem(q)));
         }
 
+        // Все вопросы
         if (currentUser?.role === 'teacher' || currentUser?.role === 'admin') {
             const allQuestionsList = document.querySelector('#all-questions-tab .all-questions-list');
             if (allQuestionsList) {
@@ -961,7 +1172,7 @@ document.addEventListener('DOMContentLoaded', function() {
             appData.groups[currentGroup].push(studentName);
             updateGroupStudents();
             updateAvailableStudents();
-            saveAllData();
+            updateData();
         }
     }
 
@@ -969,7 +1180,7 @@ document.addEventListener('DOMContentLoaded', function() {
         appData.groups[currentGroup] = appData.groups[currentGroup]?.filter(name => name !== studentName);
         updateGroupStudents();
         updateAvailableStudents();
-        saveAllData();
+        updateData();
     }
 
     // Управление данными
@@ -991,8 +1202,7 @@ document.addEventListener('DOMContentLoaded', function() {
         };
         
         appData.teachers.push(newTeacher);
-        saveAllData();
-        initTeachers();
+        updateData();
         
         document.getElementById('teacher-name').value = '';
         document.getElementById('teacher-subject').value = '';
@@ -1025,7 +1235,7 @@ document.addEventListener('DOMContentLoaded', function() {
             appData.groups[group].push(name);
         }
         
-        saveAllData();
+        updateData();
         
         if (currentGroup) {
             updateGroupStudents();
@@ -1059,8 +1269,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         appData.schedule[selectedClass][day][time] = `${subject} (${classroom})`;
         
-        saveAllData();
-        initSchedule();
+        updateData();
         
         document.getElementById('lesson-time').value = '';
         document.getElementById('lesson-subject').value = '';
@@ -1094,6 +1303,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 lesson.classroom = classroom;
             }
             document.getElementById('save-extra').removeAttribute('data-edit-id');
+            document.getElementById('save-extra').textContent = 'Сохранить';
         } else {
             // Добавление нового занятия
             const newLesson = {
@@ -1107,8 +1317,7 @@ document.addEventListener('DOMContentLoaded', function() {
             appData.extraLessons.push(newLesson);
         }
         
-        saveAllData();
-        initExtraLessons();
+        updateData();
         
         document.getElementById('extra-day').value = '';
         document.getElementById('extra-time').value = '';
@@ -1123,6 +1332,20 @@ document.addEventListener('DOMContentLoaded', function() {
     function updateWeekDisplay() {
         const weekDisplay = document.querySelector('.week-display');
         if (weekDisplay) weekDisplay.textContent = `Неделя ${currentWeek}`;
+    }
+
+    function updateData() {
+        appData.lastModified = Date.now();
+        saveAllData();
+        initData();
+    }
+
+    function checkAutoLogin() {
+        const savedUser = localStorage.getItem('chinese_school_current_user');
+        if (savedUser) {
+            currentUser = JSON.parse(savedUser);
+            updateUIForUser();
+        }
     }
 
     // Запуск приложения
