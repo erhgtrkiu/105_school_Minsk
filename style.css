@@ -1,129 +1,10 @@
-/* Замедляем анимацию */
-.china-text span {
-    font-size: 2.2rem;
-    font-weight: bold;
-    background: linear-gradient(90deg, #ffde00, #fff, #de2910, #ffde00);
-    background-size: 300% 300%;
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    animation: shimmer 8s infinite linear, float 4s ease-in-out infinite;
-    padding: 0 10px;
-}
-
-@keyframes shimmer {
-    0% { background-position: 0% 50%; }
-    100% { background-position: 300% 50%; }
-}
-
-@keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-8px); }
-}
-
-/* Адаптация для телефонов */
-@media (max-width: 768px) {
-    header {
-        flex-direction: column;
-        padding: 10px;
-        text-align: center;
-    }
-    
-    .china-text {
-        flex-direction: column;
-        gap: 10px;
-        margin-bottom: 10px;
-    }
-    
-    .china-text span {
-        font-size: 1.5rem;
-        animation: shimmer 10s infinite linear, float 5s ease-in-out infinite;
-    }
-    
-    .container {
-        flex-direction: column;
-    }
-    
-    .sidebar {
-        width: 100%;
-        order: 2;
-    }
-    
-    .content {
-        order: 1;
-    }
-    
-    .groups-container {
-        grid-template-columns: 1fr;
-        gap: 10px;
-    }
-    
-    .translator-row {
-        flex-direction: column;
-    }
-    
-    .menu-item {
-        padding: 10px 15px;
-        font-size: 14px;
-    }
-    
-    .teacher-list, .student-list {
-        grid-template-columns: 1fr;
-    }
-    
-    table {
-        font-size: 12px;
-    }
-    
-    th, td {
-        padding: 8px;
-    }
-}
-
-/* Остальные стили остаются без изменений */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: 'Arial', sans-serif;
 }
-/* Добавляем эти стили в начало файла */
-.china-text {
-    display: flex;
-    gap: 30px;
-}
 
-.china-text span {
-    font-size: 2.2rem;
-    font-weight: bold;
-    background: linear-gradient(90deg, #ffde00, #fff, #de2910, #ffde00);
-    background-size: 300% 300%;
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    animation: shimmer 5s infinite linear, float 3s ease-in-out infinite;
-    padding: 0 10px;
-}
-
-.china-text span:nth-child(2) {
-    animation-delay: 0.5s;
-}
-
-.china-text span:nth-child(3) {
-    animation-delay: 1s;
-}
-
-@keyframes shimmer {
-    0% { background-position: 0% 50%; }
-    100% { background-position: 300% 50%; }
-}
-
-@keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-}
-
-/* Остальные стили остаются без изменений */
 body {
     background-color: #f9f9f9;
     color: #333;
@@ -148,21 +29,39 @@ header {
     padding: 15px 30px;
 }
 
-.dragon-welcome {
+.china-text {
     display: flex;
-    align-items: center;
-    gap: 15px;
-    color: white;
-    font-weight: bold;
-    font-size: 1.2rem;
+    gap: 30px;
 }
 
-.dragon-icon {
-    width: 40px;
-    height: 40px;
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50,10 C60,20 70,25 80,30 C90,35 95,40 95,50 C95,60 90,65 80,70 C70,75 60,80 50,85 C40,80 30,75 20,70 C10,65 5,60 5,50 C5,40 10,35 20,30 C30,25 40,20 50,10 Z" fill="%23ffde00"/><circle cx="35" cy="40" r="5" fill="%23de2910"/><circle cx="65" cy="40" r="5" fill="%23de2910"/><path d="M40,60 Q50,70 60,60" stroke="%23de2910" stroke-width="3" fill="none"/></svg>');
-    background-size: contain;
-    background-repeat: no-repeat;
+.china-text span {
+    font-size: 2.2rem;
+    font-weight: bold;
+    background: linear-gradient(90deg, #ffde00, #fff, #de2910, #ffde00);
+    background-size: 300% 300%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    animation: shimmer 8s infinite linear, float 4s ease-in-out infinite;
+    padding: 0 10px;
+}
+
+.china-text span:nth-child(2) {
+    animation-delay: 0.5s;
+}
+
+.china-text span:nth-child(3) {
+    animation-delay: 1s;
+}
+
+@keyframes shimmer {
+    0% { background-position: 0% 50%; }
+    100% { background-position: 300% 50%; }
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
 }
 
 .header-controls {
@@ -302,7 +201,6 @@ header {
     transform: translateY(0);
 }
 
-/* Стили для групп */
 .groups-container {
     display: grid;
     grid-template-columns: 1fr 2fr 2fr;
@@ -353,7 +251,6 @@ header {
     font-size: 12px;
 }
 
-/* Стили для QA системы */
 .wide-modal {
     width: 600px;
     max-width: 90%;
@@ -394,6 +291,7 @@ header {
     border: 2px solid #ffde00;
     border-radius: 5px;
     margin-bottom: 10px;
+    font-family: Arial, sans-serif;
 }
 
 .questions-list, .all-questions-list {
@@ -441,7 +339,60 @@ body.role-admin .teacher-only {
     display: block;
 }
 
-/* Стили для праздничного окна */
+.requests-list {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.request-item {
+    padding: 15px;
+    margin: 10px 0;
+    background: #f9f9f9;
+    border-radius: 8px;
+    border-left: 4px solid #ffde00;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.request-info {
+    flex: 1;
+}
+
+.request-info h4 {
+    margin: 0 0 5px 0;
+    color: #de2910;
+}
+
+.request-info p {
+    margin: 2px 0;
+    font-size: 14px;
+    color: #666;
+}
+
+.request-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.request-actions button {
+    padding: 8px 15px;
+    font-size: 14px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-accept {
+    background-color: #28a745;
+    color: white;
+}
+
+.btn-reject {
+    background-color: #dc3545;
+    color: white;
+}
+
 .holiday {
     background: rgba(0, 0, 0, 0.8);
 }
@@ -474,7 +425,6 @@ body.role-admin .teacher-only {
     }
 }
 
-/* Ночная тема */
 body.night-theme {
     background-color: #1a1a1a;
     color: #fff;
@@ -506,6 +456,15 @@ body.night-theme .question-item {
 body.night-theme .question-item .answer-text {
     color: #ccc;
     border-color: #555;
+}
+
+body.night-theme .request-item {
+    background-color: #3d3d3d;
+    color: #fff;
+}
+
+body.night-theme .request-info p {
+    color: #ccc;
 }
 
 body.night-theme table {
@@ -540,7 +499,6 @@ body.night-theme .student-card:hover {
     background-color: #4d4d4d;
 }
 
-/* Остальные стили */
 table {
     width: 100%;
     border-collapse: collapse;
@@ -627,6 +585,7 @@ tr:nth-child(even):hover {
     resize: none;
     transition: all 0.3s ease;
     font-size: 16px;
+    font-family: Arial, sans-serif;
 }
 
 .translator textarea:focus {
@@ -718,16 +677,6 @@ button:hover {
     margin-bottom: 20px;
     color: #de2910;
 }
-
-.auth-form input, .auth-form select {
-    width: 100%;
-    padding: 12px;
-    margin: 10px 0;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    transition: all 0.3s ease;
-}
-
 .auth-form input:focus, .auth-form select:focus {
     border-color: #de2910;
     box-shadow: 0 0 8px rgba(222, 41, 16, 0.3);
@@ -892,7 +841,6 @@ footer {
     background-color: #f9f9f9;
 }
 
-/* Кружочки с числами */
 .circle-badge {
     display: inline-flex;
     align-items: center;
@@ -907,7 +855,6 @@ footer {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 
-/* Центрирование иконок */
 .theme-icon {
     display: flex;
     align-items: center;
@@ -916,7 +863,6 @@ footer {
     height: 100%;
 }
 
-/* Стили для редактирования учителей */
 .teacher-edit-item {
     display: flex;
     justify-content: space-between;
@@ -943,5 +889,83 @@ footer {
     padding: 5px 10px;
     border-radius: 3px;
     cursor: pointer;
+}
 
+/* Адаптация для телефонов */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        padding: 10px;
+        text-align: center;
+    }
+    
+    .china-text {
+        flex-direction: column;
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+    
+    .china-text span {
+        font-size: 1.5rem;
+        animation: shimmer 10s infinite linear, float 5s ease-in-out infinite;
+    }
+    
+    .container {
+        flex-direction: column;
+    }
+    
+    .sidebar {
+        width: 100%;
+        order: 2;
+    }
+    
+    .content {
+        order: 1;
+    }
+    
+    .groups-container {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    
+    .translator-row {
+        flex-direction: column;
+    }
+    
+    .menu-item {
+        padding: 10px 15px;
+        font-size: 14px;
+    }
+    
+    .teacher-list, .student-list {
+        grid-template-columns: 1fr;
+    }
+    
+    table {
+        font-size: 12px;
+    }
+    
+    th, td {
+        padding: 8px;
+    }
+    
+    .request-item {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .request-actions {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .teacher-edit-item {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .teacher-edit-item input {
+        margin: 5px 0;
+        width: 100%;
+    }
 }
