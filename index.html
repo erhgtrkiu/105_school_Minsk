@@ -3,13 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Школьный Китайский язык</title>
+    <title>Школьный портал</title>
 
     <!-- CSS -->
     <link rel="stylesheet" href="style.css">
-
-    <!-- Pinyin для переводчика -->
-    <script src="https://unpkg.com/pinyin-pro"></script>
 </head>
 <body>
 
@@ -20,15 +17,12 @@
         <div class="hero-content">
             <div class="hero-text">
                 <h1>Добро пожаловать в школьный портал</h1>
-                <h2>Изучаем китайский язык вместе</h2>
-                <p>Регистрация обязательна для использования всех функций сайта.</p>
+                <h2>Изучаем вместе</h2>
+                <p>Для работы с порталом необходимо войти или зарегистрироваться.</p>
                 <div class="hero-actions">
                     <button id="login-btn" class="btn">Войти</button>
                     <button id="register-btn" class="btn secondary">Регистрация</button>
                 </div>
-            </div>
-            <div class="hero-image">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/6/63/Great_Wall_of_China_July_2006.JPG" alt="Китай" width="300">
             </div>
         </div>
     </section>
@@ -46,9 +40,11 @@
                     <li class="menu-item" data-page="groups">Группы</li>
                     <li class="menu-item" data-page="schedule">Расписание</li>
                     <li class="menu-item" data-page="lessons">Доп. занятия</li>
-                    <li class="menu-item" data-page="qa">Вопрос-ответ <span id="qa-badge" class="notification-badge" style="display:none;">0</span></li>
+                    <li class="menu-item" data-page="qa">Вопрос-ответ 
+                        <span id="qa-badge" class="notification-badge" style="display:none;">0</span>
+                    </li>
+                    <!-- Вкладка для заявок (видит только админ) -->
                     <li class="menu-item" data-page="teacher-requests" style="display:none;">Заявки</li>
-                    <li class="menu-item" data-page="translator">Переводчик</li>
                 </ul>
             </nav>
             <div class="user-controls">
@@ -127,16 +123,6 @@
             <h2>Заявки учителей</h2>
             <div id="teacher-requests-list"></div>
         </section>
-
-        <!-- Переводчик -->
-        <section id="translator" class="page">
-            <h2>Переводчик</h2>
-            <div class="translator">
-                <textarea id="translator-input" placeholder="Введите текст на русском..."></textarea>
-                <button id="translate-btn" class="translate-btn">Перевести</button>
-                <div id="translation-result" class="result"></div>
-            </div>
-        </section>
     </main>
 
     <!-- ======================================================
@@ -164,16 +150,21 @@
         </div>
     </div>
 
-    <!-- Вопрос-ответ (модалка) -->
-    <div id="qa-modal" class="modal">
+    <!-- Модалка деталей заявки -->
+    <div id="teacher-request-modal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
-            <h3>Список вопросов</h3>
-            <div id="qa-list-modal"></div>
+            <h3>Заявка учителя</h3>
+            <p><strong>ФИО:</strong> <span id="request-fullname"></span></p>
+            <p><strong>Пароль:</strong> <span id="request-password"></span></p>
+            <div class="modal-actions">
+                <button id="approve-request" class="btn">Принять</button>
+                <button id="reject-request" class="btn secondary">Отклонить</button>
+            </div>
         </div>
     </div>
 
-    <!-- Ответ -->
+    <!-- Модалка ответа -->
     <div id="answer-modal" class="modal">
         <div class="modal-content">
             <span class="close">&times;</span>
@@ -185,49 +176,23 @@
         </div>
     </div>
 
-    <!-- Заявки учителей -->
-    <div id="teacher-requests-modal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <h3>Заявки учителей</h3>
-            <div id="teacher-requests-list-modal"></div>
-        </div>
-    </div>
-
-    <!-- Детали учителя -->
-    <div id="teacher-detail-modal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <img src="" alt="Фото учителя" class="teacher-detail-photo">
-            <h3 class="teacher-detail-name"></h3>
-            <p class="teacher-detail-subject"></p>
-            <p class="teacher-detail-experience"></p>
-        </div>
-    </div>
     <!-- ======================================================
          FOOTER
          ====================================================== -->
     <footer>
         <div class="container">
             <p>© 2025 Школьный портал — Все права защищены.</p>
-            <p id="china-fact">Интересный факт о Китае: тут будет случайный факт при загрузке.</p>
         </div>
     </footer>
 
     <!-- ======================================================
-         ОБЛАСТЬ ДЛЯ ТОСТ-УВЕДОМЛЕНИЙ
+         ОБЛАСТЬ ДЛЯ УВЕДОМЛЕНИЙ
          ====================================================== -->
-    <div id="notification-area" aria-live="polite" aria-atomic="true"></div>
+    <div id="notification-area"></div>
 
     <!-- ======================================================
          SCRIPTS
          ====================================================== -->
-
-    <!-- Подключаем pinyin-pro (для пиньинь) -->
-    <script src="https://unpkg.com/pinyin-pro"></script>
-
-    <!-- Главный скрипт (логика сайта) -->
     <script src="script.js" defer></script>
-
 </body>
 </html>
