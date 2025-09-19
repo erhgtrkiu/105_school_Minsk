@@ -1,175 +1,233 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <title>Школьный портал</title>
-  <link rel="stylesheet" href="style.css">
-  <script defer src="script.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Школьный Китайский язык</title>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Pinyin для переводчика -->
+    <script src="https://unpkg.com/pinyin-pro"></script>
 </head>
 <body>
-  <!-- ================= HERO (для гостей) ================= -->
-  <section class="hero" id="landing">
-    <div class="hero-content">
-      <div>
-        <h1>欢迎来到中文学校</h1>
-        <h2>Добро пожаловать!</h2>
-        <p>Изучайте китайский язык, задавайте вопросы, посещайте занятия.</p>
-      </div>
-      <div class="hero-actions">
-        <button id="register-btn" class="btn">Регистрация</button>
-        <button id="login-btn" class="btn secondary">Вход</button>
-      </div>
-    </div>
-  </section>
 
-  <!-- ================= HEADER ================= -->
-  <header>
-    <div class="header-inner">
-      <nav>
-        <ul class="menu">
-          <li class="menu-item active" onclick="changePage('teachers')">Учителя</li>
-          <li class="menu-item" onclick="changePage('students')">Ученики</li>
-          <li class="menu-item" onclick="changePage('groups')">Группы</li>
-          <li class="menu-item" onclick="changePage('schedule')">Расписание</li>
-          <li class="menu-item" onclick="changePage('extra-lessons')">Занятия</li>
-          <li class="menu-item" onclick="openModal('qa-modal')">
-            Вопрос-ответ
-            <span class="notification-badge">0</span>
-          </li>
-        </ul>
-      </nav>
-      <div class="user-controls">
-        <span id="user-info"></span>
-        <button id="theme-toggle">🌓</button>
-      </div>
-    </div>
-  </header>
-
-  <!-- ================= MAIN ================= -->
-  <main>
-    <!-- Страница учителей -->
-    <section class="page active" id="teachers">
-      <h2>Учителя</h2>
-      <div class="teacher-list"></div>
+    <!-- ======================================================
+         HERO (ГЛАВНЫЙ ЭКРАН ДЛЯ ГОСТЕЙ)
+         ====================================================== -->
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1>Добро пожаловать в школьный портал</h1>
+                <h2>Изучаем китайский язык вместе</h2>
+                <p>Регистрация обязательна для использования всех функций сайта.</p>
+                <div class="hero-actions">
+                    <button id="login-btn" class="btn">Войти</button>
+                    <button id="register-btn" class="btn secondary">Регистрация</button>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/6/63/Great_Wall_of_China_July_2006.JPG" alt="Китай" width="300">
+            </div>
+        </div>
     </section>
 
-    <!-- Страница учеников -->
-    <section class="page" id="students">
-      <h2>Ученики</h2>
-      <div class="student-list"></div>
-    </section>
+    <!-- ======================================================
+         HEADER / НАВИГАЦИЯ
+         ====================================================== -->
+    <header>
+        <div class="header-inner">
+            <nav>
+                <ul class="menu">
+                    <li class="menu-item active" data-page="home">Главная</li>
+                    <li class="menu-item" data-page="teachers">Учителя</li>
+                    <li class="menu-item" data-page="students">Ученики</li>
+                    <li class="menu-item" data-page="groups">Группы</li>
+                    <li class="menu-item" data-page="schedule">Расписание</li>
+                    <li class="menu-item" data-page="lessons">Доп. занятия</li>
+                    <li class="menu-item" data-page="qa">Вопрос-ответ <span id="qa-badge" class="notification-badge" style="display:none;">0</span></li>
+                    <li class="menu-item" data-page="teacher-requests" style="display:none;">Заявки</li>
+                    <li class="menu-item" data-page="translator">Переводчик</li>
+                </ul>
+            </nav>
+            <div class="user-controls">
+                <span id="user-info"></span>
+                <button id="logout-btn" class="btn secondary" style="display:none;">Выйти</button>
+                <button id="theme-toggle">🌙</button>
+            </div>
+        </div>
+    </header>
 
-    <!-- Страница групп -->
-    <section class="page" id="groups">
-      <h2>Группы</h2>
-      <div class="groups-container"></div>
-    </section>
+    <!-- ======================================================
+         СТРАНИЦЫ
+         ====================================================== -->
+    <main>
+        <!-- Главная -->
+        <section id="home" class="page active">
+            <h2>Главная страница</h2>
+            <p>Здесь будет общая информация о портале.</p>
+        </section>
 
-    <!-- Страница расписания -->
-    <section class="page" id="schedule">
-      <h2>Расписание</h2>
-      <div class="schedule-controls">
-        <button onclick="changeWeek(-1)">◀ Предыдущая</button>
-        <span id="week-label">Неделя 1</span>
-        <button onclick="changeWeek(1)">Следующая ▶</button>
-      </div>
-      <table>
-        <thead>
-          <tr>
-            <th>День</th>
-            <th>Время</th>
-            <th>Группа</th>
-            <th>Предмет</th>
-            <th>Учитель</th>
-          </tr>
-        </thead>
-        <tbody id="schedule-body"></tbody>
-      </table>
-    </section>
+        <!-- Учителя -->
+        <section id="teachers" class="page">
+            <h2>Наши учителя</h2>
+            <div id="teacher-list" class="teacher-list"></div>
+        </section>
 
-    <!-- Страница доп. занятий -->
-    <section class="page" id="extra-lessons">
-      <h2>Дополнительные занятия</h2>
-      <div class="extra-lessons"></div>
-    </section>
-  </main>
+        <!-- Ученики -->
+        <section id="students" class="page">
+            <h2>Ученики</h2>
+            <div id="student-list" class="student-list"></div>
+        </section>
 
-  <!-- ================= FOOTER ================= -->
-  <footer>
-    <p id="china-fact">Интересный факт о Китае...</p>
-  </footer>
+        <!-- Группы -->
+        <section id="groups" class="page">
+            <h2>Группы</h2>
+            <div id="group-list" class="group-list"></div>
+        </section>
 
-  <!-- ================= MODALS ================= -->
+        <!-- Расписание -->
+        <section id="schedule" class="page">
+            <h2>Расписание занятий</h2>
+            <div class="schedule-controls">
+                <button>Сегодня</button>
+                <button>Завтра</button>
+                <button>Неделя</button>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Время</th>
+                        <th>Предмет</th>
+                        <th>Преподаватель</th>
+                    </tr>
+                </thead>
+                <tbody id="schedule-body"></tbody>
+            </table>
+        </section>
+        <!-- Дополнительные занятия -->
+        <section id="lessons" class="page">
+            <h2>Дополнительные занятия</h2>
+            <div id="extra-lessons" class="extra-lessons"></div>
+        </section>
 
-  <!-- Авторизация -->
-  <div class="modal" id="auth-modal">
-    <div class="modal-content">
-      <span class="close" onclick="closeModal('auth-modal')">&times;</span>
-      <div class="tabs">
-        <button id="login-tab" class="tab active" onclick="switchAuthTab('login')">Вход</button>
-        <button id="register-tab" class="tab" onclick="switchAuthTab('register')">Регистрация</button>
-      </div>
-      <div id="login-form">
-        <input type="text" id="login-username" placeholder="ФИО">
-        <input type="password" id="login-password" placeholder="Пароль">
-        <button id="login-submit">Войти</button>
-      </div>
-      <div id="register-form" style="display:none;">
-        <input type="text" id="register-username" placeholder="ФИО">
-        <input type="password" id="register-password" placeholder="Пароль">
-        <select id="register-role">
-          <option value="student">Ученик</option>
-          <option value="teacher">Учитель</option>
-        </select>
-        <button id="register-submit">Зарегистрироваться</button>
-      </div>
-      <button id="logout-btn" class="btn secondary" style="display:none;">Выйти</button>
+        <!-- Вопрос-ответ -->
+        <section id="qa" class="page">
+            <h2>Вопросы и ответы</h2>
+            <form id="question-form">
+                <input type="text" id="question-input" placeholder="Введите свой вопрос..." required>
+                <button type="submit" class="btn">Задать вопрос</button>
+            </form>
+            <div id="qa-list"></div>
+        </section>
+
+        <!-- Заявки учителей (для админа) -->
+        <section id="teacher-requests" class="page">
+            <h2>Заявки учителей</h2>
+            <div id="teacher-requests-list"></div>
+        </section>
+
+        <!-- Переводчик -->
+        <section id="translator" class="page">
+            <h2>Переводчик</h2>
+            <div class="translator">
+                <textarea id="translator-input" placeholder="Введите текст на русском..."></textarea>
+                <button id="translate-btn" class="translate-btn">Перевести</button>
+                <div id="translation-result" class="result"></div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ======================================================
+         МОДАЛЬНЫЕ ОКНА
+         ====================================================== -->
+
+    <!-- Авторизация -->
+    <div id="auth-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Авторизация</h3>
+            <form id="auth-form">
+                <select id="auth-mode">
+                    <option value="login">Вход</option>
+                    <option value="register">Регистрация</option>
+                </select>
+                <select id="auth-role">
+                    <option value="student">Ученик</option>
+                    <option value="teacher">Учитель</option>
+                </select>
+                <input type="text" id="auth-fullname" placeholder="ФИО" required>
+                <input type="password" id="auth-password" placeholder="Пароль" required>
+                <button type="submit" class="btn">Продолжить</button>
+            </form>
+        </div>
     </div>
-  </div>
 
-  <!-- Вопрос-ответ -->
-  <div class="modal" id="qa-modal">
-    <div class="modal-content">
-      <span class="close" onclick="closeModal('qa-modal')">&times;</span>
-      <h3>Вопросы и ответы</h3>
-      <div id="qa-list"></div>
-      <textarea id="question-input" placeholder="Задайте вопрос..."></textarea>
-      <button id="send-question">Отправить</button>
+    <!-- Вопрос-ответ (модалка) -->
+    <div id="qa-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Список вопросов</h3>
+            <div id="qa-list-modal"></div>
+        </div>
     </div>
-  </div>
 
-  <!-- Заявки учителей (только для админа) -->
-  <div class="modal" id="teacher-requests-modal">
-    <div class="modal-content">
-      <span class="close" onclick="closeModal('teacher-requests-modal')">&times;</span>
-      <h3>Заявки учителей</h3>
-      <div id="teacher-requests-list"></div>
+    <!-- Ответ -->
+    <div id="answer-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Ваш ответ</h3>
+            <form id="answer-form">
+                <textarea id="answer-input" placeholder="Введите ответ..." required></textarea>
+                <button type="submit" class="btn">Сохранить</button>
+            </form>
+        </div>
     </div>
-  </div>
 
-  <!-- Карточка учителя -->
-  <div class="modal" id="teacher-detail-modal">
-    <div class="modal-content teacher-detail-modal">
-      <span class="close" onclick="closeModal('teacher-detail-modal')">&times;</span>
-      <img class="teacher-detail-photo" src="" alt="">
-      <h3 class="teacher-detail-name"></h3>
-      <p class="teacher-detail-subject"></p>
-      <p class="teacher-detail-experience"></p>
+    <!-- Заявки учителей -->
+    <div id="teacher-requests-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Заявки учителей</h3>
+            <div id="teacher-requests-list-modal"></div>
+        </div>
     </div>
-  </div>
 
-  <!-- Переводчик -->
-  <section class="translator">
-    <h2>Переводчик</h2>
-    <textarea id="translate-input" placeholder="Введите текст на русском..."></textarea>
-    <button id="translate-btn" class="translate-btn">Перевести</button>
-    <div class="result">
-      <p><strong>Китайский:</strong> <span id="translate-chinese"></span></p>
-      <p><strong>Пиньинь:</strong> <span id="translate-pinyin"></span></p>
+    <!-- Детали учителя -->
+    <div id="teacher-detail-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <img src="" alt="Фото учителя" class="teacher-detail-photo">
+            <h3 class="teacher-detail-name"></h3>
+            <p class="teacher-detail-subject"></p>
+            <p class="teacher-detail-experience"></p>
+        </div>
     </div>
-  </section>
+    <!-- ======================================================
+         FOOTER
+         ====================================================== -->
+    <footer>
+        <div class="container">
+            <p>© 2025 Школьный портал — Все права защищены.</p>
+            <p id="china-fact">Интересный факт о Китае: тут будет случайный факт при загрузке.</p>
+        </div>
+    </footer>
 
-  <!-- Уведомления -->
-  <div id="notification-area"></div>
+    <!-- ======================================================
+         ОБЛАСТЬ ДЛЯ ТОСТ-УВЕДОМЛЕНИЙ
+         ====================================================== -->
+    <div id="notification-area" aria-live="polite" aria-atomic="true"></div>
+
+    <!-- ======================================================
+         SCRIPTS
+         ====================================================== -->
+
+    <!-- Подключаем pinyin-pro (для пиньинь) -->
+    <script src="https://unpkg.com/pinyin-pro"></script>
+
+    <!-- Главный скрипт (логика сайта) -->
+    <script src="script.js" defer></script>
+
 </body>
 </html>
