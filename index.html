@@ -1,174 +1,666 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html 
+    lang="ru"
+>
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Школа №105 г. Минска - Китайский язык</title>
-    <link rel="stylesheet" href="style.css">
+    <meta 
+        charset="UTF-8"
+    >
+
+    <title>
+        Школьный портал
+    </title>
+
+    <link 
+        rel="stylesheet" 
+        href="style.css"
+    >
 </head>
+
 <body>
-    <header>
-        <div class="china-text">
-            <span>中国 - 白俄罗斯友谊</span>
-            <span>中文学习</span>
-            <span>中国文化</span>
+
+    <!-- ================================================== -->
+    <!-- === HERO ДЛЯ ГОСТЕЙ ============================= -->
+    <!-- ================================================== -->
+
+    <section 
+        id="guest-hero" 
+        class="hero"
+    >
+        <div 
+            class="hero-content"
+        >
+            <h1>
+                欢迎来到我们的学校
+            </h1>
+
+            <h2>
+                Добро пожаловать в китайскую школу
+            </h2>
+
+            <p>
+                На этом портале вы сможете изучать китайский язык 
+                и культуру Поднебесной. <br>
+                Здесь представлены учителя, расписание занятий, 
+                группы учеников и полезные материалы.
+            </p>
+
+            <div 
+                class="hero-actions"
+            >
+                <button 
+                    id="register-btn" 
+                    class="btn"
+                >
+                    Зарегистрироваться
+                </button>
+
+                <button 
+                    id="login-btn" 
+                    class="btn"
+                >
+                    Войти
+                </button>
+            </div>
         </div>
-        <div class="header-controls">
-            <button id="theme-toggle">🌙</button>
-            <button id="qa-button">Вопрос-ответ <span class="notification-badge">0</span></button>
+    </section>
+
+
+
+    <!-- ================================================== -->
+    <!-- === ШАПКА САЙТА ================================= -->
+    <!-- ================================================== -->
+
+    <header>
+        <nav>
+            <ul 
+                class="menu"
+            >
+                <li 
+                    class="menu-item" 
+                    data-page="teachers"
+                >
+                    Учителя
+                </li>
+
+                <li 
+                    class="menu-item" 
+                    data-page="students"
+                >
+                    Ученики
+                </li>
+
+                <li 
+                    class="menu-item" 
+                    data-page="groups"
+                >
+                    Группы
+                </li>
+
+                <li 
+                    class="menu-item" 
+                    data-page="schedule"
+                >
+                    Расписание
+                </li>
+
+                <li 
+                    class="menu-item" 
+                    data-page="extra"
+                >
+                    Занятия
+                </li>
+
+                <li 
+                    class="menu-item" 
+                    id="qa-button"
+                >
+                    Вопрос-ответ 
+                    <span 
+                        class="notification-badge"
+                    >
+                        0
+                    </span>
+                </li>
+
+                <li 
+                    class="menu-item" 
+                    id="theme-toggle"
+                >
+                    <span 
+                        id="theme-icon"
+                    >
+                        🌞
+                    </span>
+                </li>
+
+                <li 
+                    class="menu-item admin-only" 
+                    id="view-requests"
+                >
+                    Заявки учителей
+                </li>
+            </ul>
+        </nav>
+
+        <div 
+            class="user-controls"
+        >
+            <span 
+                id="user-info" 
+                style="display:none"
+            >
+            </span>
         </div>
     </header>
 
-    <div class="container">
-        <aside class="sidebar">
-            <div class="china-facts">
-                <h3>Интересные факты о Китае</h3>
-                <div class="fact-container">
-                    <p id="china-fact">Загрузка факта...</p>
-                </div>
-            </div>
-            <ul>
-                <li class="menu-item" data-page="teachers">Учителя</li>
-                <li class="menu-item" data-page="students">Ученики</li>
-                <li class="menu-item" data-page="groups">Группы</li>
-                <li class="menu-item" data-page="lessons">Занятия</li>
-                <li class="menu-item" data-page="extra">Доп. занятия</li>
-                <li class="menu-item" data-page="translator">Переводчик</li>
-                <li class="menu-item" id="login-btn">Войти</li>
-                <li class="menu-item" id="register-btn">Регистрация</li>
-            </ul>
-        </aside>
 
-        <main class="content">
-            <!-- Учителя -->
-            <div id="teachers" class="page active">
-                <h2>Учителя китайского языка</h2>
-                <div class="teacher-list"></div>
-                <div class="admin-controls hidden">
-                    <button id="add-teacher">Добавить учителя</button>
-                    <button id="edit-teachers">Редактировать</button>
-                    <!-- 🔹 добавил кнопку -->
-                    <button id="view-requests">Заявки учителей</button>
-                </div>
+
+    <!-- ================================================== -->
+    <!-- === СТРАНИЦЫ ==================================== -->
+    <!-- ================================================== -->
+
+    <main>
+
+        <!-- ============================================== -->
+        <!-- === СТРАНИЦА: УЧИТЕЛЯ ======================== -->
+        <!-- ============================================== -->
+
+        <section 
+            id="teachers" 
+            class="page"
+        >
+            <h2>
+                Наши учителя
+            </h2>
+
+            <p>
+                Здесь представлены преподаватели китайского языка и культуры. <br>
+                Нажмите на фотографию учителя, чтобы увидеть подробную информацию.
+            </p>
+
+            <div 
+                class="teacher-list"
+            >
+            </div>
+        </section>
+
+
+
+        <!-- ============================================== -->
+        <!-- === СТРАНИЦА: УЧЕНИКИ ======================== -->
+        <!-- ============================================== -->
+
+        <section 
+            id="students" 
+            class="page"
+        >
+            <h2>
+                Ученики
+            </h2>
+
+            <p>
+                В этом разделе вы можете увидеть список зарегистрированных учеников 
+                и их группы.
+            </p>
+
+            <div 
+                class="student-list"
+            >
+            </div>
+        </section>
+        <!-- ============================================== -->
+        <!-- === СТРАНИЦА: ГРУППЫ ========================= -->
+        <!-- ============================================== -->
+
+        <section 
+            id="groups" 
+            class="page"
+        >
+            <h2>
+                Группы
+            </h2>
+
+            <p>
+                Здесь представлены учебные группы. <br>
+                Каждая группа привязана к своему учителю. <br>
+                Щёлкните на группу, чтобы открыть список её учеников.
+            </p>
+
+            <div 
+                class="groups-container"
+            >
+            </div>
+        </section>
+
+
+
+        <!-- ============================================== -->
+        <!-- === СТРАНИЦА: РАСПИСАНИЕ ===================== -->
+        <!-- ============================================== -->
+
+        <section 
+            id="schedule" 
+            class="page"
+        >
+            <h2>
+                Расписание занятий
+            </h2>
+
+            <p>
+                Используйте стрелки для переключения недель. <br>
+                Вы можете видеть, когда и какие занятия будут проходить.
+            </p>
+
+            <div 
+                class="week-controls"
+            >
+                <button 
+                    id="prev-week"
+                >
+                    ←
+                </button>
+
+                <span 
+                    id="week-label"
+                >
+                </span>
+
+                <button 
+                    id="next-week"
+                >
+                    →
+                </button>
             </div>
 
-            <!-- Ученики -->
-            <div id="students" class="page">
-                <h2>Ученики</h2>
-                <div class="student-list"></div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>
+                            День
+                        </th>
+                        <th>
+                            Время
+                        </th>
+                        <th>
+                            Группа
+                        </th>
+                        <th>
+                            Предмет
+                        </th>
+                        <th>
+                            Учитель
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody 
+                    id="schedule-body"
+                >
+                </tbody>
+            </table>
+        </section>
+
+
+
+        <!-- ============================================== -->
+        <!-- === СТРАНИЦА: ДОП. ЗАНЯТИЯ ================== -->
+        <!-- ============================================== -->
+
+        <section 
+            id="extra" 
+            class="page"
+        >
+            <h2>
+                Дополнительные занятия
+            </h2>
+
+            <p>
+                Помимо основных уроков, мы предлагаем кружки и факультативы, <br>
+                чтобы глубже погрузиться в культуру Китая.
+            </p>
+
+            <div 
+                class="extra-lessons"
+            >
+            </div>
+        </section>
+
+
+
+        <!-- ============================================== -->
+        <!-- === ФАКТЫ + ПРАЗДНИКИ ======================== -->
+        <!-- ============================================== -->
+
+        <section 
+            id="facts-holidays"
+        >
+            <h2>
+                Интересный факт о Китае
+            </h2>
+
+            <p 
+                id="china-fact"
+            >
+            </p>
+        </section>
+    </main>
+    <!-- ================================================== -->
+    <!-- === МОДАЛКА: ВОПРОС-ОТВЕТ ======================== -->
+    <!-- ================================================== -->
+
+    <div 
+        id="qa-modal" 
+        class="modal"
+    >
+        <div 
+            class="modal-content"
+        >
+            <span 
+                class="close"
+            >
+                &times;
+            </span>
+
+            <h2>
+                Вопросы и ответы
+            </h2>
+
+            <div 
+                class="qa-container"
+            >
             </div>
 
-            <!-- Группы -->
-            <div id="groups" class="page">
-                <h2>Группы</h2>
-                <div class="groups-container"></div>
-            </div>
+            <textarea 
+                id="question-input" 
+                placeholder="Введите вопрос"
+            >
+            </textarea>
 
-            <!-- Занятия -->
-            <div id="lessons" class="page">
-                <h2>Расписание занятий</h2>
-                <div class="schedule-header">
-                    <button id="prev-week">Пред. неделя</button>
-                    <span id="week-label">Неделя 1</span>
-                    <button id="next-week">След. неделя</button>
-                </div>
-                <table class="schedule-table">
-                    <thead>
-                        <tr>
-                            <th>День</th>
-                            <th>Время</th>
-                            <th>Группа</th>
-                            <th>Предмет</th>
-                            <th>Учитель</th>
-                        </tr>
-                    </thead>
-                    <tbody id="schedule-body">
-                        <!-- Динамическое расписание -->
-                    </tbody>
-                </table>
-            </div>
-            <!-- Дополнительные занятия -->
-            <div id="extra" class="page">
-                <h2>Дополнительные занятия</h2>
-                <div class="extra-lessons"></div>
-            </div>
-
-            <!-- Переводчик -->
-            <div id="translator" class="page">
-                <h2>Переводчик</h2>
-                <div class="translator-container">
-                    <div class="translator-row">
-                        <select id="from-lang">
-                            <option value="ru">Русский</option>
-                            <option value="zh">中文</option>
-                            <option value="en">English</option>
-                        </select>
-                        <select id="to-lang">
-                            <option value="zh">中文</option>
-                            <option value="ru">Русский</option>
-                            <option value="en">English</option>
-                        </select>
-                    </div>
-                    <div class="translator-row">
-                        <textarea id="from-text" placeholder="Введите текст..."></textarea>
-                        <textarea id="to-text" placeholder="Перевод..." readonly></textarea>
-                    </div>
-                    <button id="translate-btn">Перевести</button>
-                </div>
-            </div>
-        </main>
+            <button 
+                id="send-question"
+            >
+                Отправить
+            </button>
+        </div>
     </div>
 
-    <!-- Модальное окно авторизации -->
-    <div id="auth-modal" class="modal">
-        <div class="modal-content">
-            <span class="close">&times;</span>
-            <div class="auth-tabs">
-                <button class="tab-btn active" data-tab="login">Вход</button>
-                <button class="tab-btn" data-tab="register">Регистрация</button>
+
+
+    <!-- ================================================== -->
+    <!-- === МОДАЛКА: АВТОРИЗАЦИЯ ========================= -->
+    <!-- ================================================== -->
+
+    <div 
+        id="auth-modal" 
+        class="modal"
+    >
+        <div 
+            class="modal-content auth-modal"
+        >
+            <span 
+                class="close"
+            >
+                &times;
+            </span>
+
+            <div 
+                class="auth-tabs"
+            >
+                <button 
+                    class="tab-btn" 
+                    data-tab="login"
+                >
+                    Вход
+                </button>
+
+                <button 
+                    class="tab-btn" 
+                    data-tab="register"
+                >
+                    Регистрация
+                </button>
             </div>
-            <div id="login" class="auth-form active">
-                <h3>Вход</h3>
-                <input type="text" id="login-name" placeholder="Логин">
-                <input type="password" id="login-password" placeholder="Пароль">
-                <button id="login-submit">Войти</button>
+
+            <!-- ============================================== -->
+            <!-- === ФОРМА: Вход ============================== -->
+            <!-- ============================================== -->
+            <div 
+                id="login" 
+                class="auth-form"
+            >
+                <h3>
+                    Войти
+                </h3>
+
+                <input 
+                    id="login-name" 
+                    type="text" 
+                    placeholder="Логин"
+                >
+
+                <input 
+                    id="login-password" 
+                    type="password" 
+                    placeholder="Пароль"
+                >
+
+                <button 
+                    id="login-submit"
+                >
+                    Войти
+                </button>
             </div>
-            <div id="register" class="auth-form">
-                <h3>Регистрация</h3>
-                <select id="register-role">
-                    <option value="student">Ученик</option>
-                    <option value="teacher">Учитель</option>
+
+            <!-- ============================================== -->
+            <!-- === ФОРМА: Регистрация ======================= -->
+            <!-- ============================================== -->
+            <div 
+                id="register" 
+                class="auth-form"
+            >
+                <h3>
+                    Регистрация
+                </h3>
+
+                <input 
+                    id="register-fullname" 
+                    type="text" 
+                    placeholder="ФИО"
+                >
+
+                <input 
+                    id="register-name" 
+                    type="text" 
+                    placeholder="Логин"
+                >
+
+                <input 
+                    id="register-password" 
+                    type="password" 
+                    placeholder="Пароль"
+                >
+
+                <input 
+                    id="register-confirm" 
+                    type="password" 
+                    placeholder="Подтверждение пароля"
+                >
+
+                <select 
+                    id="register-role"
+                >
+                    <option 
+                        value="student"
+                    >
+                        Ученик
+                    </option>
+
+                    <option 
+                        value="teacher"
+                    >
+                        Учитель
+                    </option>
                 </select>
-                <input type="text" id="register-name" placeholder="Логин">
-                <input type="password" id="register-password" placeholder="Пароль">
-                <input type="password" id="register-confirm" placeholder="Подтвердите пароль">
-                <input type="text" id="register-fullname" placeholder="Полное имя">
-                <button id="register-submit">Зарегистрироваться</button>
+
+                <button 
+                    id="register-submit"
+                >
+                    Зарегистрироваться
+                </button>
             </div>
         </div>
     </div>
 
-    <!-- Модальное окно для вопросов -->
-    <div id="qa-modal" class="modal">
-        <div class="modal-content wide-modal">
-            <span class="close">&times;</span>
-            <h3>Вопрос-ответ</h3>
-            <div class="qa-container"></div>
-            <div class="qa-form">
-                <textarea id="question-input" placeholder="Задайте свой вопрос..."></textarea>
-                <button id="send-question">Отправить</button>
+
+
+    <!-- ================================================== -->
+    <!-- === МОДАЛКА: ЗАЯВКИ УЧИТЕЛЕЙ ==================== -->
+    <!-- ================================================== -->
+
+    <div 
+        id="teacher-requests-modal" 
+        class="modal"
+    >
+        <div 
+            class="modal-content"
+        >
+            <span 
+                class="close"
+            >
+                &times;
+            </span>
+
+            <h2>
+                Заявки учителей
+            </h2>
+
+            <div 
+                class="teacher-requests-list"
+            >
             </div>
         </div>
     </div>
-    <!-- 🔹 Новая модалка заявок учителей -->
-    <div id="teacher-requests-modal" class="modal">
-        <div class="modal-content wide-modal">
-            <span class="close">&times;</span>
-            <h3>Заявки учителей</h3>
-            <div class="teacher-requests-list"></div>
+
+
+
+    <!-- ================================================== -->
+    <!-- === МОДАЛКА: КАРТОЧКА УЧИТЕЛЯ ==================== -->
+    <!-- ================================================== -->
+
+    <div 
+        id="teacher-detail-modal" 
+        class="modal"
+    >
+        <div 
+            class="modal-content teacher-detail"
+        >
+            <span 
+                class="close"
+            >
+                &times;
+            </span>
+
+            <img 
+                class="teacher-detail-photo" 
+                src="" 
+                alt="Фото учителя"
+            >
+
+            <h3 
+                class="teacher-detail-name"
+            >
+            </h3>
+
+            <p 
+                class="teacher-detail-subject"
+            >
+            </p>
+
+            <p 
+                class="teacher-detail-experience"
+            >
+            </p>
         </div>
     </div>
+    <!-- ================================================== -->
+    <!-- === ПЕРЕВОДЧИК ================================== -->
+    <!-- ================================================== -->
 
-    <script src="script.js"></script>
+    <section 
+        id="translator" 
+        class="page"
+    >
+        <h2>
+            Переводчик
+        </h2>
+
+        <p>
+            Введите текст на русском языке, и система переведёт его на китайский. <br>
+            В результате вы увидите иероглифы и пиньинь.
+        </p>
+
+        <textarea 
+            id="from-text" 
+            placeholder="Введите текст для перевода"
+        >
+        </textarea>
+
+        <button 
+            id="translate-btn"
+        >
+            Перевести
+        </button>
+
+        <textarea 
+            id="to-text" 
+            placeholder="Перевод" 
+            readonly
+        >
+        </textarea>
+
+        <p 
+            class="translator-hint"
+        >
+            ⚠️ Перевод выполняется с использованием нейросети. <br>
+            Показаны иероглифы и пиньинь для удобства изучения.
+        </p>
+    </section>
+
+
+
+    <!-- ================================================== -->
+    <!-- === ОБЛАСТЬ УВЕДОМЛЕНИЙ ========================= -->
+    <!-- ================================================== -->
+
+    <div 
+        id="notification-area"
+    >
+    </div>
+
+
+
+    <!-- ================================================== -->
+    <!-- === ПОДВАЛ ====================================== -->
+    <!-- ================================================== -->
+
+    <footer>
+        <p>
+            © 2025 Китайский школьный портал. Все права защищены.
+        </p>
+    </footer>
+
+
+
+    <!-- ================================================== -->
+    <!-- === ПОДКЛЮЧЕНИЕ SCRIPT ========================== -->
+    <!-- ================================================== -->
+
+    <script 
+        src="script.js"
+    >
+    </script>
+
 </body>
 </html>
