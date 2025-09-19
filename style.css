@@ -934,92 +934,6 @@ footer {
     border: 1px solid #ddd;
     border-radius: 3px;
 }
-/* ===============================
-   >>> Добавлено: Заявки учителей
-   =============================== */
-
-#teacher-requests {
-    margin-top: 20px;
-}
-
-#teacher-requests-list {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    margin-top: 15px;
-}
-
-.teacher-request {
-    padding: 15px;
-    background: #fff9e6;
-    border: 2px solid #ffde00;
-    border-radius: 8px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: all 0.3s ease;
-}
-
-.teacher-request:hover {
-    background: #fff3cc;
-    transform: translateX(5px);
-}
-
-.teacher-request p {
-    margin: 0;
-    font-weight: bold;
-    color: #333;
-}
-
-.teacher-request button {
-    padding: 8px 15px;
-    margin-left: 10px;
-    border-radius: 5px;
-    font-size: 14px;
-    cursor: pointer;
-}
-
-.teacher-request .approve-btn {
-    background-color: #28a745;
-    color: white;
-    border: none;
-}
-
-.teacher-request .approve-btn:hover {
-    background-color: #218838;
-}
-
-.teacher-request .reject-btn {
-    background-color: #dc3545;
-    color: white;
-    border: none;
-}
-
-.teacher-request .reject-btn:hover {
-    background-color: #c82333;
-}
-
-/* ===============================
-   >>> Добавлено: Пиньинь
-   =============================== */
-
-#pinyin-output {
-    margin-top: 10px;
-    font-size: 16px;
-    font-weight: bold;
-    padding: 10px;
-    border: 2px dashed #ffde00;
-    border-radius: 5px;
-    background: #fdfdf5;
-    color: #de2910;
-}
-
-/* Ночная тема */
-body.night-theme #pinyin-output {
-    background: #333;
-    color: #ffde00;
-    border-color: #de2910;
-}
 
 .delete-teacher {
     background: #ff0000;
@@ -1029,3 +943,5 @@ body.night-theme #pinyin-output {
     border-radius: 3px;
     cursor: pointer;
 }
+
+
