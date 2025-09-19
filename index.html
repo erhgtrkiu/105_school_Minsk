@@ -27,18 +27,15 @@
                     <p id="china-fact">Загрузка факта...</p>
                 </div>
             </div>
-<!-- В меню удаляем пункт "Ученики" -->
-<ul>
-    <li class="menu-item" data-page="teachers">Учителя</li>
-    <li class="menu-item" data-page="groups">Группы</li>
-    <li class="menu-item" data-page="lessons">Занятия</li>
-    <li class="menu-item" data-page="extra">Доп. занятия</li>
-    <li class="menu-item" data-page="translator">Переводчик</li>
-    <li class="menu-item" id="login-btn">Войти</li>
-    <li class="menu-item" id="register-btn">Регистрация</li>
-</ul>
-
-<!-- Удаляем всю секцию students -->
+            <ul>
+                <li class="menu-item" data-page="teachers">Учителя</li>
+                <li class="menu-item" data-page="groups">Группы</li>
+                <li class="menu-item" data-page="lessons">Занятия</li>
+                <li class="menu-item" data-page="extra">Доп. занятия</li>
+                <li class="menu-item" data-page="translator">Переводчик</li>
+                <li class="menu-item" id="login-btn">Войти</li>
+                <li class="menu-item" id="register-btn">Регистрация</li>
+            </ul>
         </aside>
         
         <main class="content">
@@ -50,17 +47,7 @@
                 <div class="admin-controls hidden">
                     <button id="add-teacher">Добавить учителя</button>
                     <button id="edit-teachers">Редактировать</button>
-                </div>
-            </div>
-            
-            <div id="students" class="page">
-                <h2>Ученики</h2>
-                <div class="student-list">
-                    <!-- Информация об учениках -->
-                </div>
-                <div class="teacher-controls hidden">
-                    <button id="add-student">Добавить ученика</button>
-                    <button id="manage-groups">Управление группами</button>
+                    <button id="manage-requests">Запросы учителей</button>
                 </div>
             </div>
             
@@ -243,6 +230,15 @@
         </div>
     </div>
     
+    <!-- Модальное окно запросов учителей -->
+    <div id="requests-modal" class="modal">
+        <div class="modal-content wide-modal">
+            <span class="close">&times;</span>
+            <h3>Запросы на регистрацию учителей</h3>
+            <div class="requests-list"></div>
+        </div>
+    </div>
+    
     <!-- Модальное окно добавления ученика -->
     <div id="student-modal" class="modal">
         <div class="modal-content">
@@ -321,4 +317,3 @@
     <script src="script.js"></script>
 </body>
 </html>
-
