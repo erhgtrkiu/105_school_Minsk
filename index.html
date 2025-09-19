@@ -27,19 +27,45 @@
                     <p id="china-fact">Загрузка факта...</p>
                 </div>
             </div>
+<!-- В меню удаляем пункт "Ученики" -->
+<ul>
+    <li class="menu-item" data-page="teachers">Учителя</li>
+    <li class="menu-item" data-page="groups">Группы</li>
+    <li class="menu-item" data-page="lessons">Занятия</li>
+    <li class="menu-item" data-page="extra">Доп. занятия</li>
+    <li class="menu-item" data-page="translator">Переводчик</li>
+    <li class="menu-item" id="login-btn">Войти</li>
+    <li class="menu-item" id="register-btn">Регистрация</li>
+</ul>
+
+<!-- Удаляем всю секцию students -->
+        </aside>
+        
         <main class="content">
             <div id="teachers" class="page active">
                 <h2>Учителя китайского языка</h2>
-                <div class="teacher-list"></div>
+                <div class="teacher-list">
+                    <!-- Список учителей будет загружаться динамически -->
+                </div>
                 <div class="admin-controls hidden">
                     <button id="add-teacher">Добавить учителя</button>
                     <button id="edit-teachers">Редактировать</button>
-                    <button id="view-requests">Запросы учителей</button>
+                </div>
+            </div>
+            
+            <div id="students" class="page">
+                <h2>Ученики</h2>
+                <div class="student-list">
+                    <!-- Информация об учениках -->
+                </div>
+                <div class="teacher-controls hidden">
+                    <button id="add-student">Добавить ученика</button>
+                    <button id="manage-groups">Управление группами</button>
                 </div>
             </div>
             
             <div id="groups" class="page">
-                <h2>Управление группы</h2>
+                <h2>Управление группами</h2>
                 <div class="groups-container">
                     <div class="group-list">
                         <h3>Группы</h3>
@@ -78,7 +104,9 @@
                     <span class="week-display">Неделя 1</span>
                     <button id="next-week">→</button>
                 </div>
-                <table class="schedule-table"></table>
+                <table class="schedule-table">
+                    <!-- Расписание будет загружаться динамически -->
+                </table>
                 <div class="teacher-controls hidden">
                     <button id="add-lesson">Добавить занятие</button>
                     <button id="edit-lesson">Редактировать</button>
@@ -87,7 +115,9 @@
             
             <div id="extra" class="page">
                 <h2>Дополнительные занятия</h2>
-                <table class="extra-table"></table>
+                <table class="extra-table">
+                    <!-- Таблица дополнительных занятий -->
+                </table>
                 <div class="teacher-controls hidden">
                     <button id="add-extra">Добавить занятие</button>
                 </div>
@@ -121,19 +151,173 @@
         </main>
     </div>
     
-    <!-- Модальные окна -->
-    <div id="auth-modal" class="modal">...</div>
-    <div id="requests-modal" class="modal">...</div>
-    <div id="qa-modal" class="modal">...</div>
-    <div id="answer-modal" class="modal">...</div>
-    <div id="teacher-modal" class="modal">...</div>
-    <div id="edit-teachers-modal" class="modal">...</div>
-    <div id="student-modal" class="modal">...</div>
-    <div id="lesson-modal" class="modal">...</div>
-    <div id="extra-modal" class="modal">...</div>
-    <div id="holiday-modal" class="modal holiday">...</div>
+    <!-- Модальное окно регистрации/входа -->
+    <div id="auth-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="auth-tabs">
+                <button class="tab-btn active" data-tab="login">Вход</button>
+                <button class="tab-btn" data-tab="register">Регистрация</button>
+            </div>
+            
+            <div id="login" class="auth-form active">
+                <h3>Вход в систему</h3>
+                <input type="text" id="login-name" placeholder="Логин">
+                <input type="password" id="login-password" placeholder="Пароль">
+                <button id="login-submit">Войти</button>
+            </div>
+            
+            <div id="register" class="auth-form">
+                <h3>Регистрация</h3>
+                <select id="register-role">
+                    <option value="student">Ученик</option>
+                    <option value="teacher">Учитель</option>
+                </select>
+                <input type="text" id="register-name" placeholder="Логин">
+                <input type="password" id="register-password" placeholder="Пароль">
+                <input type="password" id="register-confirm" placeholder="Подтвердите пароль">
+                <input type="text" id="register-fullname" placeholder="Полное имя">
+                <button id="register-submit">Зарегистрироваться</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Модальное окно вопросов и ответов -->
+    <div id="qa-modal" class="modal">
+        <div class="modal-content wide-modal">
+            <span class="close">&times;</span>
+            <h3>Вопросы и ответы</h3>
+            
+            <div class="qa-tabs">
+                <button class="qa-tab active" data-tab="ask">Задать вопрос</button>
+                <button class="qa-tab" data-tab="questions">Мои вопросы</button>
+                <button class="qa-tab teacher-only" data-tab="all-questions">Все вопросы</button>
+            </div>
+            
+            <div class="qa-content">
+                <div class="qa-tab-content active" id="ask-tab">
+                    <textarea id="question-text" placeholder="Введите ваш вопрос..."></textarea>
+                    <button id="submit-question">Отправить вопрос</button>
+                </div>
+                
+                <div class="qa-tab-content" id="questions-tab">
+                    <div class="questions-list"></div>
+                </div>
+                
+                <div class="qa-tab-content teacher-only" id="all-questions-tab">
+                    <div class="all-questions-list"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Модальное окно ответа на вопрос -->
+    <div id="answer-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Ответить на вопрос</h3>
+            <div class="question-content"></div>
+            <textarea id="answer-text" placeholder="Введите ответ..."></textarea>
+            <button id="submit-answer">Отправить ответ</button>
+        </div>
+    </div>
+    
+    <!-- Модальное окно добавления учителя -->
+    <div id="teacher-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Добавить учителя</h3>
+            <input type="text" id="teacher-name" placeholder="ФИО учителя">
+            <input type="text" id="teacher-subject" placeholder="Предмет">
+            <input type="text" id="teacher-experience" placeholder="Стаж работы">
+            <button id="save-teacher">Сохранить</button>
+        </div>
+    </div>
+    
+    <!-- Модальное окно редактирования учителей -->
+    <div id="edit-teachers-modal" class="modal">
+        <div class="modal-content wide-modal">
+            <span class="close">&times;</span>
+            <h3>Редактирование учителей</h3>
+            <div class="teachers-edit-list"></div>
+        </div>
+    </div>
+    
+    <!-- Модальное окно добавления ученика -->
+    <div id="student-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Добавить ученика</h3>
+            <input type="text" id="student-name" placeholder="ФИО ученика">
+            <select id="student-class">
+                <option value="5A">5А класс</option>
+                <option value="6A">6А класс</option>
+                <option value="7A">7А класс</option>
+                <option value="8A">8А класс</option>
+                <option value="9A">9А класс</option>
+                <option value="10A">10А класс</option>
+                <option value="11A">11А класс</option>
+            </select>
+            <select id="student-group">
+                <option value="A">Группа А</option>
+                <option value="B">Группа Б</option>
+                <option value="C">Группа В</option>
+                <option value="D">Группа Г</option>
+                <option value="E">Группа Д</option>
+            </select>
+            <button id="save-student">Сохранить</button>
+        </div>
+    </div>
+    
+    <!-- Модальное окно добавления занятия -->
+    <div id="lesson-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Добавить занятие</h3>
+            <select id="lesson-day">
+                <option value="Понедельник">Понедельник</option>
+                <option value="Вторник">Вторник</option>
+                <option value="Среда">Среда</option>
+                <option value="Четверг">Четверг</option>
+                <option value="Пятница">Пятница</option>
+            </select>
+            <input type="text" id="lesson-time" placeholder="Время (например, 9:00-10:00)">
+            <input type="text" id="lesson-subject" placeholder="Предмет">
+            <input type="text" id="lesson-classroom" placeholder="Кабинет">
+            <button id="save-lesson">Сохранить</button>
+        </div>
+    </div>
+    
+    <!-- Модальное окно дополнительного занятия -->
+    <div id="extra-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Добавить дополнительное занятие</h3>
+            <select id="extra-day">
+                <option value="Понедельник">Понедельник</option>
+                <option value="Вторник">Вторник</option>
+                <option value="Среда">Среда</option>
+                <option value="Четверг">Четверг</option>
+                <option value="Пятница">Пятница</option>
+            </select>
+            <input type="text" id="extra-time" placeholder="Время (например, 15:30-17:00)">
+            <input type="text" id="extra-subject" placeholder="Занятие">
+            <input type="text" id="extra-teacher" placeholder="Преподаватель">
+            <input type="text" id="extra-classroom" placeholder="Кабинет">
+            <button id="save-extra">Сохранить</button>
+        </div>
+    </div>
+    
+    <!-- Праздничное поздравление -->
+    <div id="holiday-modal" class="modal holiday">
+        <div class="modal-content holiday-content">
+            <div class="fireworks"></div>
+            <h2 id="holiday-title">С праздником!</h2>
+            <p id="holiday-message">Поздравляем с китайским праздником!</p>
+            <button id="close-holiday">Закрыть</button>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
 </html>
-
