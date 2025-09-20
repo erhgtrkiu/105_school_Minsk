@@ -50,7 +50,9 @@ document.addEventListener('DOMContentLoaded', function() {
         chineseFacts: [
             "Китай - третья по величине страна в мире",
             "Бумага была изобретена в Китае",
-            "Великая Китайская стена - самое длинное сооружение"
+            "Великая Китайская стена - самое длинное сооружение",
+            "Чай был открыт в Китае более 4700 лет назад",
+            "Китайская цивилизация - одна из древнейших в мире"
         ],
         holidays: {
             '01-01': { title: 'Новый год', message: 'С Новым годом!' }
@@ -59,21 +61,34 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Инициализация приложения
     function initApp() {
-        // Загружаем данные из localStorage если они есть
+        console.log('Инициализация приложения...');
+        
+        // Загружаем данные из localStorage
         const savedData = localStorage.getItem('chinese_school_data');
         if (savedData) {
-            const data = JSON.parse(savedData);
-            Object.assign(appData, data.appData || appData);
-            Object.assign(usersDatabase, data.usersDatabase || usersDatabase);
-            if (data.teacherRequests) {
-                teacherRequests.length = 0;
-                teacherRequests.push(...data.teacherRequests);
+            try {
+                const data = JSON.parse(savedData);
+                Object.assign(appData, data.appData || appData);
+                Object.assign(usersDatabase, data.usersDatabase || usersDatabase);
+                if (data.teacherRequests) {
+                    teacherRequests.length = 0;
+                    teacherRequests.push(...data.teacherRequests);
+                }
+                console.log('Данные загружены из localStorage');
+            } catch (e) {
+                console.error('Ошибка загрузки данных:', e);
             }
         }
 
+        // Загружаем текущего пользователя
         const savedUser = localStorage.getItem('chinese_school_current_user');
         if (savedUser) {
-            currentUser = JSON.parse(savedUser);
+            try {
+                currentUser = JSON.parse(savedUser);
+                console.log('Пользователь загружен:', currentUser.name);
+            } catch (e) {
+                console.error('Ошибка загрузки пользователя:', e);
+            }
         }
 
         initEventListeners();
@@ -83,44 +98,54 @@ document.addEventListener('DOMContentLoaded', function() {
         // Показываем первую страницу
         changePage('teachers');
         
-        // Показываем факты о Китае
+        // Запускаем показ фактов
         showRandomFact();
+        
+        // Загружаем тему
+        loadTheme();
+        
+        console.log('Приложение инициализировано');
     }
 
     // Сохранение всех данных
     function saveAllData() {
-        const dataToSave = {
-            appData: appData,
-            usersDatabase: usersDatabase,
-            teacherRequests: teacherRequests
-        };
-        
-        localStorage.setItem('chinese_school_data', JSON.stringify(dataToSave));
-        if (currentUser) {
-            localStorage.setItem('chinese_school_current_user', JSON.stringify(currentUser));
+        try {
+            const dataToSave = {
+                appData: appData,
+                usersDatabase: usersDatabase,
+                teacherRequests: teacherRequests
+            };
+            
+            localStorage.setItem('chinese_school_data', JSON.stringify(dataToSave));
+            if (currentUser) {
+                localStorage.setItem('chinese_school_current_user', JSON.stringify(currentUser));
+            }
+            console.log('Данные сохранены');
+        } catch (e) {
+            console.error('Ошибка сохранения данных:', e);
         }
     }
 
     // Инициализация всех обработчиков событий
     function initEventListeners() {
         console.log('Инициализация обработчиков событий...');
+
+        // Горизонтальное меню - плашки под иероглифами
+        const topMenuItems = document.querySelectorAll('.top-menu-item');
+        console.log('Найдено элементов верхнего меню:', topMenuItems.length);
         
-        // Меню - плашки вверху
-        const menuItems = document.querySelectorAll('.top-menu-item');
-        console.log('Найдено элементов меню:', menuItems.length);
-        
-        menuItems.forEach(item => {
+        topMenuItems.forEach(item => {
             item.addEventListener('click', function(e) {
                 e.preventDefault();
-                console.log('Клик по меню:', this.getAttribute('data-page'));
+                const targetPage = this.getAttribute('data-page');
+                console.log('Клик по меню:', targetPage);
                 
-                if (!currentUser) {
+                if (!currentUser && targetPage !== 'resources') {
                     showNotification('Сначала войдите в систему');
-                    showModal(document.getElementById('auth-modal'));
+                    showModal('auth-modal');
                     return;
                 }
                 
-                const targetPage = this.getAttribute('data-page');
                 changePage(targetPage);
                 
                 // Обновляем активный класс
@@ -131,7 +156,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
 
-        // Кнопки входа/регистрации
+        // Кнопки входа/регистрации в шапке
         const loginBtn = document.getElementById('login-btn');
         const registerBtn = document.getElementById('register-btn');
         
@@ -139,7 +164,10 @@ document.addEventListener('DOMContentLoaded', function() {
             loginBtn.addEventListener('click', handleAuthButtonClick);
         }
         if (registerBtn) {
-            registerBtn.addEventListener('click', handleAuthButtonClick);
+            registerBtn.addEventListener('click', function() {
+                showModal('auth-modal');
+                switchAuthTab('register');
+            });
         }
 
         // Закрытие модальных окон
@@ -147,7 +175,7 @@ document.addEventListener('DOMContentLoaded', function() {
             btn.addEventListener('click', function() {
                 const modal = this.closest('.modal');
                 if (modal) {
-                    modal.style.display = 'none';
+                    hideModal(modal.id);
                 }
             });
         });
@@ -164,7 +192,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         // Вкладки авторизации
-        document.querySelectorAll('.tab-btn').forEach(btn => {
+        document.querySelectorAll('.auth-tabs .tab-btn').forEach(btn => {
             btn.addEventListener('click', function() {
                 switchAuthTab(this.getAttribute('data-tab'));
             });
@@ -189,67 +217,51 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
 
-        // Кнопки управления - проверяем существование перед добавлением обработчиков
-        const addTeacherBtn = document.getElementById('add-teacher');
-        const saveTeacherBtn = document.getElementById('save-teacher');
-        const editTeachersBtn = document.getElementById('edit-teachers');
-        const manageRequestsBtn = document.getElementById('manage-requests');
-        const addStudentBtn = document.getElementById('add-student');
-        const saveStudentBtn = document.getElementById('save-student');
-        const addLessonBtn = document.getElementById('add-lesson');
-        const saveLessonBtn = document.getElementById('save-lesson');
-        const addExtraBtn = document.getElementById('add-extra');
-        const saveExtraBtn = document.getElementById('save-extra');
-
-        if (addTeacherBtn) addTeacherBtn.addEventListener('click', () => {
+        // Кнопки управления
+        setupButton('add-teacher', () => {
             if (!checkAdminAccess()) return;
-            showModal(document.getElementById('teacher-modal'));
+            showModal('teacher-modal');
         });
         
-        if (saveTeacherBtn) saveTeacherBtn.addEventListener('click', addTeacher);
-        if (editTeachersBtn) editTeachersBtn.addEventListener('click', () => {
+        setupButton('save-teacher', addTeacher);
+        setupButton('edit-teachers', () => {
             if (!checkAdminAccess()) return;
-            showModal(document.getElementById('edit-teachers-modal'));
+            showModal('edit-teachers-modal');
             initTeachersEditList();
         });
         
-        if (manageRequestsBtn) manageRequestsBtn.addEventListener('click', () => {
+        setupButton('manage-requests', () => {
             if (!checkAdminAccess()) return;
-            showModal(document.getElementById('requests-modal'));
+            showModal('requests-modal');
             initRequestsList();
         });
         
-        if (addStudentBtn) addStudentBtn.addEventListener('click', () => {
+        setupButton('add-student', () => {
             if (!checkTeacherAccess()) return;
-            showModal(document.getElementById('student-modal'));
+            showModal('student-modal');
         });
         
-        if (saveStudentBtn) saveStudentBtn.addEventListener('click', addStudent);
-        
-        if (addLessonBtn) addLessonBtn.addEventListener('click', () => {
+        setupButton('save-student', addStudent);
+        setupButton('add-lesson', () => {
             if (!checkTeacherAccess()) return;
-            showModal(document.getElementById('lesson-modal'));
+            showModal('lesson-modal');
         });
         
-        if (saveLessonBtn) saveLessonBtn.addEventListener('click', addLesson);
-        
-        if (addExtraBtn) addExtraBtn.addEventListener('click', () => {
+        setupButton('save-lesson', addLesson);
+        setupButton('add-extra', () => {
             if (!checkTeacherAccess()) return;
-            showModal(document.getElementById('extra-modal'));
+            showModal('extra-modal');
         });
         
-        if (saveExtraBtn) saveExtraBtn.addEventListener('click', addExtraLesson);
+        setupButton('save-extra', addExtraLesson);
 
         // Навигация по неделям
-        const prevWeekBtn = document.getElementById('prev-week');
-        const nextWeekBtn = document.getElementById('next-week');
-        
-        if (prevWeekBtn) prevWeekBtn.addEventListener('click', () => {
+        setupButton('prev-week', () => {
             if (currentWeek > 1) currentWeek--;
             updateWeekDisplay();
         });
 
-        if (nextWeekBtn) nextWeekBtn.addEventListener('click', () => {
+        setupButton('next-week', () => {
             currentWeek++;
             updateWeekDisplay();
         });
@@ -261,19 +273,13 @@ document.addEventListener('DOMContentLoaded', function() {
         }
 
         // Вопрос-ответ
-        const submitQuestionBtn = document.getElementById('submit-question');
-        const submitAnswerBtn = document.getElementById('submit-answer');
-        
-        if (submitQuestionBtn) submitQuestionBtn.addEventListener('click', submitQuestion);
-        if (submitAnswerBtn) submitAnswerBtn.addEventListener('click', submitAnswer);
+        setupButton('submit-question', submitQuestion);
+        setupButton('submit-answer', submitAnswer);
 
         // Закрытие праздничного окна
-        const closeHolidayBtn = document.getElementById('close-holiday');
-        if (closeHolidayBtn) {
-            closeHolidayBtn.addEventListener('click', () => {
-                hideModal(document.getElementById('holiday-modal'));
-            });
-        }
+        setupButton('close-holiday', () => {
+            hideModal('holiday-modal');
+        });
 
         // Вкладки QA
         document.querySelectorAll('.qa-tab').forEach(tab => {
@@ -283,6 +289,15 @@ document.addEventListener('DOMContentLoaded', function() {
         });
 
         console.log('Все обработчики событий инициализированы');
+    }
+
+    function setupButton(id, handler) {
+        const button = document.getElementById(id);
+        if (button) {
+            button.addEventListener('click', handler);
+        } else {
+            console.warn('Кнопка не найдена:', id);
+        }
     }
 
     function checkAdminAccess() {
@@ -305,7 +320,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (this.id === 'login-btn' && currentUser) {
             logout();
         } else {
-            showModal(document.getElementById('auth-modal'));
+            showModal('auth-modal');
             if (this.id === 'register-btn') {
                 switchAuthTab('register');
             }
@@ -315,10 +330,10 @@ document.addEventListener('DOMContentLoaded', function() {
     function handleQAClick() {
         if (!currentUser) {
             showNotification('Сначала войдите в систему');
-            showModal(document.getElementById('auth-modal'));
+            showModal('auth-modal');
             return;
         }
-        showModal(document.getElementById('qa-modal'));
+        showModal('qa-modal');
         updateQAContent();
     }
 
@@ -339,31 +354,63 @@ document.addEventListener('DOMContentLoaded', function() {
             setTimeout(() => targetPage.classList.add('active'), 10);
             
             // Инициализируем данные для страницы
-            if (pageId === 'groups') {
-                initGroupsPage();
-            } else if (pageId === 'lessons') {
-                initSchedule();
-            } else if (pageId === 'extra') {
-                initExtraLessons();
-            } else if (pageId === 'teachers') {
-                initTeachers();
+            switch(pageId) {
+                case 'groups':
+                    initGroupsPage();
+                    break;
+                case 'lessons':
+                    initSchedule();
+                    break;
+                case 'extra':
+                    initExtraLessons();
+                    break;
+                case 'teachers':
+                    initTeachers();
+                    break;
+                case 'resources':
+                    // Для ресурсов не требуется дополнительной инициализации
+                    break;
             }
         }
     }
 
-    function showModal(modal) {
-        if (!modal) return;
-        modal.style.display = 'flex';
+    function showModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.style.display = 'flex';
+            setTimeout(() => modal.style.opacity = '1', 10);
+        }
     }
 
-    function hideModal(modal) {
-        if (!modal) return;
-        modal.style.display = 'none';
+    function hideModal(modalId) {
+        const modal = document.getElementById(modalId);
+        if (modal) {
+            modal.style.opacity = '0';
+            setTimeout(() => modal.style.display = 'none', 300);
+        }
     }
 
     function showNotification(message) {
-        console.log('Показ уведомления:', message);
-        alert(message); // Временное упрощение для отладки
+        console.log('Уведомление:', message);
+        // Создаем простое уведомление
+        const notification = document.createElement('div');
+        notification.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #3498db;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 5px;
+            z-index: 1000;
+            font-weight: bold;
+        `;
+        notification.textContent = message;
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+            notification.remove();
+        }, 3000);
     }
 
     // Инициализация данных
@@ -571,7 +618,7 @@ document.addEventListener('DOMContentLoaded', function() {
             document.getElementById('extra-classroom').value = lesson.classroom;
             
             document.getElementById('save-extra').setAttribute('data-edit-id', id);
-            showModal(document.getElementById('extra-modal'));
+            showModal('extra-modal');
         }
     }
 
@@ -589,7 +636,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Авторизация
     function switchAuthTab(tabName) {
-        document.querySelectorAll('.tab-btn').forEach(btn => {
+        document.querySelectorAll('.auth-tabs .tab-btn').forEach(btn => {
             btn.classList.toggle('active', btn.getAttribute('data-tab') === tabName);
         });
         
@@ -614,6 +661,11 @@ document.addEventListener('DOMContentLoaded', function() {
             return;
         }
         
+        if (!user.approved) {
+            showNotification('Ваш аккаунт ожидает подтверждения администратора');
+            return;
+        }
+        
         currentUser = { 
             login: loginName,
             name: user.name, 
@@ -621,7 +673,7 @@ document.addEventListener('DOMContentLoaded', function() {
         };
         
         updateUIForUser();
-        hideModal(document.getElementById('auth-modal'));
+        hideModal('auth-modal');
         showNotification(`Добро пожаловать, ${user.name}!`);
         saveAllData();
     }
@@ -676,7 +728,7 @@ document.addEventListener('DOMContentLoaded', function() {
             showNotification(`Регистрация успешна! Добро пожаловать, ${fullName}!`);
         }
         
-        hideModal(document.getElementById('auth-modal'));
+        hideModal('auth-modal');
         saveAllData();
         updateUIForUser();
     }
@@ -725,13 +777,38 @@ document.addEventListener('DOMContentLoaded', function() {
         localStorage.setItem('theme', isNight ? 'night' : 'day');
     }
 
+    function loadTheme() {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'night') {
+            document.body.classList.add('night-theme');
+            const themeToggle = document.getElementById('theme-toggle');
+            if (themeToggle) {
+                themeToggle.textContent = '☀️';
+            }
+        }
+    }
+
     // Факты о Китае
     function showRandomFact() {
         const factElement = document.getElementById('china-fact');
-        if (!factElement) return;
+        if (!factElement) {
+            console.warn('Элемент для фактов не найден');
+            return;
+        }
         
+        // Показываем первый факт сразу
         const randomIndex = Math.floor(Math.random() * appData.chineseFacts.length);
         factElement.textContent = appData.chineseFacts[randomIndex];
+        
+        // Меняем факты каждые 10 секунд
+        setInterval(() => {
+            const newIndex = Math.floor(Math.random() * appData.chineseFacts.length);
+            factElement.style.opacity = '0';
+            setTimeout(() => {
+                factElement.textContent = appData.chineseFacts[newIndex];
+                factElement.style.opacity = '1';
+            }, 500);
+        }, 10000);
     }
 
     // Вопрос-ответ
@@ -785,7 +862,7 @@ document.addEventListener('DOMContentLoaded', function() {
             question.answerDate = new Date().toLocaleDateString();
             
             saveAllData();
-            hideModal(document.getElementById('answer-modal'));
+            hideModal('answer-modal');
             showNotification('Ответ отправлен!');
             updateQAContent();
         }
@@ -836,7 +913,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const answerBtn = div.querySelector('.answer-btn');
             answerBtn.addEventListener('click', function() {
                 currentQuestionId = parseInt(this.getAttribute('data-id'));
-                showModal(document.getElementById('answer-modal'));
+                showModal('answer-modal');
             });
         }
         
@@ -949,7 +1026,7 @@ document.addEventListener('DOMContentLoaded', function() {
         saveAllData();
         initTeachers();
         
-        hideModal(document.getElementById('teacher-modal'));
+        hideModal('teacher-modal');
         showNotification('Учитель добавлен');
     }
 
@@ -983,7 +1060,7 @@ document.addEventListener('DOMContentLoaded', function() {
             updateAvailableStudents();
         }
         
-        hideModal(document.getElementById('student-modal'));
+        hideModal('student-modal');
         showNotification('Ученик добавлен');
     }
 
@@ -1011,7 +1088,7 @@ document.addEventListener('DOMContentLoaded', function() {
         saveAllData();
         initSchedule();
         
-        hideModal(document.getElementById('lesson-modal'));
+        hideModal('lesson-modal');
         showNotification('Занятие добавлено в расписание');
     }
 
@@ -1053,7 +1130,7 @@ document.addEventListener('DOMContentLoaded', function() {
         saveAllData();
         initExtraLessons();
         
-        hideModal(document.getElementById('extra-modal'));
+        hideModal('extra-modal');
         showNotification('Дополнительное занятие добавлено');
     }
 
