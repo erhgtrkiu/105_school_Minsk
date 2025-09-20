@@ -8,79 +8,137 @@
       font-family: Arial, sans-serif;
       margin: 0;
       padding: 0;
+      background: #fafafa;
+      color: #333;
     }
 
-    /* Заглушка для иероглифов сверху */
+    /* Шапка с иероглифами */
     .header {
       background: #333;
       color: #fff;
       text-align: center;
       padding: 20px;
-      font-size: 24px;
+      font-size: 28px;
+      letter-spacing: 3px;
     }
 
-    /* Горизонтальное меню */
+    /* Меню */
     .top-menu {
       display: flex;
       justify-content: center;
       background: #f2f2f2;
       border-bottom: 1px solid #ccc;
     }
-
     .top-menu-item {
-      padding: 10px 20px;
+      padding: 12px 25px;
       text-decoration: none;
       color: #333;
       font-weight: bold;
       cursor: pointer;
-      transition: background 0.3s;
+      transition: all 0.3s;
     }
-
     .top-menu-item:hover {
       background: #e0e0e0;
     }
-
     .top-menu-item.active {
       background: #3498db;
       color: #fff;
-      border-radius: 5px 5px 0 0;
+      border-radius: 8px 8px 0 0;
     }
 
-    /* Секции страниц */
+    /* Страницы */
     .page {
       display: none;
-      padding: 20px;
+      padding: 25px;
       animation: fadeIn 0.3s;
     }
-
     .page.active {
       display: block;
     }
-
     @keyframes fadeIn {
       from {opacity: 0;}
       to {opacity: 1;}
     }
 
-    /* Пример карточек учителей */
+    /* Учителя */
     .teacher-list {
       display: flex;
       gap: 20px;
       flex-wrap: wrap;
+      margin-top: 20px;
     }
     .teacher-card {
-      background: #f9f9f9;
+      background: #fff;
       padding: 15px;
       border: 1px solid #ddd;
+      border-radius: 10px;
+      width: 220px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .teacher-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+    }
+
+    /* Группы */
+    .students-in-group,
+    .students-to-add {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 15px;
+    }
+    .student-card {
+      background: #fff;
+      border: 1px solid #ccc;
+      padding: 8px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .student-card:hover {
+      background: #f0f8ff;
+      transform: scale(1.05);
+    }
+
+    /* Таблицы */
+    .schedule-table,
+    .extra-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background: #fff;
       border-radius: 8px;
-      width: 200px;
+      overflow: hidden;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    }
+    .schedule-table th,
+    .schedule-table td,
+    .extra-table th,
+    .extra-table td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: center;
+    }
+    .schedule-table th,
+    .extra-table th {
+      background: #f5f5f5;
+      font-weight: bold;
+    }
+
+    select {
+      padding: 8px 12px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      font-size: 14px;
     }
   </style>
 </head>
 <body>
   <div class="header">漢字 漢語 學校</div>
 
-  <!-- Горизонтальное меню -->
+  <!-- Меню -->
   <div class="top-menu">
     <a href="#" class="top-menu-item active" data-page="teachers">Учителя</a>
     <a href="#" class="top-menu-item" data-page="groups">Группы</a>
@@ -97,25 +155,26 @@
 
   <div id="groups" class="page">
     <h2>Группы</h2>
-    <div id="current-group">A</div>
+    <div><b>Текущая группа:</b> <span id="current-group">A</span></div>
     <div class="students-in-group"></div>
     <hr>
+    <h3>Студенты без группы</h3>
     <div class="students-to-add"></div>
   </div>
 
   <div id="lessons" class="page">
     <h2>Расписание занятий</h2>
+    <label>Выберите класс: </label>
     <select id="class-select">
       <option value="5A">5A</option>
       <option value="10A">10A</option>
     </select>
-    <div class="week-display"></div>
-    <table class="schedule-table" border="1" cellpadding="5"></table>
+    <table class="schedule-table"></table>
   </div>
 
   <div id="extra" class="page">
     <h2>Дополнительные занятия</h2>
-    <table class="extra-table" border="1" cellpadding="5"></table>
+    <table class="extra-table"></table>
   </div>
 
   <div id="resources" class="page">
@@ -123,9 +182,143 @@
     <p>Материалы для изучения китайского языка.</p>
   </div>
 
-  <!-- Подключаем твой JS -->
   <script>
-    /* ВСТАВЬ сюда весь твой JavaScript из вопроса */
+    document.addEventListener("DOMContentLoaded", () => {
+      /* ---------- ДАННЫЕ ---------- */
+      const teachers = [
+        { id: 1, name: "Ли Мэй", subject: "Китайский язык" },
+        { id: 2, name: "Ван Чен", subject: "Китайская литература" },
+        { id: 3, name: "Чжан Юй", subject: "История Китая" }
+      ];
+
+      const students = [
+        { id: 1, name: "Аня", group: "A" },
+        { id: 2, name: "Борис", group: "A" },
+        { id: 3, name: "Катя", group: "B" },
+        { id: 4, name: "Дима", group: null }
+      ];
+
+      const lessons = [
+        { day: "Понедельник", time: "10:00", subject: "Китайский язык", teacher: "Ли Мэй", class: "5A" },
+        { day: "Вторник", time: "12:00", subject: "Литература", teacher: "Ван Чен", class: "10A" },
+        { day: "Среда", time: "14:00", subject: "История Китая", teacher: "Чжан Юй", class: "5A" }
+      ];
+
+      const extraLessons = [
+        { day: "Четверг", time: "16:00", subject: "Разговорный клуб", teacher: "Ли Мэй" },
+        { day: "Пятница", time: "17:00", subject: "Каллиграфия", teacher: "Ван Чен" }
+      ];
+
+      /* ---------- МЕНЮ ---------- */
+      const menuItems = document.querySelectorAll(".top-menu-item");
+      const pages = document.querySelectorAll(".page");
+
+      function changePage(pageId) {
+        pages.forEach(p => p.classList.remove("active"));
+        document.getElementById(pageId).classList.add("active");
+
+        menuItems.forEach(item => item.classList.remove("active"));
+        document.querySelector(`[data-page="${pageId}"]`).classList.add("active");
+      }
+
+      menuItems.forEach(item => {
+        item.addEventListener("click", e => {
+          e.preventDefault();
+          changePage(item.dataset.page);
+        });
+      });
+
+      /* ---------- УЧИТЕЛЯ ---------- */
+      function renderTeachers() {
+        const container = document.querySelector(".teacher-list");
+        container.innerHTML = "";
+        teachers.forEach(t => {
+          const card = document.createElement("div");
+          card.className = "teacher-card";
+          card.innerHTML = `<h3>${t.name}</h3><p>${t.subject}</p>`;
+          container.appendChild(card);
+        });
+      }
+
+      /* ---------- ГРУППЫ ---------- */
+      function renderGroup(groupName) {
+        const groupContainer = document.querySelector(".students-in-group");
+        const toAddContainer = document.querySelector(".students-to-add");
+
+        groupContainer.innerHTML = "";
+        toAddContainer.innerHTML = "";
+
+        students.forEach(st => {
+          const card = document.createElement("div");
+          card.className = "student-card";
+          card.textContent = st.name;
+
+          if (st.group === groupName) {
+            card.addEventListener("click", () => {
+              st.group = null;
+              renderGroup(groupName);
+            });
+            groupContainer.appendChild(card);
+          } else if (st.group === null) {
+            card.addEventListener("click", () => {
+              st.group = groupName;
+              renderGroup(groupName);
+            });
+            toAddContainer.appendChild(card);
+          }
+        });
+      }
+
+      /* ---------- РАСПИСАНИЕ ---------- */
+      function renderSchedule(className) {
+        const table = document.querySelector(".schedule-table");
+        table.innerHTML = `
+          <tr>
+            <th>День</th>
+            <th>Время</th>
+            <th>Предмет</th>
+            <th>Учитель</th>
+          </tr>
+        `;
+
+        lessons
+          .filter(l => l.class === className)
+          .forEach(l => {
+            const row = document.createElement("tr");
+            row.innerHTML = `<td>${l.day}</td><td>${l.time}</td><td>${l.subject}</td><td>${l.teacher}</td>`;
+            table.appendChild(row);
+          });
+      }
+
+      document.getElementById("class-select").addEventListener("change", e => {
+        renderSchedule(e.target.value);
+      });
+
+      /* ---------- ДОП. ЗАНЯТИЯ ---------- */
+      function renderExtraLessons() {
+        const table = document.querySelector(".extra-table");
+        table.innerHTML = `
+          <tr>
+            <th>День</th>
+            <th>Время</th>
+            <th>Предмет</th>
+            <th>Учитель</th>
+          </tr>
+        `;
+
+        extraLessons.forEach(l => {
+          const row = document.createElement("tr");
+          row.innerHTML = `<td>${l.day}</td><td>${l.time}</td><td>${l.subject}</td><td>${l.teacher}</td>`;
+          table.appendChild(row);
+        });
+      }
+
+      /* ---------- ИНИЦИАЛИЗАЦИЯ ---------- */
+      renderTeachers();
+      renderGroup("A");
+      renderSchedule("5A");
+      renderExtraLessons();
+    });
   </script>
 </body>
 </html>
