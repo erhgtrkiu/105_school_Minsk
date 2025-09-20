@@ -42,13 +42,7 @@ document.addEventListener('DOMContentLoaded', function() {
             '5A': {
                 'Понедельник': { '9:00-10:00': 'Китайский язык (101)' },
                 'Вторник': { '9:00-10:00': 'История Китая (301)' }
-            },
-            '6A': {},
-            '7A': {},
-            '8A': {},
-            '9A': {},
-            '10A': {},
-            '11A': {}
+            }
         },
         extraLessons: [
             { id: 1, day: "Понедельник", time: "15:30-17:00", subject: "Каллиграфия", teacher: "Иванова М.И.", classroom: "305" }
@@ -65,41 +59,32 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Инициализация приложения
     function initApp() {
-        loadAllData();
-        initEventListeners();
-        initData();
-        checkHolidays();
-        showRandomFact();
-        loadTheme();
-        checkAutoLogin();
-        
-        changePage('teachers');
-        document.querySelector('.menu-item[data-page="teachers"]').classList.add('active');
-    }
-
-    // Проверка автоматического входа
-    function checkAutoLogin() {
-        const savedUser = localStorage.getItem('chinese_school_current_user');
-        if (savedUser) {
-            currentUser = JSON.parse(savedUser);
-            updateUIForUser();
-        }
-    }
-
-    // Загрузка всех данных
-    function loadAllData() {
+        // Загружаем данные из localStorage если они есть
         const savedData = localStorage.getItem('chinese_school_data');
         if (savedData) {
             const data = JSON.parse(savedData);
-            Object.assign(appData, data.appData);
-            Object.assign(usersDatabase, data.usersDatabase);
-            teacherRequests.push(...data.teacherRequests || []);
+            Object.assign(appData, data.appData || appData);
+            Object.assign(usersDatabase, data.usersDatabase || usersDatabase);
+            if (data.teacherRequests) {
+                teacherRequests.length = 0;
+                teacherRequests.push(...data.teacherRequests);
+            }
         }
 
         const savedUser = localStorage.getItem('chinese_school_current_user');
         if (savedUser) {
             currentUser = JSON.parse(savedUser);
         }
+
+        initEventListeners();
+        initData();
+        updateUIForUser();
+        
+        // Показываем первую страницу
+        changePage('teachers');
+        
+        // Показываем факты о Китае
+        showRandomFact();
     }
 
     // Сохранение всех данных
@@ -118,47 +103,65 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Инициализация всех обработчиков событий
     function initEventListeners() {
-        // Меню
-        document.querySelectorAll('.menu-item').forEach(item => {
-            if (item.id !== 'login-btn' && item.id !== 'register-btn') {
-                item.addEventListener('click', function() {
-                    if (!currentUser) {
-                        showNotification('Сначала войдите в систему');
-                        showModal(document.getElementById('auth-modal'));
-                        return;
-                    }
-                    
-                    const targetPage = this.getAttribute('data-page');
-                    changePage(targetPage);
-                    
-                    document.querySelectorAll('.menu-item').forEach(i => i.classList.remove('active'));
-                    this.classList.add('active');
-                    
-                    if (targetPage === 'groups') {
-                        initGroupsPage();
-                    } else if (targetPage === 'lessons') {
-                        initSchedule();
-                    } else if (targetPage === 'extra') {
-                        initExtraLessons();
-                    }
+        console.log('Инициализация обработчиков событий...');
+        
+        // Меню - плашки вверху
+        const menuItems = document.querySelectorAll('.top-menu-item');
+        console.log('Найдено элементов меню:', menuItems.length);
+        
+        menuItems.forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                console.log('Клик по меню:', this.getAttribute('data-page'));
+                
+                if (!currentUser) {
+                    showNotification('Сначала войдите в систему');
+                    showModal(document.getElementById('auth-modal'));
+                    return;
+                }
+                
+                const targetPage = this.getAttribute('data-page');
+                changePage(targetPage);
+                
+                // Обновляем активный класс
+                document.querySelectorAll('.top-menu-item').forEach(i => {
+                    i.classList.remove('active');
                 });
-            }
+                this.classList.add('active');
+            });
         });
 
         // Кнопки входа/регистрации
-        document.getElementById('login-btn').addEventListener('click', handleAuthButtonClick);
-        document.getElementById('register-btn').addEventListener('click', handleAuthButtonClick);
+        const loginBtn = document.getElementById('login-btn');
+        const registerBtn = document.getElementById('register-btn');
+        
+        if (loginBtn) {
+            loginBtn.addEventListener('click', handleAuthButtonClick);
+        }
+        if (registerBtn) {
+            registerBtn.addEventListener('click', handleAuthButtonClick);
+        }
 
         // Закрытие модальных окон
         document.querySelectorAll('.close').forEach(btn => {
             btn.addEventListener('click', function() {
-                hideModal(this.closest('.modal'));
+                const modal = this.closest('.modal');
+                if (modal) {
+                    modal.style.display = 'none';
+                }
             });
         });
 
         // Формы авторизации
-        document.getElementById('login-submit').addEventListener('click', login);
-        document.getElementById('register-submit').addEventListener('click', register);
+        const loginSubmit = document.getElementById('login-submit');
+        const registerSubmit = document.getElementById('register-submit');
+        
+        if (loginSubmit) {
+            loginSubmit.addEventListener('click', login);
+        }
+        if (registerSubmit) {
+            registerSubmit.addEventListener('click', register);
+        }
 
         // Вкладки авторизации
         document.querySelectorAll('.tab-btn').forEach(btn => {
@@ -167,9 +170,17 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
 
-        // Остальные обработчики...
-        document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
-        document.getElementById('qa-button').addEventListener('click', handleQAClick);
+        // Тема
+        const themeToggle = document.getElementById('theme-toggle');
+        if (themeToggle) {
+            themeToggle.addEventListener('click', toggleTheme);
+        }
+
+        // Кнопка вопрос-ответ
+        const qaButton = document.getElementById('qa-button');
+        if (qaButton) {
+            qaButton.addEventListener('click', handleQAClick);
+        }
 
         // Группы
         document.querySelectorAll('.group').forEach(group => {
@@ -178,67 +189,91 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         });
 
-        // Кнопки управления
-        document.getElementById('add-teacher').addEventListener('click', () => {
+        // Кнопки управления - проверяем существование перед добавлением обработчиков
+        const addTeacherBtn = document.getElementById('add-teacher');
+        const saveTeacherBtn = document.getElementById('save-teacher');
+        const editTeachersBtn = document.getElementById('edit-teachers');
+        const manageRequestsBtn = document.getElementById('manage-requests');
+        const addStudentBtn = document.getElementById('add-student');
+        const saveStudentBtn = document.getElementById('save-student');
+        const addLessonBtn = document.getElementById('add-lesson');
+        const saveLessonBtn = document.getElementById('save-lesson');
+        const addExtraBtn = document.getElementById('add-extra');
+        const saveExtraBtn = document.getElementById('save-extra');
+
+        if (addTeacherBtn) addTeacherBtn.addEventListener('click', () => {
             if (!checkAdminAccess()) return;
             showModal(document.getElementById('teacher-modal'));
         });
         
-        document.getElementById('save-teacher').addEventListener('click', addTeacher);
-        document.getElementById('edit-teachers').addEventListener('click', () => {
+        if (saveTeacherBtn) saveTeacherBtn.addEventListener('click', addTeacher);
+        if (editTeachersBtn) editTeachersBtn.addEventListener('click', () => {
             if (!checkAdminAccess()) return;
             showModal(document.getElementById('edit-teachers-modal'));
             initTeachersEditList();
         });
         
-        document.getElementById('manage-requests').addEventListener('click', () => {
+        if (manageRequestsBtn) manageRequestsBtn.addEventListener('click', () => {
             if (!checkAdminAccess()) return;
             showModal(document.getElementById('requests-modal'));
             initRequestsList();
         });
         
-        document.getElementById('add-student').addEventListener('click', () => {
+        if (addStudentBtn) addStudentBtn.addEventListener('click', () => {
             if (!checkTeacherAccess()) return;
             showModal(document.getElementById('student-modal'));
         });
         
-        document.getElementById('save-student').addEventListener('click', addStudent);
+        if (saveStudentBtn) saveStudentBtn.addEventListener('click', addStudent);
         
-        document.getElementById('add-lesson').addEventListener('click', () => {
+        if (addLessonBtn) addLessonBtn.addEventListener('click', () => {
             if (!checkTeacherAccess()) return;
             showModal(document.getElementById('lesson-modal'));
         });
         
-        document.getElementById('save-lesson').addEventListener('click', addLesson);
+        if (saveLessonBtn) saveLessonBtn.addEventListener('click', addLesson);
         
-        document.getElementById('add-extra').addEventListener('click', () => {
+        if (addExtraBtn) addExtraBtn.addEventListener('click', () => {
             if (!checkTeacherAccess()) return;
             showModal(document.getElementById('extra-modal'));
         });
         
-        document.getElementById('save-extra').addEventListener('click', addExtraLesson);
+        if (saveExtraBtn) saveExtraBtn.addEventListener('click', addExtraLesson);
 
         // Навигация по неделям
-        document.getElementById('prev-week').addEventListener('click', () => {
+        const prevWeekBtn = document.getElementById('prev-week');
+        const nextWeekBtn = document.getElementById('next-week');
+        
+        if (prevWeekBtn) prevWeekBtn.addEventListener('click', () => {
             if (currentWeek > 1) currentWeek--;
             updateWeekDisplay();
         });
 
-        document.getElementById('next-week').addEventListener('click', () => {
+        if (nextWeekBtn) nextWeekBtn.addEventListener('click', () => {
             currentWeek++;
             updateWeekDisplay();
         });
 
-        document.getElementById('class-select').addEventListener('change', initSchedule);
+        // Выбор класса
+        const classSelect = document.getElementById('class-select');
+        if (classSelect) {
+            classSelect.addEventListener('change', initSchedule);
+        }
 
         // Вопрос-ответ
-        document.getElementById('submit-question').addEventListener('click', submitQuestion);
-        document.getElementById('submit-answer').addEventListener('click', submitAnswer);
+        const submitQuestionBtn = document.getElementById('submit-question');
+        const submitAnswerBtn = document.getElementById('submit-answer');
+        
+        if (submitQuestionBtn) submitQuestionBtn.addEventListener('click', submitQuestion);
+        if (submitAnswerBtn) submitAnswerBtn.addEventListener('click', submitAnswer);
 
         // Закрытие праздничного окна
-        document.getElementById('close-holiday').addEventListener('click', () => {
-            hideModal(document.getElementById('holiday-modal'));
-        });
+        const closeHolidayBtn = document.getElementById('close-holiday');
+        if (closeHolidayBtn) {
+            closeHolidayBtn.addEventListener('click', () => {
+                hideModal(document.getElementById('holiday-modal'));
+            });
+        }
 
         // Вкладки QA
         document.querySelectorAll('.qa-tab').forEach(tab => {
@@ -246,6 +281,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 switchQATab(this.getAttribute('data-tab'));
             });
         });
+
+        console.log('Все обработчики событий инициализированы');
     }
 
     function checkAdminAccess() {
@@ -287,50 +324,46 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Основные функции приложения
     function changePage(pageId) {
+        console.log('Переключение на страницу:', pageId);
+        
+        // Скрываем все страницы
         document.querySelectorAll('.page').forEach(page => {
-            page.classList.remove('active');
             page.style.display = 'none';
+            page.classList.remove('active');
         });
         
-        const activePage = document.getElementById(pageId);
-        if (activePage) {
-            activePage.style.display = 'block';
-            setTimeout(() => activePage.classList.add('active'), 10);
+        // Показываем выбранную страницу
+        const targetPage = document.getElementById(pageId);
+        if (targetPage) {
+            targetPage.style.display = 'block';
+            setTimeout(() => targetPage.classList.add('active'), 10);
+            
+            // Инициализируем данные для страницы
+            if (pageId === 'groups') {
+                initGroupsPage();
+            } else if (pageId === 'lessons') {
+                initSchedule();
+            } else if (pageId === 'extra') {
+                initExtraLessons();
+            } else if (pageId === 'teachers') {
+                initTeachers();
+            }
         }
     }
 
     function showModal(modal) {
         if (!modal) return;
         modal.style.display = 'flex';
-        setTimeout(() => modal.style.opacity = 1, 10);
     }
 
     function hideModal(modal) {
         if (!modal) return;
-        modal.style.opacity = 0;
-        setTimeout(() => modal.style.display = 'none', 300);
+        modal.style.display = 'none';
     }
 
     function showNotification(message) {
-        const notification = document.createElement('div');
-        notification.textContent = message;
-        notification.style.cssText = `
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: #3498db;
-            color: white;
-            padding: 15px 25px;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-            z-index: 1001;
-        `;
-        
-        document.body.appendChild(notification);
-        
-        setTimeout(() => {
-            notification.remove();
-        }, 3000);
+        console.log('Показ уведомления:', message);
+        alert(message); // Временное упрощение для отладки
     }
 
     // Инициализация данных
@@ -659,23 +692,25 @@ document.addEventListener('DOMContentLoaded', function() {
         const isTeacher = currentUser?.role === 'teacher';
         const isAdmin = currentUser?.role === 'admin';
         
+        // Показываем/скрываем элементы управления
         document.querySelectorAll('.teacher-controls').forEach(el => {
-            el.classList.toggle('hidden', !isTeacher && !isAdmin);
+            el.style.display = (isTeacher || isAdmin) ? 'block' : 'none';
         });
         
         document.querySelectorAll('.admin-controls').forEach(el => {
-            el.classList.toggle('hidden', !isAdmin);
+            el.style.display = isAdmin ? 'block' : 'none';
         });
 
+        // Обновляем кнопки входа/выхода
         const loginBtn = document.getElementById('login-btn');
         const registerBtn = document.getElementById('register-btn');
         
         if (currentUser) {
-            loginBtn.textContent = 'Выйти';
-            registerBtn.textContent = currentUser.name;
+            if (loginBtn) loginBtn.textContent = 'Выйти';
+            if (registerBtn) registerBtn.textContent = currentUser.name;
         } else {
-            loginBtn.textContent = 'Войти';
-            registerBtn.textContent = 'Регистрация';
+            if (loginBtn) loginBtn.textContent = 'Войти';
+            if (registerBtn) registerBtn.textContent = 'Регистрация';
         }
     }
 
@@ -683,16 +718,11 @@ document.addEventListener('DOMContentLoaded', function() {
     function toggleTheme() {
         document.body.classList.toggle('night-theme');
         const isNight = document.body.classList.contains('night-theme');
-        document.getElementById('theme-toggle').textContent = isNight ? '☀️' : '🌙';
-        localStorage.setItem('theme', isNight ? 'night' : 'day');
-    }
-
-    function loadTheme() {
-        const savedTheme = localStorage.getItem('theme');
-        if (savedTheme === 'night') {
-            document.body.classList.add('night-theme');
-            document.getElementById('theme-toggle').textContent = '☀️';
+        const themeToggle = document.getElementById('theme-toggle');
+        if (themeToggle) {
+            themeToggle.textContent = isNight ? '☀️' : '🌙';
         }
+        localStorage.setItem('theme', isNight ? 'night' : 'day');
     }
 
     // Факты о Китае
@@ -702,21 +732,6 @@ document.addEventListener('DOMContentLoaded', function() {
         
         const randomIndex = Math.floor(Math.random() * appData.chineseFacts.length);
         factElement.textContent = appData.chineseFacts[randomIndex];
-    }
-
-    // Праздники
-    function checkHolidays() {
-        const today = new Date();
-        const month = String(today.getMonth() + 1).padStart(2, '0');
-        const day = String(today.getDate()).padStart(2, '0');
-        const dateStr = `${month}-${day}`;
-        
-        if (appData.holidays[dateStr]) {
-            const holiday = appData.holidays[dateStr];
-            document.getElementById('holiday-title').textContent = holiday.title;
-            document.getElementById('holiday-message').textContent = holiday.message;
-            showModal(document.getElementById('holiday-modal'));
-        }
     }
 
     // Вопрос-ответ
@@ -781,14 +796,20 @@ document.addEventListener('DOMContentLoaded', function() {
         const myQuestionsList = document.querySelector('#questions-tab .questions-list');
         if (myQuestionsList) {
             myQuestionsList.innerHTML = myQuestions.length ? '' : '<p>У вас пока нет вопросов</p>';
-            myQuestions.forEach(q => myQuestionsList.appendChild(createQuestionItem(q)));
+            myQuestions.forEach(q => {
+                const questionItem = createQuestionItem(q);
+                myQuestionsList.appendChild(questionItem);
+            });
         }
 
         if (currentUser?.role === 'teacher' || currentUser?.role === 'admin') {
             const allQuestionsList = document.querySelector('#all-questions-tab .all-questions-list');
             if (allQuestionsList) {
                 allQuestionsList.innerHTML = appData.questions.length ? '' : '<p>Вопросов пока нет</p>';
-                appData.questions.forEach(q => allQuestionsList.appendChild(createQuestionItem(q, true)));
+                appData.questions.forEach(q => {
+                    const questionItem = createQuestionItem(q, true);
+                    allQuestionsList.appendChild(questionItem);
+                });
             }
         }
     }
@@ -812,7 +833,8 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
         
         if (showAnswerButton && !question.answered) {
-            div.querySelector('.answer-btn').addEventListener('click', function() {
+            const answerBtn = div.querySelector('.answer-btn');
+            answerBtn.addEventListener('click', function() {
                 currentQuestionId = parseInt(this.getAttribute('data-id'));
                 showModal(document.getElementById('answer-modal'));
             });
@@ -1041,5 +1063,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // Запуск приложения
+    console.log('Запуск приложения...');
     initApp();
 });
