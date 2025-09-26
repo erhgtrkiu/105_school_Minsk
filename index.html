@@ -1,6 +1,171 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Школа №105 г. Минска - Китайский язык</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="china-text">
+            <span>中国 - 白俄罗斯友谊</span>
+            <span>中文学习</span>
+            <span>中国文化</span>
+        </div>
+        <div class="header-controls">
+            <button id="theme-toggle">🌙</button>
+            <button id="qa-button">Вопрос-ответ <span class="notification-badge">0</span></button>
+        </div>
+    </header>
+    
+    <div class="container">
+        <aside class="sidebar">
+            <div class="china-facts">
+                <h3>Интересные факты о Китае</h3>
+                <div class="fact-container">
+                    <p id="china-fact">Загрузка факта...</p>
+                </div>
+            </div>
+            <ul>
+                <li class="menu-item" data-page="teachers">Учителя</li>
+                <li class="menu-item" data-page="groups">Группы</li>
+                <li class="menu-item" data-page="lessons">Занятия</li>
+                <li class="menu-item" data-page="extra">Доп. занятия</li>
+                <li class="menu-item" data-page="resources">Полезные ресурсы</li>
+                <li class="menu-item" id="login-btn">Войти</li>
+                <li class="menu-item" id="register-btn">Регистрация</li>
+            </ul>
+        </aside>
+        
+        <main class="content">
+            <!-- Учителя -->
+            <div id="teachers" class="page active">
+                <h2>Учителя китайского языка</h2>
+                <div class="teacher-list">
+                    <!-- Учителя будут загружаться динамически -->
+                </div>
+                <div class="admin-controls hidden">
+                    <button id="add-teacher">Добавить учителя</button>
+                    <button id="edit-teachers">Редактировать</button>
+                    <button id="manage-requests">Запросы учителей</button>
+                </div>
+            </div>
+            
+            <!-- Группы -->
+            <div id="groups" class="page">
+                <h2>Управление группами</h2>
+                <div class="groups-container">
+                    <div class="group-list">
+                        <h3>Группы</h3>
+                        <div class="groups">
+                            <div class="group" data-group="A">Группа А</div>
+                            <div class="group" data-group="B">Группа Б</div>
+                            <div class="group" data-group="C">Группа В</div>
+                            <div class="group" data-group="D">Группа Г</div>
+                            <div class="group" data-group="E">Группа Д</div>
+                        </div>
+                    </div>
+                    <div class="group-students">
+                        <h3>Ученики в группе <span id="current-group"></span></h3>
+                        <div class="students-in-group"></div>
+                    </div>
+                    <div class="available-students">
+                        <h3>Доступные ученики</h3>
+                        <div class="students-to-add"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Занятия -->
+            <div id="lessons" class="page">
+                <h2>Расписание занятий</h2>
+                <div class="schedule-controls">
+                    <select id="class-select">
+                        <option value="5A">5А класс</option>
+                        <option value="6A">6А класс</option>
+                        <option value="7A">7А класс</option>
+                        <option value="8A">8А класс</option>
+                        <option value="9A">9А класс</option>
+                        <option value="10A">10А класс</option>
+                        <option value="11A">11А класс</option>
+                    </select>
+                    <button id="prev-week">←</button>
+                    <span class="week-display">Неделя 1</span>
+                    <button id="next-week">→</button>
+                </div>
+                <table class="schedule-table">
+                    <!-- Расписание будет загружаться динамически -->
+                </table>
+                <div class="teacher-controls hidden">
+                    <button id="add-lesson">Добавить занятие</button>
+                </div>
+            </div>
+            
+            <!-- Дополнительные занятия -->
+            <div id="extra" class="page">
+                <h2>Дополнительные занятия</h2>
+                <table class="extra-table">
+                    <!-- Таблица дополнительных занятий -->
+                </table>
+                <div class="teacher-controls hidden">
+                    <button id="add-extra">Добавить занятие</button>
+                </div>
+            </div>
+            
+            <!-- Полезные ресурсы (вместо переводчика) -->
+            <div id="resources" class="page">
+                <h2>Полезные ресурсы для изучения китайского</h2>
+                <div class="links-section">
+                    <div class="links-grid">
+                        <a href="https://www.hsk.academy" target="_blank" class="resource-link">
+                            <h3>HSK Academy</h3>
+                            <p>Подготовка к экзамену HSK, упражнения, словари и материалы для изучения китайского</p>
+                        </a>
+                        
+                        <a href="https://www.chinese-tools.com" target="_blank" class="resource-link">
+                            <h3>Chinese-Tools</h3>
+                            <p>Уроки китайского, словари, инструменты для изучения иероглифов и грамматики</p>
+                        </a>
+                        
+                        <a href="https://www.pleco.com" target="_blank" class="resource-link">
+                            <h3>Pleco</h3>
+                            <p>Лучшее приложение-словарь китайского языка для мобильных устройств</p>
+                        </a>
+                        
+                        <a href="https://www.yoyochinese.com" target="_blank" class="resource-link">
+                            <h3>Yoyo Chinese</h3>
+                            <p>Видеоуроки китайского языка для разных уровней подготовки</p>
+                        </a>
+                        
+                        <a href="https://www.archchinese.com" target="_blank" class="resource-link">
+                            <h3>Arch Chinese</h3>
+                            <p>Изучение написания иероглифов, словари и обучающие материалы</p>
+                        </a>
+                        
+                        <a href="https://www.dong-chinese.com" target="_blank" class="resource-link">
+                            <h3>Dong Chinese</h3>
+                            <p>Интерактивное изучение китайского с играми и упражнениями</p>
+                        </a>
+                        
+                        <a href="https://www.thechairmansbao.com" target="_blank" class="resource-link">
+                            <h3>Chairman's Bao</h3>
+                            <p>Новости на китайском языке с адаптированными текстами для разных уровней</p>
+                        </a>
+                        
+                        <a href="https://www.hellotalk.com" target="_blank" class="resource-link">
+                            <h3>HelloTalk</h3>
+                            <p>Общение с носителями китайского языка для практики разговорной речи</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <!-- Модальные окна (остаются без изменений) --><!DOCTYPE html>
+<html lang="ru">
+<head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Minecraft Server Panel — с регистрацией учителей</title>
@@ -195,3 +360,19 @@
   <script src="script.js"></script>
 </body>
 </html>
+
+    <div id="auth-modal" class="modal">...</div>
+    <div id="qa-modal" class="modal">...</div>
+    <div id="answer-modal" class="modal">...</div>
+    <div id="teacher-modal" class="modal">...</div>
+    <div id="edit-teachers-modal" class="modal">...</div>
+    <div id="requests-modal" class="modal">...</div>
+    <div id="student-modal" class="modal">...</div>
+    <div id="lesson-modal" class="modal">...</div>
+    <div id="extra-modal" class="modal">...</div>
+    <div id="holiday-modal" class="modal holiday">...</div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+
