@@ -7,19 +7,35 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <header>
-        <div class="china-text">
+    <!-- Верхняя навигация как на сайте PKU -->
+    <header class="top-navigation">
+        <div class="nav-container">
+            <div class="logo-section">
+                <h1>Школа №105 г. Минска</h1>
+                <span>Китайский язык</span>
+            </div>
+            <nav class="main-nav">
+                <a href="#" class="nav-item active" data-page="teachers">Учителя</a>
+                <a href="#" class="nav-item" data-page="groups">Группы</a>
+                <a href="#" class="nav-item" data-page="lessons">Занятия</a>
+                <a href="#" class="nav-item" data-page="extra">Доп. занятия</a>
+                <a href="#" class="nav-item" data-page="resources">Ресурсы</a>
+            </nav>
+            <div class="nav-controls">
+                <button id="theme-toggle">🌙</button>
+                <button id="qa-button">Вопрос-ответ <span class="notification-badge">0</span></button>
+                <button id="login-btn">Войти</button>
+                <button id="register-btn">Регистрация</button>
+            </div>
+        </div>
+        <div class="china-banner">
             <span>中国 - 白俄罗斯友谊</span>
             <span>中文学习</span>
             <span>中国文化</span>
         </div>
-        <div class="header-controls">
-            <button id="theme-toggle">🌙</button>
-            <button id="qa-button">Вопрос-ответ <span class="notification-badge">0</span></button>
-        </div>
     </header>
     
-    <div class="container">
+    <div class="main-container">
         <aside class="sidebar">
             <div class="china-facts">
                 <h3>Интересные факты о Китае</h3>
@@ -27,15 +43,12 @@
                     <p id="china-fact">Загрузка факта...</p>
                 </div>
             </div>
-            <ul>
-                <li class="menu-item" data-page="teachers">Учителя</li>
-                <li class="menu-item" data-page="groups">Группы</li>
-                <li class="menu-item" data-page="lessons">Занятия</li>
-                <li class="menu-item" data-page="extra">Доп. занятия</li>
-                <li class="menu-item" data-page="resources">Полезные ресурсы</li>
-                <li class="menu-item" id="login-btn">Войти</li>
-                <li class="menu-item" id="register-btn">Регистрация</li>
-            </ul>
+            <div class="user-info">
+                <p id="current-user-info">Гость</p>
+                <div class="admin-panel hidden" id="admin-panel">
+                    <button id="manage-requests-btn">Запросы учителей</button>
+                </div>
+            </div>
         </aside>
         
         <main class="content">
@@ -48,7 +61,6 @@
                 <div class="admin-controls hidden">
                     <button id="add-teacher">Добавить учителя</button>
                     <button id="edit-teachers">Редактировать</button>
-                    <button id="manage-requests">Запросы учителей</button>
                 </div>
             </div>
             
@@ -113,19 +125,19 @@
                 </div>
             </div>
             
-            <!-- Полезные ресурсы (вместо переводчика) -->
+            <!-- Полезные ресурсы -->
             <div id="resources" class="page">
                 <h2>Полезные ресурсы для изучения китайского</h2>
                 <div class="links-section">
                     <div class="links-grid">
                         <a href="https://www.hsk.academy" target="_blank" class="resource-link">
                             <h3>HSK Academy</h3>
-                            <p>Подготовка к экзамену HSK, упражнения, словари и материалы для изучения китайского</p>
+                            <p>Подготовка к экзамену HSK, упражнения, словари и материалы</p>
                         </a>
                         
                         <a href="https://www.chinese-tools.com" target="_blank" class="resource-link">
                             <h3>Chinese-Tools</h3>
-                            <p>Уроки китайского, словари, инструменты для изучения иероглифов и грамматики</p>
+                            <p>Уроки китайского, словари, инструменты для изучения иероглифов</p>
                         </a>
                         
                         <a href="https://www.pleco.com" target="_blank" class="resource-link">
@@ -137,242 +149,93 @@
                             <h3>Yoyo Chinese</h3>
                             <p>Видеоуроки китайского языка для разных уровней подготовки</p>
                         </a>
-                        
-                        <a href="https://www.archchinese.com" target="_blank" class="resource-link">
-                            <h3>Arch Chinese</h3>
-                            <p>Изучение написания иероглифов, словари и обучающие материалы</p>
-                        </a>
-                        
-                        <a href="https://www.dong-chinese.com" target="_blank" class="resource-link">
-                            <h3>Dong Chinese</h3>
-                            <p>Интерактивное изучение китайского с играми и упражнениями</p>
-                        </a>
-                        
-                        <a href="https://www.thechairmansbao.com" target="_blank" class="resource-link">
-                            <h3>Chairman's Bao</h3>
-                            <p>Новости на китайском языке с адаптированными текстами для разных уровней</p>
-                        </a>
-                        
-                        <a href="https://www.hellotalk.com" target="_blank" class="resource-link">
-                            <h3>HelloTalk</h3>
-                            <p>Общение с носителями китайского языка для практики разговорной речи</p>
-                        </a>
                     </div>
                 </div>
             </div>
         </main>
     </div>
     
-    <!-- Модальные окна (остаются без изменений) --><!DOCTYPE html>
-<html lang="ru">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Minecraft Server Panel — с регистрацией учителей</title>
-  <link rel="stylesheet" href="style.css" />
-</head>
-<body>
-  <!-- Верхняя панель / навигация (как на примере) -->
-  <header class="topbar">
-    <div class="container topbar-content">
-      <div class="logo">Minecraft Server Panel</div>
-      <nav class="topnav">
-        <a href="#" class="topnav-link" data-target="panel-dashboard">Панель</a>
-        <a href="#" class="topnav-link" data-target="panel-mods">Моды</a>
-        <a href="#" class="topnav-link" data-target="panel-whitelist">Вайтлист</a>
-        <a href="#" class="topnav-link" data-target="panel-console">Консоль</a>
-        <a href="#" class="topnav-link" data-target="panel-requests" id="admin-requests-link" style="display:none;">Заявки</a>
-      </nav>
-
-      <div class="user-info">
-        <span id="username">Гость</span>
-        <button class="btn btn-primary" id="login-btn">Войти</button>
-        <button class="btn btn-primary" id="register-btn">Регистрация</button>
-        <button class="btn btn-danger" id="logout-btn" style="display:none;">Выйти</button>
-      </div>
+    <!-- Модальные окна -->
+    <div id="auth-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Авторизация</h2>
+            <div class="auth-tabs">
+                <button class="tab-btn active" data-tab="login">Вход</button>
+                <button class="tab-btn" data-tab="register">Регистрация</button>
+            </div>
+            
+            <div id="login" class="auth-form active">
+                <input type="text" id="login-name" placeholder="Логин">
+                <input type="password" id="login-password" placeholder="Пароль">
+                <button id="login-submit">Войти</button>
+            </div>
+            
+            <div id="register" class="auth-form">
+                <input type="text" id="register-name" placeholder="Логин">
+                <input type="password" id="register-password" placeholder="Пароль">
+                <input type="password" id="register-confirm" placeholder="Подтвердите пароль">
+                <input type="text" id="register-fullname" placeholder="ФИО">
+                <select id="register-role">
+                    <option value="student">Ученик</option>
+                    <option value="teacher">Учитель</option>
+                </select>
+                <button id="register-submit">Зарегистрироваться</button>
+            </div>
+        </div>
     </div>
-  </header>
 
-  <!-- Основной контент -->
-  <main class="container main-grid">
-    <!-- Секция статуса и быстрых кнопок — поднята вверх -->
-    <section class="server-top" id="panel-dashboard">
-      <div class="server-status">
-        <div class="status-indicator status-offline"></div>
-        <span id="status-text">Сервер остановлен</span>
-        <span id="uptime" style="margin-left:auto">Время работы: 00:00:00</span>
-      </div>
-
-      <div class="control-buttons">
-        <button class="btn btn-primary" id="start-btn">Запустить</button>
-        <button class="btn btn-danger" id="stop-btn">Остановить</button>
-        <button class="btn btn-warning" id="restart-btn">Перезапустить</button>
-        <button class="btn btn-primary" id="create-btn">Создать сервер</button>
-      </div>
-    </section>
-
-    <!-- Левая колонка — настройки, моды, вайтлист -->
-    <section class="left-col">
-      <div class="panel-section" id="server-settings">
-        <h3 class="panel-title">Настройки сервера</h3>
-        <div class="settings-grid">
-          <div class="setting-item">
-            <label for="server-type">Тип сервера</label>
-            <select id="server-type">
-              <option value="vanilla">Vanilla</option>
-              <option value="paper">Paper</option>
-              <option value="spigot">Spigot</option>
-              <option value="forge">Forge</option>
-              <option value="fabric">Fabric</option>
-            </select>
-          </div>
-
-          <div class="setting-item">
-            <label for="server-version">Версия</label>
-            <select id="server-version">
-              <option>1.20.1</option>
-              <option>1.19.4</option>
-              <option>1.18.2</option>
-              <option>1.17.1</option>
-            </select>
-          </div>
-
-          <div class="setting-item">
-            <label for="render-distance">Дистанция прорисовки чанков</label>
-            <input type="number" id="render-distance" min="2" max="32" value="10">
-          </div>
-
-          <div class="setting-item">
-            <label for="ram">RAM (GB)</label>
-            <select id="ram">
-              <option>1</option><option>2</option><option selected>4</option><option>6</option><option>8</option>
-            </select>
-          </div>
-
-          <div class="setting-item">
-            <label for="max-players">Максимум игроков</label>
-            <input type="number" id="max-players" min="1" max="200" value="20">
-          </div>
-
-          <div class="setting-item">
-            <label for="server-port">Порт</label>
-            <input type="number" id="server-port" min="1024" max="65535" value="25565">
-          </div>
+    <div id="qa-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Вопрос-ответ</h2>
+            <div class="qa-tabs">
+                <button class="qa-tab active" data-tab="my-questions">Мои вопросы</button>
+                <button class="qa-tab" data-tab="all-questions">Все вопросы</button>
+            </div>
+            
+            <div id="my-questions-tab" class="qa-tab-content active">
+                <div class="question-input">
+                    <textarea id="question-text" placeholder="Задайте ваш вопрос..."></textarea>
+                    <button id="submit-question">Отправить вопрос</button>
+                </div>
+                <div class="questions-list"></div>
+            </div>
+            
+            <div id="all-questions-tab" class="qa-tab-content">
+                <div class="all-questions-list"></div>
+            </div>
         </div>
-
-        <div style="margin-top:12px">
-          <button class="btn btn-primary" id="save-settings">Сохранить настройки</button>
-        </div>
-      </div>
-
-      <div class="panel-section" id="panel-mods">
-        <h3 class="panel-title">Моды и плагины</h3>
-        <div class="file-upload">
-          <input type="file" id="mod-file" accept=".jar" multiple>
-          <button class="btn btn-primary" id="upload-btn">Загрузить</button>
-        </div>
-        <div id="mods-list" class="file-list">
-          <div class="file-item">Моды не загружены</div>
-        </div>
-      </div>
-
-      <div class="panel-section" id="panel-whitelist">
-        <h3 class="panel-title">Вайтлист</h3>
-        <div class="setting-item">
-          <input id="whitelist-player" placeholder="Ник игрока">
-          <button class="btn btn-primary" id="whitelist-add">Добавить</button>
-        </div>
-        <div id="whitelist-players" class="file-list"></div>
-      </div>
-    </section>
-
-    <!-- Правая колонка — консоль, админ заявки -->
-    <section class="right-col">
-      <div class="panel-section" id="panel-console">
-        <h3 class="panel-title">Консоль сервера</h3>
-        <div id="server-console" class="console">
-          <div class="console-line console-info">Добро пожаловать в панель управления Minecraft сервером!</div>
-          <div class="console-line console-info">Создайте сервер кнопкой "Создать сервер".</div>
-        </div>
-
-        <div class="command-input">
-          <input id="command-input" placeholder="Введите команду...">
-          <button class="btn btn-primary" id="send-command">Отправить</button>
-        </div>
-      </div>
-
-      <div id="panel-requests" class="panel-section" style="display:none;">
-        <h3 class="panel-title">Заявки учителей</h3>
-        <div id="requests-list" class="file-list">Нет заявок</div>
-      </div>
-
-      <div class="panel-section" id="teachers-list-panel">
-        <h3 class="panel-title">Учителя</h3>
-        <div id="teachers-list" class="file-list"></div>
-      </div>
-    </section>
-  </main>
-
-  <!-- Модалка регистрации -->
-  <div id="auth-modal" class="modal" style="display:none;">
-    <div class="modal-content">
-      <h3>Регистрация учителя</h3>
-      <div class="setting-item">
-        <label>ФИО</label>
-        <input id="teacher-name" type="text" placeholder="Иванов Иван Иванович">
-      </div>
-      <div class="setting-item">
-        <label>Пароль</label>
-        <input id="teacher-pass" type="password" placeholder="Пароль">
-      </div>
-      <div style="margin-top:12px;">
-        <button class="btn btn-primary" id="submit-register">Отправить заявку</button>
-        <button class="btn btn-danger" id="close-modal">Закрыть</button>
-      </div>
     </div>
-  </div>
 
-  <!-- Модалка логина -->
-  <div id="login-modal" class="modal" style="display:none;">
-    <div class="modal-content">
-      <h3>Вход</h3>
-      <div class="setting-item">
-        <label>ФИО</label>
-        <input id="login-name">
-      </div>
-      <div class="setting-item">
-        <label>Пароль</label>
-        <input id="login-pass" type="password">
-      </div>
-      <div style="margin-top:12px;">
-        <button class="btn btn-primary" id="submit-login">Войти</button>
-        <button class="btn btn-danger" id="close-login">Закрыть</button>
-      </div>
+    <div id="answer-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Ответ на вопрос</h2>
+            <textarea id="answer-text" placeholder="Введите ваш ответ..."></textarea>
+            <button id="submit-answer">Отправить ответ</button>
+        </div>
     </div>
-  </div>
 
-  <footer class="footer">
-    <div class="container">
-      <p>Minecraft Server Panel © 2025</p>
+    <div id="teacher-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Добавить учителя</h2>
+            <input type="text" id="teacher-name" placeholder="ФИО">
+            <input type="text" id="teacher-subject" placeholder="Предмет">
+            <input type="text" id="teacher-experience" placeholder="Стаж">
+            <button id="save-teacher">Сохранить</button>
+        </div>
     </div>
-  </footer>
 
-  <script src="script.js"></script>
-</body>
-</html>
-
-    <div id="auth-modal" class="modal">...</div>
-    <div id="qa-modal" class="modal">...</div>
-    <div id="answer-modal" class="modal">...</div>
-    <div id="teacher-modal" class="modal">...</div>
-    <div id="edit-teachers-modal" class="modal">...</div>
-    <div id="requests-modal" class="modal">...</div>
-    <div id="student-modal" class="modal">...</div>
-    <div id="lesson-modal" class="modal">...</div>
-    <div id="extra-modal" class="modal">...</div>
-    <div id="holiday-modal" class="modal holiday">...</div>
+    <div id="requests-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Запросы на регистрацию учителей</h2>
+            <div class="requests-list"></div>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
 </html>
-
