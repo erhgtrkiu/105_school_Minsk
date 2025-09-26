@@ -1,180 +1,197 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Школа №105 г. Минска - Китайский язык</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Minecraft Server Panel — с регистрацией учителей</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <header>
-        <div class="china-text">
-            <span>中国 - 白俄罗斯友谊</span>
-            <span>中文学习</span>
-            <span>中国文化</span>
-        </div>
-        <div class="header-controls">
-            <button id="theme-toggle">🌙</button>
-            <button id="qa-button">Вопрос-ответ <span class="notification-badge">0</span></button>
-        </div>
-    </header>
-    
-    <div class="container">
-        <aside class="sidebar">
-            <div class="china-facts">
-                <h3>Интересные факты о Китае</h3>
-                <div class="fact-container">
-                    <p id="china-fact">Загрузка факта...</p>
-                </div>
-            </div>
-            <ul>
-                <li class="menu-item" data-page="teachers">Учителя</li>
-                <li class="menu-item" data-page="groups">Группы</li>
-                <li class="menu-item" data-page="lessons">Занятия</li>
-                <li class="menu-item" data-page="extra">Доп. занятия</li>
-                <li class="menu-item" data-page="resources">Полезные ресурсы</li>
-                <li class="menu-item" id="login-btn">Войти</li>
-                <li class="menu-item" id="register-btn">Регистрация</li>
-            </ul>
-        </aside>
-        
-        <main class="content">
-            <!-- Учителя -->
-            <div id="teachers" class="page active">
-                <h2>Учителя китайского языка</h2>
-                <div class="teacher-list">
-                    <!-- Учителя будут загружаться динамически -->
-                </div>
-                <div class="admin-controls hidden">
-                    <button id="add-teacher">Добавить учителя</button>
-                    <button id="edit-teachers">Редактировать</button>
-                    <button id="manage-requests">Запросы учителей</button>
-                </div>
-            </div>
-            
-            <!-- Группы -->
-            <div id="groups" class="page">
-                <h2>Управление группами</h2>
-                <div class="groups-container">
-                    <div class="group-list">
-                        <h3>Группы</h3>
-                        <div class="groups">
-                            <div class="group" data-group="A">Группа А</div>
-                            <div class="group" data-group="B">Группа Б</div>
-                            <div class="group" data-group="C">Группа В</div>
-                            <div class="group" data-group="D">Группа Г</div>
-                            <div class="group" data-group="E">Группа Д</div>
-                        </div>
-                    </div>
-                    <div class="group-students">
-                        <h3>Ученики в группе <span id="current-group"></span></h3>
-                        <div class="students-in-group"></div>
-                    </div>
-                    <div class="available-students">
-                        <h3>Доступные ученики</h3>
-                        <div class="students-to-add"></div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Занятия -->
-            <div id="lessons" class="page">
-                <h2>Расписание занятий</h2>
-                <div class="schedule-controls">
-                    <select id="class-select">
-                        <option value="5A">5А класс</option>
-                        <option value="6A">6А класс</option>
-                        <option value="7A">7А класс</option>
-                        <option value="8A">8А класс</option>
-                        <option value="9A">9А класс</option>
-                        <option value="10A">10А класс</option>
-                        <option value="11A">11А класс</option>
-                    </select>
-                    <button id="prev-week">←</button>
-                    <span class="week-display">Неделя 1</span>
-                    <button id="next-week">→</button>
-                </div>
-                <table class="schedule-table">
-                    <!-- Расписание будет загружаться динамически -->
-                </table>
-                <div class="teacher-controls hidden">
-                    <button id="add-lesson">Добавить занятие</button>
-                </div>
-            </div>
-            
-            <!-- Дополнительные занятия -->
-            <div id="extra" class="page">
-                <h2>Дополнительные занятия</h2>
-                <table class="extra-table">
-                    <!-- Таблица дополнительных занятий -->
-                </table>
-                <div class="teacher-controls hidden">
-                    <button id="add-extra">Добавить занятие</button>
-                </div>
-            </div>
-            
-            <!-- Полезные ресурсы (вместо переводчика) -->
-            <div id="resources" class="page">
-                <h2>Полезные ресурсы для изучения китайского</h2>
-                <div class="links-section">
-                    <div class="links-grid">
-                        <a href="https://www.hsk.academy" target="_blank" class="resource-link">
-                            <h3>HSK Academy</h3>
-                            <p>Подготовка к экзамену HSK, упражнения, словари и материалы для изучения китайского</p>
-                        </a>
-                        
-                        <a href="https://www.chinese-tools.com" target="_blank" class="resource-link">
-                            <h3>Chinese-Tools</h3>
-                            <p>Уроки китайского, словари, инструменты для изучения иероглифов и грамматики</p>
-                        </a>
-                        
-                        <a href="https://www.pleco.com" target="_blank" class="resource-link">
-                            <h3>Pleco</h3>
-                            <p>Лучшее приложение-словарь китайского языка для мобильных устройств</p>
-                        </a>
-                        
-                        <a href="https://www.yoyochinese.com" target="_blank" class="resource-link">
-                            <h3>Yoyo Chinese</h3>
-                            <p>Видеоуроки китайского языка для разных уровней подготовки</p>
-                        </a>
-                        
-                        <a href="https://www.archchinese.com" target="_blank" class="resource-link">
-                            <h3>Arch Chinese</h3>
-                            <p>Изучение написания иероглифов, словари и обучающие материалы</p>
-                        </a>
-                        
-                        <a href="https://www.dong-chinese.com" target="_blank" class="resource-link">
-                            <h3>Dong Chinese</h3>
-                            <p>Интерактивное изучение китайского с играми и упражнениями</p>
-                        </a>
-                        
-                        <a href="https://www.thechairmansbao.com" target="_blank" class="resource-link">
-                            <h3>Chairman's Bao</h3>
-                            <p>Новости на китайском языке с адаптированными текстами для разных уровней</p>
-                        </a>
-                        
-                        <a href="https://www.hellotalk.com" target="_blank" class="resource-link">
-                            <h3>HelloTalk</h3>
-                            <p>Общение с носителями китайского языка для практики разговорной речи</p>
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </main>
-    </div>
-    
-    <!-- Модальные окна (остаются без изменений) -->
-    <div id="auth-modal" class="modal">...</div>
-    <div id="qa-modal" class="modal">...</div>
-    <div id="answer-modal" class="modal">...</div>
-    <div id="teacher-modal" class="modal">...</div>
-    <div id="edit-teachers-modal" class="modal">...</div>
-    <div id="requests-modal" class="modal">...</div>
-    <div id="student-modal" class="modal">...</div>
-    <div id="lesson-modal" class="modal">...</div>
-    <div id="extra-modal" class="modal">...</div>
-    <div id="holiday-modal" class="modal holiday">...</div>
+  <!-- Верхняя панель / навигация (как на примере) -->
+  <header class="topbar">
+    <div class="container topbar-content">
+      <div class="logo">Minecraft Server Panel</div>
+      <nav class="topnav">
+        <a href="#" class="topnav-link" data-target="panel-dashboard">Панель</a>
+        <a href="#" class="topnav-link" data-target="panel-mods">Моды</a>
+        <a href="#" class="topnav-link" data-target="panel-whitelist">Вайтлист</a>
+        <a href="#" class="topnav-link" data-target="panel-console">Консоль</a>
+        <a href="#" class="topnav-link" data-target="panel-requests" id="admin-requests-link" style="display:none;">Заявки</a>
+      </nav>
 
-    <script src="script.js"></script>
+      <div class="user-info">
+        <span id="username">Гость</span>
+        <button class="btn btn-primary" id="login-btn">Войти</button>
+        <button class="btn btn-primary" id="register-btn">Регистрация</button>
+        <button class="btn btn-danger" id="logout-btn" style="display:none;">Выйти</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Основной контент -->
+  <main class="container main-grid">
+    <!-- Секция статуса и быстрых кнопок — поднята вверх -->
+    <section class="server-top" id="panel-dashboard">
+      <div class="server-status">
+        <div class="status-indicator status-offline"></div>
+        <span id="status-text">Сервер остановлен</span>
+        <span id="uptime" style="margin-left:auto">Время работы: 00:00:00</span>
+      </div>
+
+      <div class="control-buttons">
+        <button class="btn btn-primary" id="start-btn">Запустить</button>
+        <button class="btn btn-danger" id="stop-btn">Остановить</button>
+        <button class="btn btn-warning" id="restart-btn">Перезапустить</button>
+        <button class="btn btn-primary" id="create-btn">Создать сервер</button>
+      </div>
+    </section>
+
+    <!-- Левая колонка — настройки, моды, вайтлист -->
+    <section class="left-col">
+      <div class="panel-section" id="server-settings">
+        <h3 class="panel-title">Настройки сервера</h3>
+        <div class="settings-grid">
+          <div class="setting-item">
+            <label for="server-type">Тип сервера</label>
+            <select id="server-type">
+              <option value="vanilla">Vanilla</option>
+              <option value="paper">Paper</option>
+              <option value="spigot">Spigot</option>
+              <option value="forge">Forge</option>
+              <option value="fabric">Fabric</option>
+            </select>
+          </div>
+
+          <div class="setting-item">
+            <label for="server-version">Версия</label>
+            <select id="server-version">
+              <option>1.20.1</option>
+              <option>1.19.4</option>
+              <option>1.18.2</option>
+              <option>1.17.1</option>
+            </select>
+          </div>
+
+          <div class="setting-item">
+            <label for="render-distance">Дистанция прорисовки чанков</label>
+            <input type="number" id="render-distance" min="2" max="32" value="10">
+          </div>
+
+          <div class="setting-item">
+            <label for="ram">RAM (GB)</label>
+            <select id="ram">
+              <option>1</option><option>2</option><option selected>4</option><option>6</option><option>8</option>
+            </select>
+          </div>
+
+          <div class="setting-item">
+            <label for="max-players">Максимум игроков</label>
+            <input type="number" id="max-players" min="1" max="200" value="20">
+          </div>
+
+          <div class="setting-item">
+            <label for="server-port">Порт</label>
+            <input type="number" id="server-port" min="1024" max="65535" value="25565">
+          </div>
+        </div>
+
+        <div style="margin-top:12px">
+          <button class="btn btn-primary" id="save-settings">Сохранить настройки</button>
+        </div>
+      </div>
+
+      <div class="panel-section" id="panel-mods">
+        <h3 class="panel-title">Моды и плагины</h3>
+        <div class="file-upload">
+          <input type="file" id="mod-file" accept=".jar" multiple>
+          <button class="btn btn-primary" id="upload-btn">Загрузить</button>
+        </div>
+        <div id="mods-list" class="file-list">
+          <div class="file-item">Моды не загружены</div>
+        </div>
+      </div>
+
+      <div class="panel-section" id="panel-whitelist">
+        <h3 class="panel-title">Вайтлист</h3>
+        <div class="setting-item">
+          <input id="whitelist-player" placeholder="Ник игрока">
+          <button class="btn btn-primary" id="whitelist-add">Добавить</button>
+        </div>
+        <div id="whitelist-players" class="file-list"></div>
+      </div>
+    </section>
+
+    <!-- Правая колонка — консоль, админ заявки -->
+    <section class="right-col">
+      <div class="panel-section" id="panel-console">
+        <h3 class="panel-title">Консоль сервера</h3>
+        <div id="server-console" class="console">
+          <div class="console-line console-info">Добро пожаловать в панель управления Minecraft сервером!</div>
+          <div class="console-line console-info">Создайте сервер кнопкой "Создать сервер".</div>
+        </div>
+
+        <div class="command-input">
+          <input id="command-input" placeholder="Введите команду...">
+          <button class="btn btn-primary" id="send-command">Отправить</button>
+        </div>
+      </div>
+
+      <div id="panel-requests" class="panel-section" style="display:none;">
+        <h3 class="panel-title">Заявки учителей</h3>
+        <div id="requests-list" class="file-list">Нет заявок</div>
+      </div>
+
+      <div class="panel-section" id="teachers-list-panel">
+        <h3 class="panel-title">Учителя</h3>
+        <div id="teachers-list" class="file-list"></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Модалка регистрации -->
+  <div id="auth-modal" class="modal" style="display:none;">
+    <div class="modal-content">
+      <h3>Регистрация учителя</h3>
+      <div class="setting-item">
+        <label>ФИО</label>
+        <input id="teacher-name" type="text" placeholder="Иванов Иван Иванович">
+      </div>
+      <div class="setting-item">
+        <label>Пароль</label>
+        <input id="teacher-pass" type="password" placeholder="Пароль">
+      </div>
+      <div style="margin-top:12px;">
+        <button class="btn btn-primary" id="submit-register">Отправить заявку</button>
+        <button class="btn btn-danger" id="close-modal">Закрыть</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Модалка логина -->
+  <div id="login-modal" class="modal" style="display:none;">
+    <div class="modal-content">
+      <h3>Вход</h3>
+      <div class="setting-item">
+        <label>ФИО</label>
+        <input id="login-name">
+      </div>
+      <div class="setting-item">
+        <label>Пароль</label>
+        <input id="login-pass" type="password">
+      </div>
+      <div style="margin-top:12px;">
+        <button class="btn btn-primary" id="submit-login">Войти</button>
+        <button class="btn btn-danger" id="close-login">Закрыть</button>
+      </div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <p>Minecraft Server Panel © 2025</p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
 </body>
 </html>
