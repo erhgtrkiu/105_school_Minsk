@@ -1,11 +1,63 @@
-// Data storage with real-time synchronization
-let users = JSON.parse(localStorage.getItem('school-users')) || [];
-let questions = JSON.parse(localStorage.getItem('school-questions')) || [];
-let currentUser = JSON.parse(localStorage.getItem('school-currentUser')) || null;
-let students = JSON.parse(localStorage.getItem('school-students')) || [];
-let classes = JSON.parse(localStorage.getItem('school-classes')) || [];
-let lessons = JSON.parse(localStorage.getItem('school-lessons')) || [];
-let resources = JSON.parse(localStorage.getItem('school-resources')) || [];
+// Data management with proper synchronization
+function getUsers() {
+    return JSON.parse(localStorage.getItem('school-users')) || [];
+}
+
+function getQuestions() {
+    return JSON.parse(localStorage.getItem('school-questions')) || [];
+}
+
+function getCurrentUser() {
+    return JSON.parse(localStorage.getItem('school-currentUser')) || null;
+}
+
+function getStudents() {
+    return JSON.parse(localStorage.getItem('school-students')) || [];
+}
+
+function getClasses() {
+    return JSON.parse(localStorage.getItem('school-classes')) || [];
+}
+
+function getLessons() {
+    return JSON.parse(localStorage.getItem('school-lessons')) || [];
+}
+
+function getResources() {
+    return JSON.parse(localStorage.getItem('school-resources')) || [];
+}
+
+function setUsers(users) {
+    localStorage.setItem('school-users', JSON.stringify(users));
+}
+
+function setQuestions(questions) {
+    localStorage.setItem('school-questions', JSON.stringify(questions));
+}
+
+function setCurrentUser(user) {
+    if (user) {
+        localStorage.setItem('school-currentUser', JSON.stringify(user));
+    } else {
+        localStorage.removeItem('school-currentUser');
+    }
+}
+
+function setStudents(students) {
+    localStorage.setItem('school-students', JSON.stringify(students));
+}
+
+function setClasses(classes) {
+    localStorage.setItem('school-classes', JSON.stringify(classes));
+}
+
+function setLessons(lessons) {
+    localStorage.setItem('school-lessons', JSON.stringify(lessons));
+}
+
+function setResources(resources) {
+    localStorage.setItem('school-resources', JSON.stringify(resources));
+}
 
 // Real-time synchronization system
 function initializeSync() {
@@ -13,36 +65,20 @@ function initializeSync() {
     window.addEventListener('storage', function(e) {
         if (e.key && e.key.startsWith('school-')) {
             console.log('🔄 Data changed in another tab:', e.key);
-            refreshAllData();
-            updateCurrentPage();
             updateAuthUI();
+            updateCurrentPage();
         }
     });
-    
-    // Auto-save every 2 seconds
-    setInterval(syncAllData, 2000);
-}
-
-// Sync all data to localStorage
-function syncAllData() {
-    try {
-        localStorage.setItem('school-users', JSON.stringify(users));
-        localStorage.setItem('school-questions', JSON.stringify(questions));
-        localStorage.setItem('school-currentUser', JSON.stringify(currentUser));
-        localStorage.setItem('school-students', JSON.stringify(students));
-        localStorage.setItem('school-classes', JSON.stringify(classes));
-        localStorage.setItem('school-lessons', JSON.stringify(lessons));
-        localStorage.setItem('school-resources', JSON.stringify(resources));
-        console.log('💾 Данные успешно сохранены');
-    } catch (error) {
-        console.error('❌ Ошибка сохранения данных:', error);
-        showNotification('❌ Ошибка сохранения данных', 'error');
-    }
 }
 
 // Initialize default data
 function initializeData() {
     try {
+        let users = getUsers();
+        let classes = getClasses();
+        let lessons = getLessons();
+        let resources = getResources();
+
         // Add default admin if not exists
         if (!users.find(u => u.username === 'admin')) {
             users.push({
@@ -51,7 +87,7 @@ function initializeData() {
                 role: 'admin',
                 name: 'Администратор'
             });
-            syncAllData();
+            setUsers(users);
         }
 
         // Initialize classes with proper structure
@@ -62,7 +98,7 @@ function initializeData() {
                 { id: '6A', name: '6А', grade: '6', letter: 'А', students: [] },
                 { id: '6B', name: '6Б', grade: '6', letter: 'Б', students: [] }
             ];
-            syncAllData();
+            setClasses(classes);
         }
 
         // Initialize lessons
@@ -71,7 +107,7 @@ function initializeData() {
                 { id: 1, classId: '5A', day: 'Понедельник', time: '9:00', subject: 'Китайский для начинающих' },
                 { id: 2, classId: '6A', day: 'Вторник', time: '10:00', subject: 'Разговорный китайский' }
             ];
-            syncAllData();
+            setLessons(lessons);
         }
 
         // Initialize resources with REAL Chinese learning links
@@ -120,7 +156,7 @@ function initializeData() {
                     type: 'website'
                 }
             ];
-            syncAllData();
+            setResources(resources);
         }
         
     } catch (error) {
@@ -185,40 +221,14 @@ function hideNotification() {
 
 // Check if user has permission to edit
 function hasPermission() {
+    const currentUser = getCurrentUser();
     return currentUser !== null && (currentUser.role === 'teacher' || currentUser.role === 'admin');
 }
 
 // Check if user is admin
 function isAdmin() {
+    const currentUser = getCurrentUser();
     return currentUser !== null && currentUser.role === 'admin';
-}
-
-// Force refresh all data from localStorage
-function refreshAllData() {
-    const storedUsers = JSON.parse(localStorage.getItem('school-users')) || [];
-    const storedQuestions = JSON.parse(localStorage.getItem('school-questions')) || [];
-    const storedCurrentUser = JSON.parse(localStorage.getItem('school-currentUser')) || null;
-    const storedStudents = JSON.parse(localStorage.getItem('school-students')) || [];
-    const storedClasses = JSON.parse(localStorage.getItem('school-classes')) || [];
-    const storedLessons = JSON.parse(localStorage.getItem('school-lessons')) || [];
-    const storedResources = JSON.parse(localStorage.getItem('school-resources')) || [];
-    
-    // Update global variables only if they are different
-    if (JSON.stringify(users) !== JSON.stringify(storedUsers)) users = storedUsers;
-    if (JSON.stringify(questions) !== JSON.stringify(storedQuestions)) questions = storedQuestions;
-    if (JSON.stringify(currentUser) !== JSON.stringify(storedCurrentUser)) currentUser = storedCurrentUser;
-    if (JSON.stringify(students) !== JSON.stringify(storedStudents)) students = storedStudents;
-    if (JSON.stringify(classes) !== JSON.stringify(storedClasses)) classes = storedClasses;
-    if (JSON.stringify(lessons) !== JSON.stringify(storedLessons)) lessons = storedLessons;
-    if (JSON.stringify(resources) !== JSON.stringify(storedResources)) resources = storedResources;
-}
-
-// Save data and force UI update
-function saveData(dataType) {
-    syncAllData();
-    refreshAllData();
-    updateCurrentPage();
-    updateAuthUI();
 }
 
 // Update current page content
@@ -277,8 +287,6 @@ function showPage(pageId) {
 }
 
 function loadPageContent(pageId) {
-    refreshAllData();
-    
     switch(pageId) {
         case 'teachers':
             loadTeachersPage();
@@ -301,6 +309,8 @@ function loadTeachersPage() {
     const addTeacherBtn = document.getElementById('add-teacher-btn');
     
     if (!teachersContainer) return;
+    
+    const users = getUsers();
     
     // Show/hide add teacher button for admin
     if (isAdmin()) {
@@ -373,6 +383,8 @@ function addTeacher() {
         return;
     }
     
+    const users = getUsers();
+    
     if (users.find(u => u.username === login)) {
         showNotification('❌ Пользователь с таким логином уже существует', 'error');
         return;
@@ -386,7 +398,7 @@ function addTeacher() {
     };
     
     users.push(newTeacher);
-    saveData('users');
+    setUsers(users);
     
     // Clear form
     document.getElementById('teacher-name').value = '';
@@ -395,6 +407,9 @@ function addTeacher() {
     
     showNotification(`🎉 Учитель ${name} добавлен!`, 'success');
     closeModal('add-teacher-modal');
+    
+    // Update UI
+    loadTeachersPage();
 }
 
 // Delete Teacher Function
@@ -406,11 +421,13 @@ function deleteTeacher(username) {
     
     if (!confirm('Вы уверены, что хотите удалить этого учителя?')) return;
     
+    const users = getUsers();
     const userIndex = users.findIndex(u => u.username === username);
     if (userIndex !== -1) {
         users.splice(userIndex, 1);
-        saveData('users');
+        setUsers(users);
         showNotification('🗑️ Учитель удален', 'success');
+        loadTeachersPage();
     }
 }
 
@@ -422,6 +439,9 @@ function loadClassesPage() {
     const addClassBtn = document.getElementById('add-class-btn');
     
     if (!classesContainer) return;
+    
+    const classes = getClasses();
+    const students = getStudents();
     
     // Show/hide add class button for admin
     if (isAdmin()) {
@@ -517,6 +537,8 @@ function addClass() {
     const classId = grade + letter;
     const className = grade + ' ' + letter;
     
+    const classes = getClasses();
+    
     // Check if class already exists
     if (classes.find(c => c.id === classId)) {
         showNotification('❌ Такой класс уже существует', 'error');
@@ -532,10 +554,13 @@ function addClass() {
     };
     
     classes.push(newClass);
-    saveData('classes');
+    setClasses(classes);
     
     showNotification(`🎉 Класс ${className} добавлен!`, 'success');
     closeModal('add-class-modal');
+    
+    // Update UI
+    loadClassesPage();
 }
 
 // Delete Class Function
@@ -544,6 +569,9 @@ function deleteClass(classId) {
         showNotification('❌ Только администратор может удалять классы', 'error');
         return;
     }
+    
+    let classes = getClasses();
+    let students = getStudents();
     
     const classItem = classes.find(c => c.id === classId);
     if (!classItem) return;
@@ -554,21 +582,26 @@ function deleteClass(classId) {
     const classIndex = classes.findIndex(c => c.id === classId);
     if (classIndex !== -1) {
         classes.splice(classIndex, 1);
+        setClasses(classes);
     }
     
     // Remove students from this class
     students = students.filter(student => student.class !== classId);
-    
-    saveData('classes');
-    saveData('students');
+    setStudents(students);
     
     showNotification(`🗑️ Класс ${classItem.name} удален`, 'success');
+    
+    // Update UI
+    loadClassesPage();
 }
 
 // Load Lessons Page
 function loadLessonsPage() {
     const lessonsContainer = document.getElementById('lessons-container');
     if (!lessonsContainer) return;
+    
+    const lessons = getLessons();
+    const classes = getClasses();
     
     lessonsContainer.innerHTML = '';
     
@@ -604,6 +637,8 @@ function loadLessonsPage() {
 function loadResourcesPage() {
     const resourcesContainer = document.getElementById('resources-container');
     if (!resourcesContainer) return;
+    
+    const resources = getResources();
     
     resourcesContainer.innerHTML = '';
     
@@ -671,6 +706,8 @@ function addStudent() {
         return;
     }
     
+    const users = getUsers();
+    
     if (users.find(u => u.username === login)) {
         showNotification('❌ Пользователь с таким логином уже существует', 'error');
         return;
@@ -685,9 +722,10 @@ function addStudent() {
     };
     
     users.push(studentUser);
-    saveData('users');
+    setUsers(users);
     
     // Add student to students list
+    const students = getStudents();
     const newStudent = {
         name: name,
         class: studentClass,
@@ -695,13 +733,16 @@ function addStudent() {
     };
     
     students.push(newStudent);
-    saveData('students');
+    setStudents(students);
     
     // Clear form
     document.getElementById('student-name').value = '';
     document.getElementById('student-login').value = '';
     
     showNotification(`🎉 Ученик ${name} успешно добавлен в класс! Пароль: student123`, 'success');
+    
+    // Update UI
+    loadClassesPage();
 }
 
 // Facts rotation
@@ -813,27 +854,21 @@ function login() {
     
     // Check for admin
     if (username === 'admin' && password === 'admin123') {
-        currentUser = { username: 'admin', role: 'admin', name: 'Администратор' };
-        localStorage.setItem('school-currentUser', JSON.stringify(currentUser));
+        setCurrentUser({ username: 'admin', role: 'admin', name: 'Администратор' });
         showNotification('🎉 Добро пожаловать, Администратор! Теперь у вас есть полный доступ к системе', 'success');
         closeModal('auth-modal');
         
-        // Force refresh and update UI
-        setTimeout(() => {
-            refreshAllData();
-            updateAuthUI();
-            showPage('teachers');
-        }, 100);
+        // Update UI immediately
+        updateAuthUI();
+        showPage('teachers');
         return;
     }
     
-    // Refresh data before checking login
-    refreshAllData();
-    
+    const users = getUsers();
     const user = users.find(u => u.username === username && u.password === password);
+    
     if (user) {
-        currentUser = user;
-        localStorage.setItem('school-currentUser', JSON.stringify(user));
+        setCurrentUser(user);
         
         let welcomeMessage = `🎉 Добро пожаловать, ${user.name || user.username}!`;
         if (user.role === 'teacher') {
@@ -845,16 +880,13 @@ function login() {
         showNotification(welcomeMessage, 'success');
         closeModal('auth-modal');
         
-        // Force refresh and update UI
-        setTimeout(() => {
-            refreshAllData();
-            updateAuthUI();
-            if (user.role === 'teacher' || user.role === 'admin') {
-                showPage('teachers');
-            } else {
-                showPage('main');
-            }
-        }, 100);
+        // Update UI immediately
+        updateAuthUI();
+        if (user.role === 'teacher' || user.role === 'admin') {
+            showPage('teachers');
+        } else {
+            showPage('main');
+        }
     } else {
         showNotification('❌ Неверный логин или пароль', 'error');
     }
@@ -876,8 +908,7 @@ function register() {
         return;
     }
     
-    // Refresh data before checking if user exists
-    refreshAllData();
+    const users = getUsers();
     
     if (users.find(u => u.username === username)) {
         showNotification('❌ Пользователь с таким логином уже существует', 'error');
@@ -892,13 +923,10 @@ function register() {
     };
     
     users.push(newUser);
-    
-    // Сохраняем данные сразу после добавления пользователя
-    syncAllData();
+    setUsers(users);
     
     // Auto login after registration
-    currentUser = newUser;
-    localStorage.setItem('school-currentUser', JSON.stringify(newUser));
+    setCurrentUser(newUser);
     
     let successMessage = '🎉 Регистрация выполнена успешно! ';
     if (role === 'teacher') {
@@ -916,16 +944,13 @@ function register() {
     document.getElementById('reg-password').value = '';
     document.getElementById('reg-confirm-password').value = '';
     
-    // Force refresh and update UI
-    setTimeout(() => {
-        refreshAllData();
-        updateAuthUI();
-        if (role === 'teacher' || role === 'admin') {
-            showPage('teachers');
-        } else {
-            showPage('main');
-        }
-    }, 100);
+    // Update UI immediately
+    updateAuthUI();
+    if (role === 'teacher' || role === 'admin') {
+        showPage('teachers');
+    } else {
+        showPage('main');
+    }
 }
 
 function forgotPassword() {
@@ -942,8 +967,7 @@ function updateAuthUI() {
     
     if (!authButtons) return;
     
-    // Принудительно обновляем данные
-    refreshAllData();
+    const currentUser = getCurrentUser();
     
     if (currentUser) {
         // User is logged in
@@ -1054,32 +1078,28 @@ function updateAuthUI() {
 }
 
 function logout() {
-    currentUser = null;
-    localStorage.removeItem('school-currentUser');
+    setCurrentUser(null);
     showNotification('🔒 Вы успешно вышли из системы. Чтобы снова войти, нажмите кнопку "Войти"', 'info');
     
-    // Force refresh and update UI
-    setTimeout(() => {
-        refreshAllData();
-        updateAuthUI();
-        showPage('main');
-    }, 100);
+    // Update UI immediately
+    updateAuthUI();
+    showPage('main');
 }
 
 // Q&A functions
 function openQAModal() {
-    if (!currentUser) {
+    if (!getCurrentUser()) {
         showNotification('🔒 Для доступа к вопросам и ответам необходимо войти в систему', 'warning');
         openAuthModal('login');
         return;
     }
     
-    refreshAllData();
     openModal('qa-modal');
     loadQuestions();
 }
 
 function submitQuestion() {
+    const currentUser = getCurrentUser();
     if (!currentUser) {
         showNotification('🔒 Для отправки вопроса необходимо войти в систему', 'warning');
         return;
@@ -1093,6 +1113,7 @@ function submitQuestion() {
         return;
     }
     
+    const questions = getQuestions();
     const newQuestion = {
         id: Date.now(),
         question: question,
@@ -1103,17 +1124,19 @@ function submitQuestion() {
     };
     
     questions.push(newQuestion);
-    saveData('questions');
+    setQuestions(questions);
     
     questionInput.value = '';
     showNotification('✅ Ваш вопрос отправлен учителям!', 'success');
+    loadQuestions();
 }
 
 function loadQuestions() {
     const qaList = document.getElementById('qa-list');
     if (!qaList) return;
     
-    refreshAllData();
+    const questions = getQuestions();
+    const currentUser = getCurrentUser();
     
     qaList.innerHTML = '';
     
@@ -1217,11 +1240,13 @@ function submitAnswer(questionId) {
         return;
     }
     
+    const questions = getQuestions();
     const questionIndex = questions.findIndex(q => q.id === questionId);
     if (questionIndex !== -1) {
         questions[questionIndex].answer = answerText;
-        saveData('questions');
+        setQuestions(questions);
         showNotification('✅ Ответ отправлен ученику!', 'success');
+        loadQuestions();
     } else {
         showNotification('❌ Ошибка: вопрос не найден', 'error');
     }
