@@ -9,59 +9,69 @@ let resources = JSON.parse(localStorage.getItem('resources')) || [];
 
 // Initialize default data
 function initializeData() {
-    // Add default admin if not exists
-    if (!users.find(u => u.username === 'admin')) {
-        users.push({
-            username: 'admin',
-            password: 'admin123',
-            role: 'admin',
-            name: 'Администратор'
-        });
-        localStorage.setItem('users', JSON.stringify(users));
-    }
+    try {
+        // Add default admin if not exists
+        if (!users.find(u => u.username === 'admin')) {
+            users.push({
+                username: 'admin',
+                password: 'admin123',
+                role: 'admin',
+                name: 'Администратор'
+            });
+            localStorage.setItem('users', JSON.stringify(users));
+        }
 
-    // Initialize classes
-    if (classes.length === 0) {
-        classes = [
-            { id: '5A', name: '5А', students: [] },
-            { id: '5B', name: '5Б', students: [] },
-            { id: '6A', name: '6А', students: [] },
-            { id: '6B', name: '6Б', students: [] }
-        ];
-        localStorage.setItem('classes', JSON.stringify(classes));
-    }
+        // Initialize classes
+        if (classes.length === 0) {
+            classes = [
+                { id: '5A', name: '5А', students: [] },
+                { id: '5B', name: '5Б', students: [] },
+                { id: '6A', name: '6А', students: [] },
+                { id: '6B', name: '6Б', students: [] }
+            ];
+            localStorage.setItem('classes', JSON.stringify(classes));
+        }
 
-    // Initialize lessons
-    if (lessons.length === 0) {
-        lessons = [
-            { id: 1, classId: '5A', day: 'Понедельник', time: '9:00', subject: 'Китайский для начинающих' }
-        ];
-        localStorage.setItem('lessons', JSON.stringify(lessons));
-    }
+        // Initialize lessons
+        if (lessons.length === 0) {
+            lessons = [
+                { id: 1, classId: '5A', day: 'Понедельник', time: '9:00', subject: 'Китайский для начинающих' }
+            ];
+            localStorage.setItem('lessons', JSON.stringify(lessons));
+        }
 
-    // Initialize resources with real links
-    if (resources.length === 0) {
-        resources = [
-            { 
-                id: 1, 
-                title: 'Основы китайской грамматики', 
-                description: 'Учебное пособие для начинающих', 
-                link: 'https://www.chinese-tools.com/learn/chinese/grammar' 
-            },
-            { 
-                id: 2, 
-                title: 'Китайские иероглифы', 
-                description: 'Изучение основных иероглифов', 
-                link: 'https://www.hanzi5.com/' 
-            },
-            { 
-                id: 3, 
-                title: 'Разговорный китайский', 
-                description: 'Практика разговорной речи', 
-                link: 'https://www.chineseclass101.com/' 
-            }
-        ];
-        localStorage.setItem('resources', JSON.stringify(resources));
+        // Initialize resources with real links
+        if (resources.length === 0) {
+            resources = [
+                { 
+                    id: 1, 
+                    title: 'Основы китайской грамматики', 
+                    description: 'Учебное пособие для начинающих', 
+                    link: 'https://www.chinese-tools.com/learn/chinese/grammar' 
+                },
+                { 
+                    id: 2, 
+                    title: 'Китайские иероглифы', 
+                    description: 'Изучение основных иероглифов', 
+                    link: 'https://www.hanzi5.com/' 
+                },
+                { 
+                    id: 3, 
+                    title: 'Разговорный китайский', 
+                    description: 'Практика разговорной речи', 
+                    link: 'https://www.chineseclass101.com/' 
+                }
+            ];
+            localStorage.setItem('resources', JSON.stringify(resources));
+        }
+        
+        // Initialize questions if not exists
+        if (!localStorage.getItem('questions')) {
+            localStorage.setItem('questions', JSON.stringify([]));
+        }
+        
+    } catch (error) {
+        console.error('Error initializing data:', error);
     }
 }
 
@@ -198,6 +208,8 @@ function loadTeachersPage() {
     const teachersContainer = document.getElementById('teachers-container');
     const addTeacherBtn = document.getElementById('add-teacher-btn');
     
+    if (!teachersContainer) return;
+    
     // Show/hide add teacher button for admin
     if (isAdmin()) {
         addTeacherBtn.classList.remove('hidden');
@@ -307,6 +319,8 @@ function loadClassesPage() {
     const addStudentSection = document.getElementById('add-student-section');
     const studentClassSelect = document.getElementById('student-class');
     
+    if (!classesContainer) return;
+    
     // Show/hide add student section based on permissions
     if (hasPermission()) {
         addStudentSection.classList.remove('hidden');
@@ -353,6 +367,8 @@ function loadClassesPage() {
 // Load Lessons Page
 function loadLessonsPage() {
     const lessonsContainer = document.getElementById('lessons-container');
+    if (!lessonsContainer) return;
+    
     lessonsContainer.innerHTML = '';
     
     if (lessons.length === 0) {
@@ -386,6 +402,8 @@ function loadLessonsPage() {
 // Load Resources Page
 function loadResourcesPage() {
     const resourcesContainer = document.getElementById('resources-container');
+    if (!resourcesContainer) return;
+    
     resourcesContainer.innerHTML = '';
     
     if (resources.length === 0) {
@@ -638,6 +656,8 @@ function updateAuthUI() {
     const addTeacherBtn = document.getElementById('add-teacher-btn');
     const addStudentSection = document.getElementById('add-student-section');
     
+    if (!authButtons) return;
+    
     if (currentUser) {
         // User is logged in
         authButtons.innerHTML = `
@@ -649,27 +669,38 @@ function updateAuthUI() {
             </div>
         `;
         
-        mobileAuthSection.innerHTML = `
-            <div class="pt-4 border-t border-blue-600 space-y-3">
-                <div class="text-white text-center py-2">
-                    ${currentUser.name || currentUser.username}
+        if (mobileAuthSection) {
+            mobileAuthSection.innerHTML = `
+                <div class="pt-4 border-t border-blue-600 space-y-3">
+                    <div class="text-white text-center py-2">
+                        ${currentUser.name || currentUser.username}
+                    </div>
+                    <button onclick="logout()" class="w-full px-4 py-3 bg-red-600 text-white rounded-xl font-medium flex items-center justify-center transition-all duration-300">
+                        <i data-feather="log-out" class="w-4 h-4 mr-2"></i>
+                        Выйти
+                    </button>
                 </div>
-                <button onclick="logout()" class="w-full px-4 py-3 bg-red-600 text-white rounded-xl font-medium flex items-center justify-center transition-all duration-300">
-                    <i data-feather="log-out" class="w-4 h-4 mr-2"></i>
-                    Выйти
-                </button>
-            </div>
-        `;
+            `;
+        }
         
         // Show Q&A button for all logged in users
-        qaButton.classList.remove('hidden');
+        if (qaButton) qaButton.classList.remove('hidden');
         
         // Update permissions for admin/teacher features
-        if (isAdmin()) {
-            addTeacherBtn.classList.remove('hidden');
+        if (addTeacherBtn) {
+            if (isAdmin()) {
+                addTeacherBtn.classList.remove('hidden');
+            } else {
+                addTeacherBtn.classList.add('hidden');
+            }
         }
-        if (hasPermission()) {
-            addStudentSection.classList.remove('hidden');
+        
+        if (addStudentSection) {
+            if (hasPermission()) {
+                addStudentSection.classList.remove('hidden');
+            } else {
+                addStudentSection.classList.add('hidden');
+            }
         }
         
     } else {
@@ -683,23 +714,25 @@ function updateAuthUI() {
             </button>
         `;
         
-        mobileAuthSection.innerHTML = `
-            <div class="pt-4 border-t border-blue-600 space-y-3">
-                <button onclick="openAuthModal('register')" class="w-full px-4 py-3 bg-white text-blue-600 rounded-xl font-medium flex items-center justify-center transition-all duration-300">
-                    <i data-feather="user-plus" class="w-4 h-4 mr-2"></i>
-                    Регистрация
-                </button>
-                <button onclick="openAuthModal('login')" class="w-full mt-2 px-4 py-3 bg-blue-700 text-white rounded-xl font-medium flex items-center justify-center transition-all duration-300">
-                    <i data-feather="log-in" class="w-4 h-4 mr-2"></i>
-                    Войти
-                </button>
-            </div>
-        `;
+        if (mobileAuthSection) {
+            mobileAuthSection.innerHTML = `
+                <div class="pt-4 border-t border-blue-600 space-y-3">
+                    <button onclick="openAuthModal('register')" class="w-full px-4 py-3 bg-white text-blue-600 rounded-xl font-medium flex items-center justify-center transition-all duration-300">
+                        <i data-feather="user-plus" class="w-4 h-4 mr-2"></i>
+                        Регистрация
+                    </button>
+                    <button onclick="openAuthModal('login')" class="w-full mt-2 px-4 py-3 bg-blue-700 text-white rounded-xl font-medium flex items-center justify-center transition-all duration-300">
+                        <i data-feather="log-in" class="w-4 h-4 mr-2"></i>
+                        Войти
+                    </button>
+                </div>
+            `;
+        }
         
         // Hide Q&A button for anonymous users
-        qaButton.classList.add('hidden');
-        addTeacherBtn.classList.add('hidden');
-        addStudentSection.classList.add('hidden');
+        if (qaButton) qaButton.classList.add('hidden');
+        if (addTeacherBtn) addTeacherBtn.classList.add('hidden');
+        if (addStudentSection) addStudentSection.classList.add('hidden');
     }
     
     feather.replace();
@@ -721,6 +754,8 @@ function openQAModal() {
         return;
     }
     
+    // Перезагружаем вопросы из localStorage перед открытием
+    questions = JSON.parse(localStorage.getItem('questions')) || [];
     openModal('qa-modal');
     loadQuestions();
 }
@@ -748,16 +783,23 @@ function submitQuestion() {
         userName: currentUser.name || currentUser.username
     };
     
+    // Обновляем локальную переменную и localStorage
     questions.push(newQuestion);
     localStorage.setItem('questions', JSON.stringify(questions));
     
-    loadQuestions();
+    // Очищаем поле и перезагружаем вопросы
     questionInput.value = '';
+    loadQuestions();
     showNotification('Ваш вопрос отправлен!');
 }
 
 function loadQuestions() {
     const qaList = document.getElementById('qa-list');
+    if (!qaList) return;
+    
+    // Всегда перезагружаем вопросы из localStorage
+    questions = JSON.parse(localStorage.getItem('questions')) || [];
+    
     qaList.innerHTML = '';
     
     if (questions.length === 0) {
@@ -771,10 +813,17 @@ function loadQuestions() {
         return;
     }
     
-    // Show only current user's questions or all questions for teachers/admins
-    const questionsToShow = hasPermission() 
-        ? questions 
-        : questions.filter(q => q.user === currentUser.username);
+    // Определяем какие вопросы показывать
+    let questionsToShow;
+    if (hasPermission()) {
+        // Учителя и админы видят все вопросы
+        questionsToShow = [...questions].reverse(); // новые вопросы сверху
+    } else {
+        // Ученики видят только свои вопросы
+        questionsToShow = questions
+            .filter(q => q.user === currentUser.username)
+            .reverse(); // новые вопросы сверху
+    }
     
     if (questionsToShow.length === 0) {
         qaList.innerHTML = `
@@ -844,7 +893,10 @@ function submitAnswer(questionId) {
     }
     
     const answerTextarea = document.getElementById(`answer-${questionId}`);
-    if (!answerTextarea) return;
+    if (!answerTextarea) {
+        showNotification('Ошибка: поле ответа не найдено', 'error');
+        return;
+    }
     
     const answerText = answerTextarea.value.trim();
     
@@ -853,52 +905,78 @@ function submitAnswer(questionId) {
         return;
     }
     
-    const question = questions.find(q => q.id === questionId);
-    if (question) {
-        question.answer = answerText;
+    // Находим вопрос и обновляем его
+    const questionIndex = questions.findIndex(q => q.id === questionId);
+    if (questionIndex !== -1) {
+        questions[questionIndex].answer = answerText;
         localStorage.setItem('questions', JSON.stringify(questions));
         showNotification('Ответ отправлен');
+        
+        // Перезагружаем вопросы сразу после ответа
         loadQuestions();
+    } else {
+        showNotification('Ошибка: вопрос не найден', 'error');
     }
+}
+
+// Функция для принудительного обновления всех данных
+function refreshAllData() {
+    users = JSON.parse(localStorage.getItem('users')) || [];
+    questions = JSON.parse(localStorage.getItem('questions')) || [];
+    currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
+    students = JSON.parse(localStorage.getItem('students')) || [];
+    classes = JSON.parse(localStorage.getItem('classes')) || [];
+    lessons = JSON.parse(localStorage.getItem('lessons')) || [];
+    resources = JSON.parse(localStorage.getItem('resources')) || [];
+    
+    updateAuthUI();
 }
 
 // Initialize application
 document.addEventListener('DOMContentLoaded', function() {
-    // Initialize data
-    initializeData();
-    
-    // Start facts rotation
-    setInterval(rotateFacts, 5000);
-    
-    // Navigation
-    document.querySelectorAll('[data-page]').forEach(button => {
-        button.addEventListener('click', function() {
-            showPage(this.getAttribute('data-page'));
+    try {
+        // Initialize data
+        initializeData();
+        
+        // Start facts rotation
+        setInterval(rotateFacts, 5000);
+        
+        // Navigation
+        document.querySelectorAll('[data-page]').forEach(button => {
+            button.addEventListener('click', function() {
+                showPage(this.getAttribute('data-page'));
+            });
         });
-    });
-    
-    // Theme toggle
-    document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
-    
-    // Mobile menu
-    setupMobileMenu();
-    
-    // Q&A button
-    document.getElementById('qa-button').addEventListener('click', openQAModal);
-    
-    // Close modals on outside click
-    document.addEventListener('click', function(event) {
-        if (event.target.classList.contains('fixed') && event.target.id.includes('modal')) {
-            closeModal(event.target.id);
-        }
-    });
-    
-    // Update UI based on current user
-    updateAuthUI();
-    
-    // Initialize feather icons
-    feather.replace();
-    
-    console.log('School 105 application initialized');
-    console.log('Admin: admin / admin123');
+        
+        // Theme toggle
+        document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
+        
+        // Mobile menu
+        setupMobileMenu();
+        
+        // Q&A button
+        document.getElementById('qa-button').addEventListener('click', openQAModal);
+        
+        // Close modals on outside click
+        document.addEventListener('click', function(event) {
+            if (event.target.classList.contains('fixed') && event.target.id.includes('modal')) {
+                closeModal(event.target.id);
+            }
+        });
+        
+        // Update UI based on current user
+        updateAuthUI();
+        
+        // Initialize feather icons
+        feather.replace();
+        
+        // Периодическое обновление данных (каждые 10 секунд)
+        setInterval(refreshAllData, 10000);
+        
+        console.log('School 105 application initialized');
+        console.log('Admin: admin / admin123');
+        
+    } catch (error) {
+        console.error('Error initializing application:', error);
+    }
 });
