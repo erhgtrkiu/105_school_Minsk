@@ -3,15 +3,16 @@ feather.replace();
 
 // School facts rotation
 const schoolFacts = [
-    "Наша школа основана в 1975 году",
-    "У нас обучается более 800 учеников",
-    "В школе работает 50 преподавателей",
-    "Мы сотрудничаем с 3 китайскими школами-партнерами",
-    "Ежегодно наши ученики побеждают в олимпиадах"
+    "Китай - самая населённая страна в мире с более чем 1.4 миллиарда жителей.",
+    "Китайский язык является одним из шести официальных языков ООН.",
+    "В китайском языке более 50,000 иероглифов, но для чтения газет достаточно знать 3,000.",
+    "Великая Китайская стена - самое длинное сооружение, построенное человеком.",
+    "Китай является родиной многих изобретений: бумаги, пороха, компаса и книгопечатания."
 ];
 
 let currentFactIndex = 0;
 const factContainer = document.getElementById('fact-container');
+const factDots = document.querySelectorAll('.fact-dot');
 
 function rotateFacts() {
     currentFactIndex = (currentFactIndex + 1) % schoolFacts.length;
@@ -20,7 +21,7 @@ function rotateFacts() {
     factContainer.classList.add('opacity-0');
     
     setTimeout(() => {
-        factContainer.innerHTML = `<p class="text-gray-700">${schoolFacts[currentFactIndex]}</p>`;
+        factContainer.innerHTML = `<p class="text-xl">${schoolFacts[currentFactIndex]}</p>`;
         
         // Fade in
         factContainer.classList.remove('opacity-0');
@@ -32,13 +33,14 @@ function rotateFacts() {
         }, 500);
         
         // Update dots
-        const dots = document.querySelectorAll('.w-2.h-2');
-        dots.forEach((dot, index) => {
-            dot.classList.remove('bg-blue-400');
-            dot.classList.add('bg-blue-200');
+        factDots.forEach((dot, index) => {
+            dot.classList.remove('active');
+            dot.classList.remove('bg-white');
+            dot.classList.add('bg-white/50');
             if (index === currentFactIndex) {
-                dot.classList.remove('bg-blue-200');
-                dot.classList.add('bg-blue-400');
+                dot.classList.add('active');
+                dot.classList.add('bg-white');
+                dot.classList.remove('bg-white/50');
             }
         });
     }, 300);
@@ -51,24 +53,32 @@ document.getElementById('theme-toggle').addEventListener('click', function() {
     
     if (body.getAttribute('data-theme') === 'day') {
         body.setAttribute('data-theme', 'night');
-        document.getElementById('header').classList.remove('bg-blue-600');
-        document.getElementById('header').classList.add('bg-gray-900');
-        document.getElementById('footer').classList.remove('bg-blue-800');
-        document.getElementById('footer').classList.add('bg-gray-900');
+        document.getElementById('header').classList.remove('header-glow');
+        document.getElementById('header').classList.add('bg-gradient-to-r', 'from-gray-900', 'to-gray-800');
+        document.getElementById('footer').classList.remove('bg-gradient-to-br', 'from-blue-800', 'to-blue-900');
+        document.getElementById('footer').classList.add('bg-gradient-to-br', 'from-gray-900', 'to-gray-800');
         
         // Change icon to sun
         themeIcon.setAttribute('data-feather', 'sun');
         feather.replace();
+        
+        // Update facts container for night mode
+        document.querySelector('.facts-container').classList.remove('facts-container');
+        document.querySelector('.facts-container').style.background = 'linear-gradient(135deg, #2d3748 0%, #1a202c 100%)';
     } else {
         body.setAttribute('data-theme', 'day');
-        document.getElementById('header').classList.remove('bg-gray-900');
-        document.getElementById('header').classList.add('bg-blue-600');
-        document.getElementById('footer').classList.remove('bg-gray-900');
-        document.getElementById('footer').classList.add('bg-blue-800');
+        document.getElementById('header').classList.add('header-glow');
+        document.getElementById('header').classList.remove('bg-gradient-to-r', 'from-gray-900', 'to-gray-800');
+        document.getElementById('footer').classList.add('bg-gradient-to-br', 'from-blue-800', 'to-blue-900');
+        document.getElementById('footer').classList.remove('bg-gradient-to-br', 'from-gray-900', 'to-gray-800');
         
         // Change icon to moon
         themeIcon.setAttribute('data-feather', 'moon');
         feather.replace();
+        
+        // Update facts container for day mode
+        document.querySelector('.facts-container').classList.add('facts-container');
+        document.querySelector('.facts-container').style.background = '';
     }
 });
 
@@ -76,11 +86,44 @@ document.getElementById('theme-toggle').addEventListener('click', function() {
 document.getElementById('mobile-menu-button').addEventListener('click', function() {
     const menu = document.getElementById('mobile-menu');
     menu.classList.toggle('hidden');
+    
+    // Change menu icon
+    const menuIcon = document.querySelector('#mobile-menu-button i');
+    if (menu.classList.contains('hidden')) {
+        menuIcon.setAttribute('data-feather', 'menu');
+    } else {
+        menuIcon.setAttribute('data-feather', 'x');
+    }
+    feather.replace();
 });
+
+// Modal management
+function openModal(modalId) {
+    const modal = document.getElementById(modalId);
+    const modalContent = modal.querySelector('.modal-content');
+    
+    modal.classList.remove('hidden');
+    setTimeout(() => {
+        modalContent.classList.remove('scale-95', 'opacity-0');
+        modalContent.classList.add('scale-100', 'opacity-100');
+    }, 10);
+}
+
+function closeModal(modalId) {
+    const modal = document.getElementById(modalId);
+    const modalContent = modal.querySelector('.modal-content');
+    
+    modalContent.classList.remove('scale-100', 'opacity-100');
+    modalContent.classList.add('scale-95', 'opacity-0');
+    
+    setTimeout(() => {
+        modal.classList.add('hidden');
+    }, 300);
+}
 
 // Auth modal functions
 function openAuthModal(type) {
-    document.getElementById('auth-modal').classList.remove('hidden');
+    openModal('auth-modal');
     if (type === 'register') {
         switchToRegister();
     } else {
@@ -89,7 +132,7 @@ function openAuthModal(type) {
 }
 
 function closeAuthModal() {
-    document.getElementById('auth-modal').classList.add('hidden');
+    closeModal('auth-modal');
 }
 
 function switchToRegister() {
@@ -146,7 +189,7 @@ function register() {
     if (role === 'teacher') {
         alert('Ваша заявка на регистрацию как учитель отправлена администратору на подтверждение.');
     } else {
-        alert('Регистрация ученика выполнена успешно!');
+        alert('Регистрация выполнена успешно!');
     }
     
     closeAuthModal();
@@ -154,29 +197,29 @@ function register() {
 
 // Lessons modal functions
 function openLessonsModal() {
-    document.getElementById('lessons-modal').classList.remove('hidden');
+    openModal('lessons-modal');
 }
 
 function closeLessonsModal() {
-    document.getElementById('lessons-modal').classList.add('hidden');
+    closeModal('lessons-modal');
 }
 
 // Resources modal functions
 function openResourcesModal() {
-    document.getElementById('resources-modal').classList.remove('hidden');
+    openModal('resources-modal');
 }
 
 function closeResourcesModal() {
-    document.getElementById('resources-modal').classList.add('hidden');
+    closeModal('resources-modal');
 }
 
 // Q&A modal functions
 function openQAModal() {
-    document.getElementById('qa-modal').classList.remove('hidden');
+    openModal('qa-modal');
 }
 
 function closeQAModal() {
-    document.getElementById('qa-modal').classList.add('hidden');
+    closeModal('qa-modal');
 }
 
 function submitQuestion() {
@@ -190,29 +233,48 @@ function submitQuestion() {
     
     const qaList = document.getElementById('qa-list');
     const newQuestion = document.createElement('div');
-    newQuestion.className = 'qa-item';
+    newQuestion.className = 'qa-item enhanced-card p-5';
     newQuestion.innerHTML = `
-        <div class="qa-question">${question}</div>
-        <div class="qa-answer">Ваш вопрос отправлен учителю. Ответ появится здесь после проверки.</div>
+        <div class="qa-question flex items-start">
+            <i data-feather="help-circle" class="w-5 h-5 text-blue-500 mr-3 mt-0.5"></i>
+            <span>${question}</span>
+        </div>
+        <div class="qa-answer mt-3 flex items-start">
+            <i data-feather="clock" class="w-5 h-5 text-yellow-500 mr-3 mt-0.5"></i>
+            <span>Ваш вопрос отправлен учителю. Ответ появится здесь после проверки.</span>
+        </div>
     `;
     
     qaList.prepend(newQuestion);
     questionInput.value = '';
+    feather.replace();
     
     alert('Ваш вопрос отправлен! Ответ появится после проверки учителем.');
 }
 
+// Close modals when clicking outside
+document.addEventListener('click', function(event) {
+    const modals = ['auth-modal', 'lessons-modal', 'resources-modal', 'qa-modal'];
+    
+    modals.forEach(modalId => {
+        const modal = document.getElementById(modalId);
+        if (event.target === modal) {
+            closeModal(modalId);
+        }
+    });
+});
+
 // Event Listeners
 document.addEventListener('DOMContentLoaded', function() {
     // Start facts rotation
-    setInterval(rotateFacts, 7000);
+    setInterval(rotateFacts, 5000);
     
     // Auth modal events
     document.getElementById('register-btn').addEventListener('click', () => openAuthModal('register'));
     document.getElementById('login-btn').addEventListener('click', () => openAuthModal('login'));
     document.getElementById('mobile-register-btn').addEventListener('click', () => openAuthModal('register'));
     document.getElementById('mobile-login-btn').addEventListener('click', () => openAuthModal('login'));
-    document.getElementById('close-auth-modal').addEventListener('click', closeAuthModal);
+    document.getElementById('close-auth-modal').addEventListener('click', () => closeModal('auth-modal'));
     document.getElementById('switch-to-register').addEventListener('click', switchToRegister);
     document.getElementById('switch-to-login').addEventListener('click', switchToLogin);
     document.getElementById('login-submit').addEventListener('click', login);
@@ -221,15 +283,34 @@ document.addEventListener('DOMContentLoaded', function() {
     // Lessons modal events
     document.getElementById('lessons-link').addEventListener('click', openLessonsModal);
     document.getElementById('mobile-lessons-link').addEventListener('click', openLessonsModal);
-    document.getElementById('close-lessons-modal').addEventListener('click', closeLessonsModal);
+    document.getElementById('close-lessons-modal').addEventListener('click', () => closeModal('lessons-modal'));
     
     // Resources modal events
     document.getElementById('resources-link').addEventListener('click', openResourcesModal);
     document.getElementById('mobile-resources-link').addEventListener('click', openResourcesModal);
-    document.getElementById('close-resources-modal').addEventListener('click', closeResourcesModal);
+    document.getElementById('close-resources-modal').addEventListener('click', () => closeModal('resources-modal'));
     
     // Q&A modal events
     document.getElementById('qa-button').addEventListener('click', openQAModal);
-    document.getElementById('close-qa-modal').addEventListener('click', closeQAModal);
+    document.getElementById('close-qa-modal').addEventListener('click', () => closeModal('qa-modal'));
     document.getElementById('submit-question').addEventListener('click', submitQuestion);
+    
+    // Add enter key support for question submission
+    document.getElementById('question-input').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter' && e.ctrlKey) {
+            submitQuestion();
+        }
+    });
+    
+    // Add loading animation to images
+    const images = document.querySelectorAll('img');
+    images.forEach(img => {
+        img.addEventListener('load', function() {
+            this.classList.remove('animate-pulse');
+        });
+        
+        if (!img.complete) {
+            img.classList.add('animate-pulse');
+        }
+    });
 });
