@@ -156,9 +156,11 @@ body[data-theme="night"] .text-gray-500 { color: #9ca3af; }
 body[data-theme="night"] .bg-blue-50 { background-color: #1e3a8a !important; color: #f9fafb; }
 body[data-theme="night"] .bg-red-50 { background-color: #7f1d1d !important; color: #f9fafb; }
 body[data-theme="night"] .bg-green-50 { background-color: #14532d !important; color: #f9fafb; }
+body[data-theme="night"] .bg-purple-50 { background-color: #4c1d95 !important; color: #f9fafb; }
 body[data-theme="night"] .bg-blue-100 { background-color: #1e40af !important; color: #f9fafb; }
 body[data-theme="night"] .bg-red-100 { background-color: #991b1b !important; color: #f9fafb; }
 body[data-theme="night"] .bg-green-100 { background-color: #166534 !important; color: #f9fafb; }
+body[data-theme="night"] .bg-purple-100 { background-color: #5b21b6 !important; color: #f9fafb; }
 body[data-theme="night"] .border-gray-100 { border-color: #374151; }
 body[data-theme="night"] .border-gray-300 { border-color: #4b5563; }
 
