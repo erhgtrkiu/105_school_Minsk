@@ -1,4 +1,4 @@
-// Data storage
+// Data storage with real-time synchronization
 let users = JSON.parse(localStorage.getItem('users')) || [];
 let questions = JSON.parse(localStorage.getItem('questions')) || [];
 let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
@@ -6,6 +6,33 @@ let students = JSON.parse(localStorage.getItem('students')) || [];
 let classes = JSON.parse(localStorage.getItem('classes')) || [];
 let lessons = JSON.parse(localStorage.getItem('lessons')) || [];
 let resources = JSON.parse(localStorage.getItem('resources')) || [];
+
+// Real-time synchronization system
+function initializeSync() {
+    // Listen for storage changes (other tabs)
+    window.addEventListener('storage', function(e) {
+        if (e.key && e.key.startsWith('school-')) {
+            console.log('🔄 Data changed in another tab:', e.key);
+            refreshAllData();
+            updateCurrentPage();
+            updateAuthUI();
+        }
+    });
+    
+    // Auto-save every 2 seconds
+    setInterval(syncAllData, 2000);
+}
+
+// Sync all data to localStorage
+function syncAllData() {
+    localStorage.setItem('school-users', JSON.stringify(users));
+    localStorage.setItem('school-questions', JSON.stringify(questions));
+    localStorage.setItem('school-currentUser', JSON.stringify(currentUser));
+    localStorage.setItem('school-students', JSON.stringify(students));
+    localStorage.setItem('school-classes', JSON.stringify(classes));
+    localStorage.setItem('school-lessons', JSON.stringify(lessons));
+    localStorage.setItem('school-resources', JSON.stringify(resources));
+}
 
 // Initialize default data
 function initializeData() {
@@ -18,57 +45,75 @@ function initializeData() {
                 role: 'admin',
                 name: 'Администратор'
             });
-            localStorage.setItem('users', JSON.stringify(users));
         }
 
-        // Initialize classes
+        // Initialize classes with proper structure
         if (classes.length === 0) {
             classes = [
-                { id: '5A', name: '5А', students: [] },
-                { id: '5B', name: '5Б', students: [] },
-                { id: '6A', name: '6А', students: [] },
-                { id: '6B', name: '6Б', students: [] }
+                { id: '5A', name: '5А', grade: '5', letter: 'А', students: [] },
+                { id: '5B', name: '5Б', grade: '5', letter: 'Б', students: [] },
+                { id: '6A', name: '6А', grade: '6', letter: 'А', students: [] },
+                { id: '6B', name: '6Б', grade: '6', letter: 'Б', students: [] }
             ];
-            localStorage.setItem('classes', JSON.stringify(classes));
         }
 
         // Initialize lessons
         if (lessons.length === 0) {
             lessons = [
-                { id: 1, classId: '5A', day: 'Понедельник', time: '9:00', subject: 'Китайский для начинающих' }
+                { id: 1, classId: '5A', day: 'Понедельник', time: '9:00', subject: 'Китайский для начинающих' },
+                { id: 2, classId: '6A', day: 'Вторник', time: '10:00', subject: 'Разговорный китайский' }
             ];
-            localStorage.setItem('lessons', JSON.stringify(lessons));
         }
 
-        // Initialize resources with real links
+        // Initialize resources with REAL Chinese learning links
         if (resources.length === 0) {
             resources = [
                 { 
                     id: 1, 
-                    title: 'Основы китайской грамматики', 
-                    description: 'Учебное пособие для начинающих', 
-                    link: 'https://www.chinese-tools.com/learn/chinese/grammar' 
+                    title: 'HelloChinese', 
+                    description: 'Лучшее приложение для изучения китайского с нуля', 
+                    link: 'https://www.hellochinese.cc/',
+                    type: 'app'
                 },
                 { 
                     id: 2, 
-                    title: 'Китайские иероглифы', 
-                    description: 'Изучение основных иероглифов', 
-                    link: 'https://www.hanzi5.com/' 
+                    title: 'Pleco', 
+                    description: 'Словарь китайского языка с распознаванием иероглифов', 
+                    link: 'https://www.pleco.com/',
+                    type: 'app'
                 },
                 { 
                     id: 3, 
-                    title: 'Разговорный китайский', 
-                    description: 'Практика разговорной речи', 
-                    link: 'https://www.chineseclass101.com/' 
+                    title: 'Chinese Grammar Wiki', 
+                    description: 'Подробная грамматика китайского языка', 
+                    link: 'https://resources.allsetlearning.com/chinese/grammar/',
+                    type: 'website'
+                },
+                { 
+                    id: 4, 
+                    title: 'YouTube: Mandarin Corner', 
+                    description: 'Бесплатные уроки китайского на YouTube', 
+                    link: 'https://www.youtube.com/c/MandarinCorner',
+                    type: 'video'
+                },
+                { 
+                    id: 5, 
+                    title: 'HSK Online', 
+                    description: 'Подготовка к экзамену HSK', 
+                    link: 'https://www.hskonline.com/',
+                    type: 'website'
+                },
+                { 
+                    id: 6, 
+                    title: 'Arch Chinese', 
+                    description: 'Интерактивное изучение иероглифов', 
+                    link: 'https://www.archchinese.com/',
+                    type: 'website'
                 }
             ];
-            localStorage.setItem('resources', JSON.stringify(resources));
         }
         
-        // Initialize questions if not exists
-        if (!localStorage.getItem('questions')) {
-            localStorage.setItem('questions', JSON.stringify([]));
-        }
+        syncAllData();
         
     } catch (error) {
         console.error('Error initializing data:', error);
@@ -142,18 +187,18 @@ function isAdmin() {
 
 // Force refresh all data from localStorage
 function refreshAllData() {
-    users = JSON.parse(localStorage.getItem('users')) || [];
-    questions = JSON.parse(localStorage.getItem('questions')) || [];
-    currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
-    students = JSON.parse(localStorage.getItem('students')) || [];
-    classes = JSON.parse(localStorage.getItem('classes')) || [];
-    lessons = JSON.parse(localStorage.getItem('lessons')) || [];
-    resources = JSON.parse(localStorage.getItem('resources')) || [];
+    users = JSON.parse(localStorage.getItem('school-users')) || [];
+    questions = JSON.parse(localStorage.getItem('school-questions')) || [];
+    currentUser = JSON.parse(localStorage.getItem('school-currentUser')) || null;
+    students = JSON.parse(localStorage.getItem('school-students')) || [];
+    classes = JSON.parse(localStorage.getItem('school-classes')) || [];
+    lessons = JSON.parse(localStorage.getItem('school-lessons')) || [];
+    resources = JSON.parse(localStorage.getItem('school-resources')) || [];
 }
 
 // Save data and force UI update
 function saveData(dataType) {
-    localStorage.setItem(dataType, JSON.stringify(eval(dataType)));
+    syncAllData();
     refreshAllData();
     updateCurrentPage();
 }
@@ -253,25 +298,36 @@ function loadTeachersPage() {
     
     if (teachers.length === 0) {
         teachersContainer.innerHTML = `
-            <div class="col-span-3 text-center py-8">
-                <i data-feather="users" class="w-12 h-12 text-gray-400 mx-auto mb-4"></i>
-                <p class="text-gray-600 font-medium">Учителя пока не добавлены</p>
+            <div class="col-span-3 text-center py-12">
+                <i data-feather="users" class="w-16 h-16 text-gray-400 mx-auto mb-4"></i>
+                <p class="text-gray-600 font-medium text-lg mb-2">Учителя пока не добавлены</p>
+                ${isAdmin() ? `
+                    <p class="text-gray-500 text-sm">Нажмите кнопку "Добавить учителя" выше</p>
+                ` : `
+                    <p class="text-gray-500 text-sm">Обратитесь к администратору для добавления учителей</p>
+                `}
             </div>
         `;
     } else {
         teachers.forEach(teacher => {
             const teacherElement = document.createElement('div');
-            teacherElement.className = 'bg-white p-6 rounded-2xl shadow-lg border border-gray-200 text-center';
+            teacherElement.className = 'bg-white p-4 sm:p-6 rounded-2xl shadow-lg border border-gray-200 text-center transform hover:scale-105 transition-all duration-300';
             teacherElement.style.animation = 'fadeIn 0.6s ease-out';
             teacherElement.innerHTML = `
-                <div class="w-24 h-24 bg-blue-100 rounded-full mx-auto mb-4 flex items-center justify-center">
-                    <i data-feather="user" class="w-12 h-12 text-blue-600"></i>
+                <div class="w-20 h-20 sm:w-24 sm:h-24 bg-gradient-to-br from-blue-100 to-blue-200 rounded-full mx-auto mb-3 sm:mb-4 flex items-center justify-center shadow-inner">
+                    <i data-feather="user" class="w-10 h-10 sm:w-12 sm:h-12 text-blue-600"></i>
                 </div>
-                <h3 class="text-xl font-bold text-blue-600 mb-2">${teacher.name}</h3>
-                <p class="text-gray-700 mb-3 font-medium">Учитель китайского языка</p>
-                <p class="text-gray-600 text-sm">Логин: ${teacher.username}</p>
+                <h3 class="text-lg sm:text-xl font-bold text-blue-600 mb-2">${teacher.name}</h3>
+                <div class="flex items-center justify-center mb-3">
+                    <i data-feather="award" class="w-4 h-4 text-yellow-500 mr-2"></i>
+                    <p class="text-gray-700 font-medium text-sm sm:text-base">Учитель китайского языка</p>
+                </div>
+                <div class="bg-gray-50 p-2 sm:p-3 rounded-lg mb-3">
+                    <p class="text-gray-600 text-xs sm:text-sm font-mono">Логин: ${teacher.username}</p>
+                </div>
                 ${isAdmin() ? `
-                    <button onclick="deleteTeacher('${teacher.username}')" class="mt-3 bg-red-600 text-white px-3 py-1 rounded-lg text-sm hover:bg-red-700 transition-all duration-300">
+                    <button onclick="deleteTeacher('${teacher.username}')" class="bg-red-600 text-white px-3 py-2 rounded-lg font-medium hover:bg-red-700 transition-all duration-300 flex items-center justify-center mx-auto text-sm">
+                        <i data-feather="trash-2" class="w-3 h-3 sm:w-4 sm:h-4 mr-2"></i>
                         Удалить
                     </button>
                 ` : ''}
@@ -286,7 +342,7 @@ function loadTeachersPage() {
 // Add Teacher Function
 function addTeacher() {
     if (!isAdmin()) {
-        showNotification('Только администратор может добавлять учителей', 'error');
+        showNotification('❌ Только администратор может добавлять учителей', 'error');
         return;
     }
     
@@ -295,12 +351,12 @@ function addTeacher() {
     const password = document.getElementById('teacher-password').value;
     
     if (!name || !login || !password) {
-        showNotification('Заполните все поля', 'error');
+        showNotification('❌ Заполните все поля', 'error');
         return;
     }
     
     if (users.find(u => u.username === login)) {
-        showNotification('Пользователь с таким логином уже существует', 'error');
+        showNotification('❌ Пользователь с таким логином уже существует', 'error');
         return;
     }
     
@@ -319,14 +375,14 @@ function addTeacher() {
     document.getElementById('teacher-login').value = '';
     document.getElementById('teacher-password').value = '';
     
-    showNotification(`Учитель ${name} добавлен`);
+    showNotification(`🎉 Учитель ${name} добавлен!`, 'success');
     closeModal('add-teacher-modal');
 }
 
 // Delete Teacher Function
 function deleteTeacher(username) {
     if (!isAdmin()) {
-        showNotification('Только администратор может удалять учителей', 'error');
+        showNotification('❌ Только администратор может удалять учителей', 'error');
         return;
     }
     
@@ -336,7 +392,7 @@ function deleteTeacher(username) {
     if (userIndex !== -1) {
         users.splice(userIndex, 1);
         saveData('users');
-        showNotification('Учитель удален');
+        showNotification('🗑️ Учитель удален', 'success');
     }
 }
 
@@ -345,8 +401,16 @@ function loadClassesPage() {
     const classesContainer = document.getElementById('classes-container');
     const addStudentSection = document.getElementById('add-student-section');
     const studentClassSelect = document.getElementById('student-class');
+    const addClassBtn = document.getElementById('add-class-btn');
     
     if (!classesContainer) return;
+    
+    // Show/hide add class button for admin
+    if (isAdmin()) {
+        addClassBtn.classList.remove('hidden');
+    } else {
+        addClassBtn.classList.add('hidden');
+    }
     
     // Show/hide add student section based on permissions
     if (hasPermission()) {
@@ -366,29 +430,121 @@ function loadClassesPage() {
     
     // Render classes
     classesContainer.innerHTML = '';
-    classes.forEach(classItem => {
-        const classStudents = students.filter(student => student.class === classItem.id);
-        
-        const classCard = document.createElement('div');
-        classCard.className = 'bg-white p-6 rounded-2xl shadow-lg border border-gray-200 text-center class-card';
-        classCard.style.animation = 'fadeIn 0.6s ease-out';
-        classCard.innerHTML = `
-            <div class="w-16 h-16 bg-blue-100 rounded-full mx-auto mb-4 flex items-center justify-center">
-                <i data-feather="users" class="w-8 h-8 text-blue-600"></i>
-            </div>
-            <h3 class="text-xl font-bold text-blue-600 mb-2">${classItem.name} класс</h3>
-            <p class="text-gray-700 font-medium mb-3">${classStudents.length} учеников</p>
-            <div class="max-h-32 overflow-y-auto">
-                ${classStudents.map(student => `
-                    <div class="text-sm text-gray-600 py-1 border-b border-gray-100">${student.name}</div>
-                `).join('')}
-                ${classStudents.length === 0 ? '<p class="text-sm text-gray-500 py-2">Нет учеников</p>' : ''}
+    
+    if (classes.length === 0) {
+        classesContainer.innerHTML = `
+            <div class="col-span-4 text-center py-12">
+                <i data-feather="layers" class="w-16 h-16 text-gray-400 mx-auto mb-4"></i>
+                <p class="text-gray-600 font-medium text-lg mb-2">Классы пока не добавлены</p>
+                ${isAdmin() ? `
+                    <p class="text-gray-500 text-sm">Нажмите кнопку "Добавить класс" выше</p>
+                ` : `
+                    <p class="text-gray-500 text-sm">Обратитесь к администратору для добавления классов</p>
+                `}
             </div>
         `;
-        classesContainer.appendChild(classCard);
-    });
+    } else {
+        // Sort classes by grade and letter
+        const sortedClasses = [...classes].sort((a, b) => {
+            if (a.grade !== b.grade) return a.grade - b.grade;
+            return a.letter.localeCompare(b.letter);
+        });
+        
+        sortedClasses.forEach(classItem => {
+            const classStudents = students.filter(student => student.class === classItem.id);
+            
+            const classCard = document.createElement('div');
+            classCard.className = 'bg-white p-4 sm:p-6 rounded-2xl shadow-lg border border-gray-200 text-center class-card';
+            classCard.style.animation = 'fadeIn 0.6s ease-out';
+            classCard.innerHTML = `
+                <div class="w-14 h-14 sm:w-16 sm:h-16 bg-blue-100 rounded-full mx-auto mb-3 sm:mb-4 flex items-center justify-center">
+                    <i data-feather="users" class="w-6 h-6 sm:w-8 sm:h-8 text-blue-600"></i>
+                </div>
+                <h3 class="text-lg sm:text-xl font-bold text-blue-600 mb-2">${classItem.name} класс</h3>
+                <p class="text-gray-700 font-medium mb-3 text-sm sm:text-base">${classStudents.length} учеников</p>
+                <div class="max-h-24 sm:max-h-32 overflow-y-auto text-xs sm:text-sm">
+                    ${classStudents.map(student => `
+                        <div class="text-gray-600 py-1 border-b border-gray-100">${student.name}</div>
+                    `).join('')}
+                    ${classStudents.length === 0 ? '<p class="text-gray-500 py-2">Нет учеников</p>' : ''}
+                </div>
+                ${isAdmin() ? `
+                    <button onclick="deleteClass('${classItem.id}')" class="mt-3 bg-red-600 text-white px-3 py-1 rounded-lg text-xs sm:text-sm hover:bg-red-700 transition-all duration-300">
+                        Удалить класс
+                    </button>
+                ` : ''}
+            `;
+            classesContainer.appendChild(classCard);
+        });
+    }
     
     feather.replace();
+}
+
+// Add Class Function
+function addClass() {
+    if (!isAdmin()) {
+        showNotification('❌ Только администратор может добавлять классы', 'error');
+        return;
+    }
+    
+    const grade = document.getElementById('class-grade').value;
+    const letter = document.getElementById('class-letter').value;
+    
+    if (!grade || !letter) {
+        showNotification('❌ Выберите класс и букву', 'error');
+        return;
+    }
+    
+    const classId = grade + letter;
+    const className = grade + ' ' + letter;
+    
+    // Check if class already exists
+    if (classes.find(c => c.id === classId)) {
+        showNotification('❌ Такой класс уже существует', 'error');
+        return;
+    }
+    
+    const newClass = {
+        id: classId,
+        name: className,
+        grade: grade,
+        letter: letter,
+        students: []
+    };
+    
+    classes.push(newClass);
+    saveData('classes');
+    
+    showNotification(`🎉 Класс ${className} добавлен!`, 'success');
+    closeModal('add-class-modal');
+}
+
+// Delete Class Function
+function deleteClass(classId) {
+    if (!isAdmin()) {
+        showNotification('❌ Только администратор может удалять классы', 'error');
+        return;
+    }
+    
+    const classItem = classes.find(c => c.id === classId);
+    if (!classItem) return;
+    
+    if (!confirm(`Вы уверены, что хотите удалить класс ${classItem.name}? Все ученики этого класса также будут удалены.`)) return;
+    
+    // Remove class
+    const classIndex = classes.findIndex(c => c.id === classId);
+    if (classIndex !== -1) {
+        classes.splice(classIndex, 1);
+    }
+    
+    // Remove students from this class
+    students = students.filter(student => student.class !== classId);
+    
+    saveData('classes');
+    saveData('students');
+    
+    showNotification(`🗑️ Класс ${classItem.name} удален`, 'success');
 }
 
 // Load Lessons Page
@@ -409,15 +565,15 @@ function loadLessonsPage() {
         lessons.forEach((lesson, index) => {
             const classItem = classes.find(c => c.id === lesson.classId);
             const lessonElement = document.createElement('div');
-            lessonElement.className = 'bg-blue-50 p-4 rounded-xl border border-blue-100 lesson-card';
+            lessonElement.className = 'bg-blue-50 p-3 sm:p-4 rounded-xl border border-blue-100 lesson-card';
             lessonElement.style.animation = `fadeIn 0.6s ease-out ${index * 0.1}s both`;
             lessonElement.innerHTML = `
                 <div class="flex items-center mb-2">
                     <i data-feather="clock" class="w-4 h-4 text-blue-500 mr-2"></i>
-                    <span class="font-medium text-gray-800">${lesson.day}, ${lesson.time}</span>
+                    <span class="font-medium text-gray-800 text-sm sm:text-base">${lesson.day}, ${lesson.time}</span>
                 </div>
-                <p class="text-gray-800 font-medium">${lesson.subject}</p>
-                <p class="text-sm text-gray-600 mt-1">${classItem?.name || lesson.classId} класс</p>
+                <p class="text-gray-800 font-medium text-sm sm:text-base">${lesson.subject}</p>
+                <p class="text-xs sm:text-sm text-gray-600 mt-1">${classItem?.name || lesson.classId} класс</p>
             `;
             lessonsContainer.appendChild(lessonElement);
         });
@@ -443,12 +599,33 @@ function loadResourcesPage() {
     } else {
         resources.forEach((resource, index) => {
             const resourceElement = document.createElement('div');
-            resourceElement.className = 'bg-white p-6 rounded-2xl shadow-lg border border-gray-200 resource-card';
+            resourceElement.className = 'bg-white p-4 sm:p-6 rounded-2xl shadow-lg border border-gray-200 resource-card';
             resourceElement.style.animation = `slideUp 0.6s ease-out ${index * 0.1}s both`;
+            
+            let typeIcon = 'external-link';
+            let typeColor = 'blue';
+            if (resource.type === 'app') {
+                typeIcon = 'smartphone';
+                typeColor = 'green';
+            } else if (resource.type === 'video') {
+                typeIcon = 'video';
+                typeColor = 'red';
+            } else if (resource.type === 'website') {
+                typeIcon = 'globe';
+                typeColor = 'blue';
+            }
+            
             resourceElement.innerHTML = `
-                <h3 class="text-xl font-bold text-blue-600 mb-2">${resource.title}</h3>
-                <p class="text-gray-700 mb-4">${resource.description}</p>
-                <a href="${resource.link}" target="_blank" class="bg-blue-600 text-white inline-flex items-center px-4 py-2 rounded-xl text-sm hover:bg-blue-700 transition-all duration-300">
+                <div class="flex items-start mb-3">
+                    <div class="bg-${typeColor}-100 p-2 rounded-lg mr-3">
+                        <i data-feather="${typeIcon}" class="w-5 h-5 text-${typeColor}-600"></i>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="text-lg sm:text-xl font-bold text-blue-600 mb-1">${resource.title}</h3>
+                        <p class="text-gray-700 text-sm sm:text-base mb-3">${resource.description}</p>
+                    </div>
+                </div>
+                <a href="${resource.link}" target="_blank" class="bg-blue-600 text-white inline-flex items-center px-4 py-2 rounded-xl text-sm hover:bg-blue-700 transition-all duration-300 w-full justify-center">
                     <i data-feather="external-link" class="w-4 h-4 mr-2"></i>
                     Открыть ресурс
                 </a>
@@ -463,7 +640,7 @@ function loadResourcesPage() {
 // Add Student Function
 function addStudent() {
     if (!hasPermission()) {
-        showNotification('У вас нет прав для добавления учеников', 'error');
+        showNotification('❌ У вас нет прав для добавления учеников. Только учителя и администраторы могут добавлять учеников.', 'error');
         return;
     }
     
@@ -472,19 +649,19 @@ function addStudent() {
     const login = document.getElementById('student-login').value;
     
     if (!name || !studentClass || !login) {
-        showNotification('Заполните все поля', 'error');
+        showNotification('❌ Заполните все поля', 'error');
         return;
     }
     
     if (users.find(u => u.username === login)) {
-        showNotification('Пользователь с таким логином уже существует', 'error');
+        showNotification('❌ Пользователь с таким логином уже существует', 'error');
         return;
     }
     
     // Create user account for student
     const studentUser = {
         username: login,
-        password: 'student123',
+        password: 'student123', // простой пароль по умолчанию
         role: 'student',
         name: name
     };
@@ -506,7 +683,7 @@ function addStudent() {
     document.getElementById('student-name').value = '';
     document.getElementById('student-login').value = '';
     
-    showNotification(`Ученик ${name} добавлен`);
+    showNotification(`🎉 Ученик ${name} успешно добавлен в класс! Пароль: student123`, 'success');
 }
 
 // Facts rotation
@@ -518,7 +695,7 @@ function rotateFacts() {
     factContainer.style.transform = 'translateY(10px)';
     
     setTimeout(() => {
-        factContainer.innerHTML = `<p class="text-xl font-medium">${chinaFacts[currentFactIndex]}</p>`;
+        factContainer.innerHTML = `<p class="text-lg sm:text-xl font-medium">${chinaFacts[currentFactIndex]}</p>`;
         factContainer.style.opacity = '1';
         factContainer.style.transform = 'translateY(0)';
     }, 300);
@@ -534,12 +711,12 @@ function toggleTheme() {
         body.setAttribute('data-theme', 'night');
         body.className = 'bg-gray-900 text-white transition-all duration-500';
         themeIcon.setAttribute('data-feather', 'sun');
-        showNotification('Ночная тема включена');
+        showNotification('🌙 Ночная тема включена', 'success');
     } else {
         body.setAttribute('data-theme', 'day');
         body.className = 'bg-white text-gray-900 transition-all duration-500';
         themeIcon.setAttribute('data-feather', 'moon');
-        showNotification('Дневная тема включена');
+        showNotification('☀️ Дневная тема включена', 'success');
     }
     feather.replace();
 }
@@ -600,29 +777,51 @@ function login() {
     const password = document.getElementById('login-password').value;
     
     if (!username || !password) {
-        showNotification('Заполните все поля', 'error');
+        showNotification('❌ Заполните все поля', 'error');
         return;
     }
     
     // Check for admin
     if (username === 'admin' && password === 'admin123') {
         currentUser = { username: 'admin', role: 'admin', name: 'Администратор' };
-        localStorage.setItem('currentUser', JSON.stringify(currentUser));
-        showNotification('Добро пожаловать, Администратор!');
+        localStorage.setItem('school-currentUser', JSON.stringify(currentUser));
+        showNotification('🎉 Добро пожаловать, Администратор! Теперь у вас есть полный доступ к системе', 'success');
         closeModal('auth-modal');
         updateAuthUI();
+        
+        // Показать изменения сразу
+        setTimeout(() => {
+            showPage('teachers'); // Переходим на страницу учителей где видны изменения
+        }, 1000);
         return;
     }
     
     const user = users.find(u => u.username === username && u.password === password);
     if (user) {
         currentUser = user;
-        localStorage.setItem('currentUser', JSON.stringify(user));
-        showNotification(`Добро пожаловать, ${user.name || user.username}!`);
+        localStorage.setItem('school-currentUser', JSON.stringify(user));
+        
+        let welcomeMessage = `🎉 Добро пожаловать, ${user.name || user.username}!`;
+        if (user.role === 'teacher') {
+            welcomeMessage += ' Теперь вы можете отвечать на вопросы учеников';
+        } else if (user.role === 'student') {
+            welcomeMessage += ' Теперь вы можете задавать вопросы учителям';
+        }
+        
+        showNotification(welcomeMessage, 'success');
         closeModal('auth-modal');
         updateAuthUI();
+        
+        // Показать изменения сразу
+        setTimeout(() => {
+            if (user.role === 'teacher' || user.role === 'admin') {
+                showPage('teachers');
+            } else {
+                showPage('main');
+            }
+        }, 1000);
     } else {
-        showNotification('Неверный логин или пароль', 'error');
+        showNotification('❌ Неверный логин или пароль', 'error');
     }
 }
 
@@ -633,17 +832,17 @@ function register() {
     const role = document.getElementById('reg-role').value;
     
     if (!username || !password || !confirmPassword) {
-        showNotification('Заполните все поля', 'error');
+        showNotification('❌ Заполните все поля', 'error');
         return;
     }
     
     if (password !== confirmPassword) {
-        showNotification('Пароли не совпадают', 'error');
+        showNotification('❌ Пароли не совпадают', 'error');
         return;
     }
     
     if (users.find(u => u.username === username)) {
-        showNotification('Пользователь с таким логином уже существует', 'error');
+        showNotification('❌ Пользователь с таким логином уже существует', 'error');
         return;
     }
     
@@ -659,9 +858,16 @@ function register() {
     
     // Auto login after registration
     currentUser = newUser;
-    localStorage.setItem('currentUser', JSON.stringify(newUser));
+    localStorage.setItem('school-currentUser', JSON.stringify(newUser));
     
-    showNotification('Регистрация выполнена успешно!');
+    let successMessage = '🎉 Регистрация выполнена успешно! ';
+    if (role === 'teacher') {
+        successMessage += 'Теперь вы можете отвечать на вопросы учеников';
+    } else {
+        successMessage += 'Теперь вы можете задавать вопросы учителям';
+    }
+    
+    showNotification(successMessage, 'success');
     
     closeModal('auth-modal');
     document.getElementById('reg-username').value = '';
@@ -669,27 +875,44 @@ function register() {
     document.getElementById('reg-confirm-password').value = '';
     
     updateAuthUI();
+    
+    // Показать изменения сразу
+    setTimeout(() => {
+        if (role === 'teacher') {
+            showPage('teachers');
+        } else {
+            showPage('main');
+        }
+    }, 1000);
 }
 
 function forgotPassword() {
-    showNotification('Для восстановления пароля обратитесь к администратору школы.', 'info');
+    showNotification('🔐 Для восстановления пароля обратитесь к администратору школы.', 'info');
 }
 
 function updateAuthUI() {
     const authButtons = document.getElementById('auth-buttons');
-    const mobileAuthSection = document.querySelector('#mobile-menu .pt-4');
+    const mobileAuthSection = document.getElementById('mobile-auth-section');
     const qaButton = document.getElementById('qa-button');
     const addTeacherBtn = document.getElementById('add-teacher-btn');
     const addStudentSection = document.getElementById('add-student-section');
+    const header = document.querySelector('header');
     
     if (!authButtons) return;
     
     if (currentUser) {
-        // User is logged in
+        // User is logged in - Показать явные изменения
         authButtons.innerHTML = `
-            <div class="flex items-center space-x-3">
-                <span class="text-white">${currentUser.name || currentUser.username}</span>
-                <button onclick="logout()" class="bg-red-600 text-white px-4 py-2 rounded-xl font-medium text-sm hover:bg-red-700 transition-all duration-300">
+            <div class="flex items-center space-x-2 sm:space-x-3 bg-green-500/20 p-2 rounded-xl border border-green-500/30">
+                <i data-feather="user-check" class="w-4 h-4 sm:w-5 sm:h-5 text-green-400"></i>
+                <span class="text-white font-semibold text-sm sm:text-base">${currentUser.name || currentUser.username}</span>
+                <div class="h-4 sm:h-6 w-px bg-white/30"></div>
+                <span class="text-green-300 text-xs sm:text-sm px-2 py-1 bg-green-500/20 rounded-lg">
+                    ${currentUser.role === 'admin' ? '👑 Админ' : 
+                      currentUser.role === 'teacher' ? '👨‍🏫 Учитель' : '🎒 Ученик'}
+                </span>
+                <button onclick="logout()" class="bg-red-600 text-white px-2 py-1 sm:px-3 sm:py-1 rounded-lg text-xs sm:text-sm hover:bg-red-700 transition-all duration-300 flex items-center">
+                    <i data-feather="log-out" class="w-3 h-3 sm:w-4 sm:h-4 mr-1"></i>
                     Выйти
                 </button>
             </div>
@@ -698,21 +921,29 @@ function updateAuthUI() {
         if (mobileAuthSection) {
             mobileAuthSection.innerHTML = `
                 <div class="pt-4 border-t border-blue-600 space-y-3">
-                    <div class="text-white text-center py-2">
-                        ${currentUser.name || currentUser.username}
+                    <div class="text-center p-3 bg-green-500/20 rounded-xl border border-green-500/30">
+                        <div class="text-green-300 font-semibold">${currentUser.name || currentUser.username}</div>
+                        <div class="text-green-400 text-sm mt-1">
+                            ${currentUser.role === 'admin' ? '👑 Администратор' : 
+                              currentUser.role === 'teacher' ? '👨‍🏫 Учитель' : '🎒 Ученик'}
+                        </div>
                     </div>
-                    <button onclick="logout()" class="w-full px-4 py-3 bg-red-600 text-white rounded-xl font-medium flex items-center justify-center transition-all duration-300">
+                    <button onclick="logout()" class="w-full px-4 py-3 bg-red-600 text-white rounded-xl font-medium flex items-center justify-center transition-all duration-300 hover:bg-red-700">
                         <i data-feather="log-out" class="w-4 h-4 mr-2"></i>
-                        Выйти
+                        Выйти из системы
                     </button>
                 </div>
             `;
         }
         
-        // Show Q&A button for all logged in users
-        if (qaButton) qaButton.classList.remove('hidden');
+        // Show Q&A button for all logged in users with special styling
+        if (qaButton) {
+            qaButton.classList.remove('hidden');
+            qaButton.innerHTML = `<i data-feather="message-circle" class="w-4 h-4 sm:w-5 sm:h-5"></i>`;
+            qaButton.title = "Задать вопрос учителю";
+        }
         
-        // Update permissions for admin/teacher features
+        // Update permissions for admin/teacher features - сделать более заметными
         if (addTeacherBtn) {
             if (isAdmin()) {
                 addTeacherBtn.classList.remove('hidden');
@@ -729,15 +960,24 @@ function updateAuthUI() {
             }
         }
         
+        // Добавить визуальный индикатор в хедер
+        if (header) {
+            header.classList.add('bg-gradient-to-r', 'from-blue-600', 'to-green-600');
+        }
+        
     } else {
-        // User is not logged in
+        // User is not logged in - стандартный вид
         authButtons.innerHTML = `
-            <button onclick="openAuthModal('register')" class="bg-red-600 text-white px-5 py-2.5 rounded-xl font-medium hover:bg-red-700 transition-all duration-300">
-                Регистрация
-            </button>
-            <button onclick="openAuthModal('login')" class="bg-blue-700 text-white px-5 py-2.5 rounded-xl font-medium hover:bg-blue-800 transition-all duration-300">
-                Войти
-            </button>
+            <div class="flex items-center space-x-2 sm:space-x-3">
+                <button onclick="openAuthModal('register')" class="bg-red-600 text-white px-3 py-2 sm:px-5 sm:py-2.5 rounded-xl font-medium hover:bg-red-700 transition-all duration-300 flex items-center text-xs sm:text-base">
+                    <i data-feather="user-plus" class="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2"></i>
+                    Регистрация
+                </button>
+                <button onclick="openAuthModal('login')" class="bg-blue-700 text-white px-3 py-2 sm:px-5 sm:py-2.5 rounded-xl font-medium hover:bg-blue-800 transition-all duration-300 flex items-center text-xs sm:text-base">
+                    <i data-feather="log-in" class="w-3 h-3 sm:w-4 sm:h-4 mr-1 sm:mr-2"></i>
+                    Войти
+                </button>
+            </div>
         `;
         
         if (mobileAuthSection) {
@@ -759,6 +999,11 @@ function updateAuthUI() {
         if (qaButton) qaButton.classList.add('hidden');
         if (addTeacherBtn) addTeacherBtn.classList.add('hidden');
         if (addStudentSection) addStudentSection.classList.add('hidden');
+        
+        // Вернуть стандартный цвет хедера
+        if (header) {
+            header.classList.remove('bg-gradient-to-r', 'from-blue-600', 'to-green-600');
+        }
     }
     
     feather.replace();
@@ -766,8 +1011,8 @@ function updateAuthUI() {
 
 function logout() {
     currentUser = null;
-    localStorage.removeItem('currentUser');
-    showNotification('Вы успешно вышли из системы');
+    localStorage.removeItem('school-currentUser');
+    showNotification('🔒 Вы успешно вышли из системы. Чтобы снова войти, нажмите кнопку "Войти"', 'info');
     updateAuthUI();
     showPage('main');
 }
@@ -775,7 +1020,7 @@ function logout() {
 // Q&A functions
 function openQAModal() {
     if (!currentUser) {
-        showNotification('Для доступа к вопросам и ответам необходимо войти в систему', 'warning');
+        showNotification('🔒 Для доступа к вопросам и ответам необходимо войти в систему', 'warning');
         openAuthModal('login');
         return;
     }
@@ -787,7 +1032,7 @@ function openQAModal() {
 
 function submitQuestion() {
     if (!currentUser) {
-        showNotification('Для отправки вопроса необходимо войти в систему', 'warning');
+        showNotification('🔒 Для отправки вопроса необходимо войти в систему', 'warning');
         return;
     }
     
@@ -795,7 +1040,7 @@ function submitQuestion() {
     const question = questionInput.value.trim();
     
     if (!question) {
-        showNotification('Пожалуйста, введите вопрос', 'error');
+        showNotification('❌ Пожалуйста, введите вопрос', 'error');
         return;
     }
     
@@ -812,7 +1057,7 @@ function submitQuestion() {
     saveData('questions');
     
     questionInput.value = '';
-    showNotification('Ваш вопрос отправлен!');
+    showNotification('✅ Ваш вопрос отправлен учителям!', 'success');
 }
 
 function loadQuestions() {
@@ -856,25 +1101,25 @@ function loadQuestions() {
     
     questionsToShow.forEach((q, index) => {
         const questionElement = document.createElement('div');
-        questionElement.className = 'bg-white p-5 rounded-2xl shadow-lg border border-gray-200 mb-4';
+        questionElement.className = 'bg-white p-4 sm:p-5 rounded-2xl shadow-lg border border-gray-200 mb-4';
         questionElement.style.animation = `fadeIn 0.6s ease-out ${index * 0.1}s both`;
         
         let answerSection = '';
         if (q.answer) {
             answerSection = `
                 <div class="flex items-start bg-green-50 p-3 rounded-lg mt-3">
-                    <i data-feather="check-circle" class="w-5 h-5 text-green-500 mr-3 mt-0.5"></i>
+                    <i data-feather="check-circle" class="w-4 h-4 sm:w-5 sm:h-5 text-green-500 mr-3 mt-0.5"></i>
                     <div class="flex-1">
-                        <span class="text-gray-800 font-medium">${q.answer}</span>
-                        <p class="text-sm text-gray-600 mt-1">Ответ учителя</p>
+                        <span class="text-gray-800 font-medium text-sm sm:text-base">${q.answer}</span>
+                        <p class="text-xs sm:text-sm text-gray-600 mt-1">Ответ учителя</p>
                     </div>
                 </div>
             `;
         } else if (hasPermission()) {
             answerSection = `
                 <div class="mt-3">
-                    <textarea id="answer-${q.id}" placeholder="Введите ответ..." class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm resize-none h-20"></textarea>
-                    <button onclick="submitAnswer(${q.id})" class="bg-blue-600 text-white px-3 py-1 rounded-lg text-sm mt-1 hover:bg-blue-700 transition-all duration-300">
+                    <textarea id="answer-${q.id}" placeholder="Введите ответ..." class="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs sm:text-sm resize-none h-16 sm:h-20"></textarea>
+                    <button onclick="submitAnswer(${q.id})" class="bg-blue-600 text-white px-3 py-1 rounded-lg text-xs sm:text-sm mt-1 hover:bg-blue-700 transition-all duration-300">
                         Ответить
                     </button>
                 </div>
@@ -882,18 +1127,18 @@ function loadQuestions() {
         } else {
             answerSection = `
                 <div class="flex items-start bg-yellow-50 p-3 rounded-lg mt-3">
-                    <i data-feather="clock" class="w-5 h-5 text-yellow-500 mr-3 mt-0.5"></i>
-                    <span class="text-gray-800 font-medium">Вопрос на рассмотрении учителя</span>
+                    <i data-feather="clock" class="w-4 h-4 sm:w-5 sm:h-5 text-yellow-500 mr-3 mt-0.5"></i>
+                    <span class="text-gray-800 font-medium text-sm sm:text-base">Вопрос на рассмотрении учителя</span>
                 </div>
             `;
         }
         
         questionElement.innerHTML = `
             <div class="flex items-start mb-3">
-                <i data-feather="help-circle" class="w-5 h-5 text-blue-500 mr-3 mt-0.5"></i>
+                <i data-feather="help-circle" class="w-4 h-4 sm:w-5 sm:h-5 text-blue-500 mr-3 mt-0.5"></i>
                 <div class="flex-1">
-                    <span class="font-semibold text-gray-800">${q.question}</span>
-                    <p class="text-sm text-gray-600 mt-1">От: ${q.userName} • ${q.date}</p>
+                    <span class="font-semibold text-gray-800 text-sm sm:text-base">${q.question}</span>
+                    <p class="text-xs sm:text-sm text-gray-600 mt-1">От: ${q.userName} • ${q.date}</p>
                 </div>
             </div>
             ${answerSection}
@@ -906,20 +1151,20 @@ function loadQuestions() {
 
 function submitAnswer(questionId) {
     if (!hasPermission()) {
-        showNotification('Только учителя могут отвечать на вопросы', 'error');
+        showNotification('❌ Только учителя могут отвечать на вопросы', 'error');
         return;
     }
     
     const answerTextarea = document.getElementById(`answer-${questionId}`);
     if (!answerTextarea) {
-        showNotification('Ошибка: поле ответа не найдено', 'error');
+        showNotification('❌ Ошибка: поле ответа не найдено', 'error');
         return;
     }
     
     const answerText = answerTextarea.value.trim();
     
     if (!answerText) {
-        showNotification('Пожалуйста, введите ответ', 'error');
+        showNotification('❌ Пожалуйста, введите ответ', 'error');
         return;
     }
     
@@ -927,9 +1172,9 @@ function submitAnswer(questionId) {
     if (questionIndex !== -1) {
         questions[questionIndex].answer = answerText;
         saveData('questions');
-        showNotification('Ответ отправлен');
+        showNotification('✅ Ответ отправлен ученику!', 'success');
     } else {
-        showNotification('Ошибка: вопрос не найден', 'error');
+        showNotification('❌ Ошибка: вопрос не найден', 'error');
     }
 }
 
@@ -937,6 +1182,7 @@ function submitAnswer(questionId) {
 document.addEventListener('DOMContentLoaded', function() {
     try {
         initializeData();
+        initializeSync();
         
         setInterval(rotateFacts, 5000);
         
@@ -962,8 +1208,10 @@ document.addEventListener('DOMContentLoaded', function() {
         
         feather.replace();
         
-        console.log('School 105 application initialized');
-        console.log('Admin: admin / admin123');
+        console.log('🎯 School 105 application initialized');
+        console.log('👑 Admin: admin / admin123');
+        console.log('📱 Fully responsive design');
+        console.log('🔄 Real-time synchronization enabled');
         
     } catch (error) {
         console.error('Error initializing application:', error);
