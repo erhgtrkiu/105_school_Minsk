@@ -122,12 +122,12 @@ function hideNotification() {
 
 // Check if user has permission to edit
 function hasPermission() {
-    return currentUser && (currentUser.role === 'teacher' || currentUser.role === 'admin');
+    return currentUser !== null && (currentUser.role === 'teacher' || currentUser.role === 'admin');
 }
 
 // Check if user is admin
 function isAdmin() {
-    return currentUser && currentUser.role === 'admin';
+    return currentUser !== null && currentUser.role === 'admin';
 }
 
 // Page management with animations
@@ -613,12 +613,18 @@ function register() {
     users.push(newUser);
     localStorage.setItem('users', JSON.stringify(users));
     
+    // Auto login after registration
+    currentUser = newUser;
+    localStorage.setItem('currentUser', JSON.stringify(newUser));
+    
     showNotification('Регистрация выполнена успешно!');
     
     closeModal('auth-modal');
     document.getElementById('reg-username').value = '';
     document.getElementById('reg-password').value = '';
     document.getElementById('reg-confirm-password').value = '';
+    
+    updateAuthUI();
 }
 
 function forgotPassword() {
@@ -629,6 +635,8 @@ function updateAuthUI() {
     const authButtons = document.getElementById('auth-buttons');
     const mobileAuthSection = document.querySelector('#mobile-menu .pt-4');
     const qaButton = document.getElementById('qa-button');
+    const addTeacherBtn = document.getElementById('add-teacher-btn');
+    const addStudentSection = document.getElementById('add-student-section');
     
     if (currentUser) {
         // User is logged in
@@ -656,6 +664,14 @@ function updateAuthUI() {
         // Show Q&A button for all logged in users
         qaButton.classList.remove('hidden');
         
+        // Update permissions for admin/teacher features
+        if (isAdmin()) {
+            addTeacherBtn.classList.remove('hidden');
+        }
+        if (hasPermission()) {
+            addStudentSection.classList.remove('hidden');
+        }
+        
     } else {
         // User is not logged in
         authButtons.innerHTML = `
@@ -682,6 +698,8 @@ function updateAuthUI() {
         
         // Hide Q&A button for anonymous users
         qaButton.classList.add('hidden');
+        addTeacherBtn.classList.add('hidden');
+        addStudentSection.classList.add('hidden');
     }
     
     feather.replace();
@@ -753,7 +771,23 @@ function loadQuestions() {
         return;
     }
     
-    questions.forEach((q, index) => {
+    // Show only current user's questions or all questions for teachers/admins
+    const questionsToShow = hasPermission() 
+        ? questions 
+        : questions.filter(q => q.user === currentUser.username);
+    
+    if (questionsToShow.length === 0) {
+        qaList.innerHTML = `
+            <div class="text-center py-8">
+                <i data-feather="message-circle" class="w-12 h-12 text-gray-400 mx-auto mb-4"></i>
+                <p class="text-gray-600 font-medium">У вас пока нет вопросов</p>
+            </div>
+        `;
+        feather.replace();
+        return;
+    }
+    
+    questionsToShow.forEach((q, index) => {
         const questionElement = document.createElement('div');
         questionElement.className = 'bg-white p-5 rounded-2xl shadow-lg border border-gray-200 mb-4';
         questionElement.style.animation = `fadeIn 0.6s ease-out ${index * 0.1}s both`;
