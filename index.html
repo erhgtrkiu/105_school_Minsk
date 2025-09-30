@@ -4,51 +4,110 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Школа 105 - Кабинет китайского языка</title>
-    <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/feather-icons"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Force dark text on white background for day theme */
-        body:not([data-theme="night"]) .enhanced-card,
-        body:not([data-theme="night"]) .enhanced-card *:not(.text-white):not(.text-blue-100):not(.text-blue-200):not(.text-blue-300) {
+        * { box-sizing: border-box; }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            line-height: 1.6;
+            transition: all 0.3s ease;
+        }
+
+        /* ДНЕВНАЯ ТЕМА */
+        body[data-theme="day"] {
+            background: white !important;
             color: #1f2937 !important;
         }
-        
-        body:not([data-theme="night"]) h1:not(.text-white),
-        body:not([data-theme="night"]) h2:not(.text-white),
-        body:not([data-theme="night"]) h3:not(.text-white),
-        body:not([data-theme="night"]) h4:not(.text-white),
-        body:not([data-theme="night"]) h5:not(.text-white),
-        body:not([data-theme="night"]) h6:not(.text-white) {
+        body[data-theme="day"] .theme-bg { background: white !important; }
+        body[data-theme="day"] .theme-card { 
+            background: white !important; 
+            border-color: #e5e7eb !important;
             color: #1f2937 !important;
         }
-        
-        body:not([data-theme="night"]) p:not(.text-white),
-        body:not([data-theme="night"]) span:not(.text-white),
-        body:not([data-theme="night"]) div:not(.text-white) {
-            color: #1f2937 !important;
+        body[data-theme="day"] .theme-text { color: #1f2937 !important; }
+        body[data-theme="day"] .theme-bg-blue { background: #dbeafe !important; }
+        body[data-theme="day"] .theme-bg-red { background: #fee2e2 !important; }
+        body[data-theme="day"] .theme-bg-green { background: #dcfce7 !important; }
+
+        /* НОЧНАЯ ТЕМА */
+        body[data-theme="night"] {
+            background: #111827 !important;
+            color: #f3f4f6 !important;
         }
-        
-        /* Ensure text in main content is visible */
-        body:not([data-theme="night"]) #main-page,
-        body:not([data-theme="night"]) #teachers-page,
-        body:not([data-theme="night"]) #classes-page,
-        body:not([data-theme="night"]) #lessons-page,
-        body:not([data-theme="night"]) #resources-page,
-        body:not([data-theme="night"]) #additional-page {
-            color: #1f2937 !important;
+        body[data-theme="night"] .theme-bg { background: #111827 !important; }
+        body[data-theme="night"] .theme-card { 
+            background: #1f2937 !important; 
+            border-color: #374151 !important;
+            color: #f3f4f6 !important;
         }
+        body[data-theme="night"] .theme-text { color: #f3f4f6 !important; }
+        body[data-theme="night"] .theme-bg-blue { background: #1e3a8a !important; }
+        body[data-theme="night"] .theme-bg-red { background: #7f1d1d !important; }
+        body[data-theme="night"] .theme-bg-green { background: #14532d !important; }
+
+        /* ОБЩИЕ СТИЛИ */
+        .header-glow {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%) !important;
+        }
+        .nav-item {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%) !important;
+            border: none !important;
+        }
+        .nav-item:hover {
+            transform: translateY(-2px) !important;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2) !important;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%) !important;
+            color: white !important;
+            border: none !important;
+        }
+        .btn-secondary {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%) !important;
+            color: white !important;
+            border: none !important;
+        }
+        .facts-container {
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%) !important;
+            color: white !important;
+        }
+        .page { 
+            display: none; 
+            opacity: 0; 
+            transform: translateY(20px); 
+            transition: all 0.5s ease; 
+        }
+        .page.active { 
+            display: block; 
+            opacity: 1; 
+            transform: translateY(0); 
+        }
+        .enhanced-card {
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+        .enhanced-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.15);
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in { animation: fadeIn 0.8s ease-out; }
     </style>
 </head>
-<body class="bg-white font-sans transition-all duration-500" data-theme="day">
-    <!-- Notification System -->
+<body class="theme-bg theme-text" data-theme="day">
+    <!-- Notification -->
     <div id="notification" class="fixed top-4 right-4 z-50 max-w-sm hidden">
-        <div class="bg-white rounded-xl shadow-2xl p-4 border-l-4 border-green-500 transform transition-all duration-500 translate-x-full">
+        <div class="theme-card rounded-xl shadow-2xl p-4 border-l-4 border-green-500 transform transition-all duration-500 translate-x-full">
             <div class="flex items-center">
                 <i data-feather="check-circle" class="w-6 h-6 text-green-500 mr-3"></i>
                 <div class="flex-1">
-                    <p id="notification-text" class="text-gray-800 font-medium"></p>
+                    <p id="notification-text" class="theme-text font-medium"></p>
                 </div>
                 <button onclick="hideNotification()" class="text-gray-400 hover:text-gray-600 ml-4">
                     <i data-feather="x" class="w-5 h-5"></i>
@@ -58,111 +117,96 @@
     </div>
 
     <!-- Header -->
-    <header class="header-glow text-white shadow-2xl sticky top-0 z-40 transition-all duration-500" id="header">
+    <header class="header-glow text-white shadow-2xl sticky top-0 z-40">
         <div class="container mx-auto px-4 py-3">
             <div class="flex justify-between items-center">
                 <div class="flex items-center space-x-3">
-                    <div class="bg-white/20 p-2 rounded-xl transition-transform duration-300 hover:scale-110">
+                    <div class="bg-white/20 p-2 rounded-xl">
                         <i data-feather="book-open" class="w-7 h-7"></i>
                     </div>
                     <div>
-                        <h1 class="text-2xl font-bold transition-all duration-300">Школа 105</h1>
+                        <h1 class="text-2xl font-bold">Школа 105</h1>
                         <p class="text-blue-100 text-sm hidden sm:block">Кабинет китайского языка</p>
                     </div>
                 </div>
                 
-                <!-- Top Right Buttons -->
                 <div class="flex items-center space-x-3">
-                    <!-- Theme Toggle Button -->
-                    <button id="theme-toggle" class="theme-toggle p-3 rounded-xl bg-white/20 hover:bg-white/30 transition-all duration-300 transform hover:scale-110">
+                    <button id="theme-toggle" class="bg-white/20 p-3 rounded-xl hover:bg-white/30 transition-all">
                         <i data-feather="moon" class="w-5 h-5"></i>
                     </button>
                     
-                    <!-- Q&A Button -->
-                    <button id="qa-button" class="theme-toggle p-3 rounded-xl bg-white/20 hover:bg-white/30 transition-all duration-300 transform hover:scale-110">
+                    <button id="qa-button" class="bg-white/20 p-3 rounded-xl hover:bg-white/30 transition-all">
                         <i data-feather="message-circle" class="w-5 h-5"></i>
                     </button>
                     
-                    <!-- Auth Buttons -->
                     <div id="auth-buttons" class="hidden md:flex space-x-3">
-                        <button id="register-btn" class="btn-secondary px-5 py-2.5 rounded-xl font-medium transition-all duration-300 transform hover:scale-105">
+                        <button id="register-btn" class="btn-secondary px-5 py-2.5 rounded-xl font-medium">
                             Регистрация
                         </button>
-                        <button id="login-btn" class="btn-primary px-5 py-2.5 rounded-xl font-medium transition-all duration-300 transform hover:scale-105">
+                        <button id="login-btn" class="btn-primary px-5 py-2.5 rounded-xl font-medium">
                             Войти
                         </button>
                     </div>
                 </div>
                 
-                <button id="mobile-menu-button" class="md:hidden p-2 bg-white/20 rounded-lg transition-all duration-300 hover:bg-white/30">
+                <button id="mobile-menu-button" class="md:hidden p-2 bg-white/20 rounded-lg">
                     <i data-feather="menu" class="w-6 h-6"></i>
                 </button>
             </div>
             
-            <!-- Navigation -->
             <nav class="mt-4 hidden md:block">
                 <div class="flex flex-wrap justify-center gap-3">
-                    <button data-page="main" class="nav-item px-5 py-2.5 rounded-xl font-medium text-white transition-all duration-300 active">Главная</button>
-                    <button data-page="teachers" class="nav-item px-5 py-2.5 rounded-xl font-medium text-white transition-all duration-300">Учителя</button>
-                    <button data-page="classes" class="nav-item px-5 py-2.5 rounded-xl font-medium text-white transition-all duration-300">Классы</button>
-                    <button data-page="lessons" class="nav-item px-5 py-2.5 rounded-xl font-medium text-white transition-all duration-300">Занятия</button>
-                    <button data-page="resources" class="nav-item px-5 py-2.5 rounded-xl font-medium text-white transition-all duration-300">Ресурсы</button>
-                    <button data-page="additional" class="nav-item px-5 py-2.5 rounded-xl font-medium text-white transition-all duration-300">Доп. занятия</button>
+                    <button data-page="main" class="nav-item px-5 py-2.5 rounded-xl font-medium text-white active">Главная</button>
+                    <button data-page="teachers" class="nav-item px-5 py-2.5 rounded-xl font-medium text-white">Учителя</button>
+                    <button data-page="classes" class="nav-item px-5 py-2.5 rounded-xl font-medium text-white">Классы</button>
+                    <button data-page="lessons" class="nav-item px-5 py-2.5 rounded-xl font-medium text-white">Занятия</button>
+                    <button data-page="resources" class="nav-item px-5 py-2.5 rounded-xl font-medium text-white">Ресурсы</button>
+                    <button data-page="additional" class="nav-item px-5 py-2.5 rounded-xl font-medium text-white">Доп. занятия</button>
                 </div>
             </nav>
         </div>
     </header>
 
     <!-- Mobile Menu -->
-    <div id="mobile-menu" class="hidden bg-gradient-to-br from-blue-700 to-blue-900 text-white py-4 px-4 md:hidden transition-all duration-500">
+    <div id="mobile-menu" class="hidden bg-gradient-to-br from-blue-700 to-blue-900 text-white py-4 px-4 md:hidden">
         <div class="flex flex-col space-y-3">
-            <button data-page="main" class="px-4 py-3 rounded-xl hover:bg-white/10 transition-all duration-300 flex items-center transform hover:translate-x-2">
-                <i data-feather="home" class="w-4 h-4 mr-3"></i>
-                Главная
+            <button data-page="main" class="px-4 py-3 rounded-xl hover:bg-white/10 flex items-center">
+                <i data-feather="home" class="w-4 h-4 mr-3"></i>Главная
             </button>
-            <button data-page="teachers" class="px-4 py-3 rounded-xl hover:bg-white/10 transition-all duration-300 flex items-center transform hover:translate-x-2">
-                <i data-feather="users" class="w-4 h-4 mr-3"></i>
-                Учителя
+            <button data-page="teachers" class="px-4 py-3 rounded-xl hover:bg-white/10 flex items-center">
+                <i data-feather="users" class="w-4 h-4 mr-3"></i>Учителя
             </button>
-            <button data-page="classes" class="px-4 py-3 rounded-xl hover:bg-white/10 transition-all duration-300 flex items-center transform hover:translate-x-2">
-                <i data-feather="layers" class="w-4 h-4 mr-3"></i>
-                Классы
+            <button data-page="classes" class="px-4 py-3 rounded-xl hover:bg-white/10 flex items-center">
+                <i data-feather="layers" class="w-4 h-4 mr-3"></i>Классы
             </button>
-            <button data-page="lessons" class="px-4 py-3 rounded-xl hover:bg-white/10 transition-all duration-300 flex items-center transform hover:translate-x-2">
-                <i data-feather="clock" class="w-4 h-4 mr-3"></i>
-                Занятия
+            <button data-page="lessons" class="px-4 py-3 rounded-xl hover:bg-white/10 flex items-center">
+                <i data-feather="clock" class="w-4 h-4 mr-3"></i>Занятия
             </button>
-            <button data-page="resources" class="px-4 py-3 rounded-xl hover:bg-white/10 transition-all duration-300 flex items-center transform hover:translate-x-2">
-                <i data-feather="book" class="w-4 h-4 mr-3"></i>
-                Ресурсы
+            <button data-page="resources" class="px-4 py-3 rounded-xl hover:bg-white/10 flex items-center">
+                <i data-feather="book" class="w-4 h-4 mr-3"></i>Ресурсы
             </button>
-            <button data-page="additional" class="px-4 py-3 rounded-xl hover:bg-white/10 transition-all duration-300 flex items-center transform hover:translate-x-2">
-                <i data-feather="award" class="w-4 h-4 mr-3"></i>
-                Доп. занятия
+            <button data-page="additional" class="px-4 py-3 rounded-xl hover:bg-white/10 flex items-center">
+                <i data-feather="award" class="w-4 h-4 mr-3"></i>Доп. занятия
             </button>
             <div class="pt-4 border-t border-blue-600 space-y-3">
-                <button id="mobile-register-btn" class="w-full px-4 py-3 bg-white text-blue-600 rounded-xl font-medium transition-all duration-300 hover:bg-blue-50 transform hover:scale-105 flex items-center justify-center">
-                    <i data-feather="user-plus" class="w-4 h-4 mr-2"></i>
-                    Регистрация
+                <button id="mobile-register-btn" class="w-full px-4 py-3 bg-white text-blue-600 rounded-xl font-medium flex items-center justify-center">
+                    <i data-feather="user-plus" class="w-4 h-4 mr-2"></i>Регистрация
                 </button>
-                <button id="mobile-login-btn" class="w-full mt-2 px-4 py-3 bg-blue-800 text-white rounded-xl font-medium transition-all duration-300 hover:bg-blue-700 transform hover:scale-105 flex items-center justify-center">
-                    <i data-feather="log-in" class="w-4 h-4 mr-2"></i>
-                    Войти
+                <button id="mobile-login-btn" class="w-full mt-2 px-4 py-3 bg-blue-800 text-white rounded-xl font-medium flex items-center justify-center">
+                    <i data-feather="log-in" class="w-4 h-4 mr-2"></i>Войти
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- Main Content - Главная страница -->
-    <main id="main-page" class="page container mx-auto px-4 py-8 active animate-fade-in">
-        <!-- Hero Section -->
+    <!-- Main Content -->
+    <main id="main-page" class="page container mx-auto px-4 py-8 active animate-fade-in theme-bg">
         <section class="text-center mb-12">
-            <h1 class="text-4xl md:text-5xl font-bold mb-4 animate-slide-down">Кабинет <span class="text-blue-600">китайского языка</span> в школе №105</h1>
-            <p class="text-xl max-w-2xl mx-auto animate-slide-up">Изучаем китайский язык и культуру Китая в обычной средней школы</p>
+            <h1 class="text-4xl md:text-5xl font-bold theme-text mb-4">Кабинет <span class="text-blue-600">китайского языка</span></h1>
+            <p class="text-xl theme-text max-w-2xl mx-auto">Изучаем китайский язык и культуру Китая</p>
         </section>
 
-        <!-- China Facts Section -->
-        <section class="max-w-4xl mx-auto enhanced-card p-8 mb-12 facts-container text-white animate-scale-in">
+        <section class="max-w-4xl mx-auto enhanced-card theme-card p-8 mb-12 facts-container">
             <div class="flex items-center mb-6">
                 <div class="bg-white/20 p-3 rounded-xl mr-4">
                     <i data-feather="info" class="w-6 h-6"></i>
@@ -171,496 +215,181 @@
             </div>
             <div id="china-facts" class="min-h-[140px] flex items-center justify-center">
                 <div id="fact-container" class="text-center">
-                    <p class="text-xl font-medium">Китай - самая населённая страна в мире с более чем 1.4 миллиарда жителей</p>
-                </div>
-            </div>
-            <div class="flex justify-center mt-6">
-                <div class="flex space-x-3">
-                    <div class="w-3 h-3 rounded-full fact-dot active transition-all duration-300"></div>
-                    <div class="w-3 h-3 rounded-full fact-dot transition-all duration-300"></div>
-                    <div class="w-3 h-3 rounded-full fact-dot transition-all duration-300"></div>
-                    <div class="w-3 h-3 rounded-full fact-dot transition-all duration-300"></div>
-                    <div class="w-3 h-3 rounded-full fact-dot transition-all duration-300"></div>
+                    <p class="text-xl font-medium">Китай - самая населённая страна в мире</p>
                 </div>
             </div>
         </section>
 
-        <!-- Quick Info -->
         <div class="grid md:grid-cols-3 gap-6 mb-12">
-            <div class="enhanced-card p-6 group hover:bg-blue-50 transition-all duration-500 animate-slide-up" style="animation-delay: 0.1s">
+            <div class="enhanced-card theme-card p-6 theme-bg-blue">
                 <div class="flex items-center mb-4">
-                    <div class="bg-blue-100 p-3 rounded-xl mr-4 group-hover:bg-blue-200 transition-all duration-300 group-hover:scale-110">
+                    <div class="bg-blue-100 p-3 rounded-xl mr-4">
                         <i data-feather="calendar" class="w-6 h-6 text-blue-600"></i>
                     </div>
                     <h3 class="font-semibold text-blue-600 text-lg">Ближайшие занятия</h3>
                 </div>
-                <p class="font-medium">Понедельник, 9:00 - Китайский для начинающих</p>
-                <div class="mt-4 pt-4 border-t border-gray-100">
-                    <p class="text-sm">Следующее: Завтра, 10:00 - Разговорный китайский</p>
-                </div>
+                <p class="theme-text font-medium">Понедельник, 9:00 - Китайский для начинающих</p>
             </div>
             
-            <div class="enhanced-card p-6 group hover:bg-red-50 transition-all duration-500 animate-slide-up" style="animation-delay: 0.2s">
+            <div class="enhanced-card theme-card p-6 theme-bg-red">
                 <div class="flex items-center mb-4">
-                    <div class="bg-red-100 p-3 rounded-xl mr-4 group-hover:bg-red-200 transition-all duration-300 group-hover:scale-110">
+                    <div class="bg-red-100 p-3 rounded-xl mr-4">
                         <i data-feather="award" class="w-6 h-6 text-red-600"></i>
                     </div>
                     <h3 class="font-semibold text-red-600 text-lg">Наши достижения</h3>
                 </div>
-                <p class="font-medium">15 призеров городской олимпиады по китайскому</p>
-                <div class="mt-4 pt-4 border-t border-gray-100">
-                    <p class="text-sm">3 победителя республиканского этапа</p>
-                </div>
+                <p class="theme-text font-medium">15 призеров городской олимпиады</p>
             </div>
             
-            <div class="enhanced-card p-6 group hover:bg-green-50 transition-all duration-500 animate-slide-up" style="animation-delay: 0.3s">
+            <div class="enhanced-card theme-card p-6 theme-bg-green">
                 <div class="flex items-center mb-4">
-                    <div class="bg-green-100 p-3 rounded-xl mr-4 group-hover:bg-green-200 transition-all duration-300 group-hover:scale-110">
+                    <div class="bg-green-100 p-3 rounded-xl mr-4">
                         <i data-feather="users" class="w-6 h-6 text-green-600"></i>
                     </div>
                     <h3 class="font-semibold text-green-600 text-lg">Наши учителя</h3>
                 </div>
-                <p class="font-medium">5 преподавателей с опытом работы в Китае</p>
-                <div class="mt-4 pt-4 border-t border-gray-100">
-                    <p class="text-sm">2 носителя языка</p>
-                </div>
+                <p class="theme-text font-medium">5 преподавателей с опытом работы в Китае</p>
             </div>
         </div>
-
-        <!-- School Stats -->
-        <section class="enhanced-card overflow-hidden mb-12 animate-scale-in">
-            <div class="md:flex">
-                <div class="md:w-1/2 p-8">
-                    <h2 class="text-2xl font-bold mb-6">О нашей школе</h2>
-                    <div class="grid grid-cols-2 gap-6 mb-6">
-                        <div class="text-center p-4 bg-blue-50 rounded-xl transition-all duration-300 hover:scale-105">
-                            <div class="text-2xl font-bold text-blue-600">800+</div>
-                            <div class="font-medium">Учеников</div>
-                        </div>
-                        <div class="text-center p-4 bg-green-50 rounded-xl transition-all duration-300 hover:scale-105">
-                            <div class="text-2xl font-bold text-green-600">50+</div>
-                            <div class="font-medium">Преподавателей</div>
-                        </div>
-                        <div class="text-center p-4 bg-red-50 rounded-xl transition-all duration-300 hover:scale-105">
-                            <div class="text-2xl font-bold text-red-600">15</div>
-                            <div class="font-medium">Лет опыта</div>
-                        </div>
-                        <div class="text-center p-4 bg-purple-50 rounded-xl transition-all duration-300 hover:scale-105">
-                            <div class="text-2xl font-bold text-purple-600">3</div>
-                            <div class="font-medium">Партнёрские школы в Китае</div>
-                        </div>
-                    </div>
-                    <p class="font-medium">Мы предоставляем качественное образование с изучением китайского языка и культуры Китая в рамках школьной программы.</p>
-                </div>
-                <div class="md:w-1/2">
-                    <div class="h-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center p-8">
-                        <div class="text-white text-center">
-                            <i data-feather="book-open" class="w-16 h-16 mx-auto mb-4"></i>
-                            <h3 class="text-2xl font-bold mb-2">Школа №105</h3>
-                            <p class="font-medium">г. Минск, ул. Примерная, 105</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
     </main>
 
     <!-- Teachers Page -->
-    <div id="teachers-page" class="page container mx-auto px-4 py-8 hidden">
-        <h2 class="text-3xl font-bold text-center mb-8 animate-slide-down">Наши учителя китайского языка</h2>
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div class="teacher-card enhanced-card p-6 text-center animate-scale-in" style="animation-delay: 0.1s">
-                <div class="w-24 h-24 bg-blue-100 rounded-full mx-auto mb-4 flex items-center justify-center transition-all duration-300 group-hover:scale-110">
+    <div id="teachers-page" class="page container mx-auto px-4 py-8 hidden theme-bg">
+        <h2 class="text-3xl font-bold text-center theme-text mb-8">Наши учителя</h2>
+        <div class="grid md:grid-cols-3 gap-6">
+            <div class="enhanced-card theme-card p-6 text-center">
+                <div class="w-24 h-24 bg-blue-100 rounded-full mx-auto mb-4 flex items-center justify-center">
                     <i data-feather="user" class="w-12 h-12 text-blue-600"></i>
                 </div>
                 <h3 class="text-xl font-bold text-blue-600 mb-2">Иванова Мария Петровна</h3>
-                <p class="mb-3 font-medium">Учитель китайского языка</p>
-                <p class="text-sm font-medium">Опыт работы: 15 лет. Выпускница БГПУ им. Максима Танка.</p>
-            </div>
-            
-            <div class="teacher-card enhanced-card p-6 text-center animate-scale-in" style="animation-delay: 0.2s">
-                <div class="w-24 h-24 bg-green-100 rounded-full mx-auto mb-4 flex items-center justify-center transition-all duration-300 group-hover:scale-110">
-                    <i data-feather="user" class="w-12 h-12 text-green-600"></i>
-                </div>
-                <h3 class="text-xl font-bold text-green-600 mb-2">Петров Иван Сергеевич</h3>
-                <p class="mb-3 font-medium">Учитель китайского языка</p>
-                <p class="text-sm font-medium">Опыт работы: 10 лет. Кандидат педагогических наук.</p>
-            </div>
-            
-            <div class="teacher-card enhanced-card p-6 text-center animate-scale-in" style="animation-delay: 0.3s">
-                <div class="w-24 h-24 bg-purple-100 rounded-full mx-auto mb-4 flex items-center justify-center transition-all duration-300 group-hover:scale-110">
-                    <i data-feather="user" class="w-12 h-12 text-purple-600"></i>
-                </div>
-                <h3 class="text-xl font-bold text-purple-600 mb-2">Смирнова Анна Владимировна</h3>
-                <p class="mb-3 font-medium">Учитель китайского языка</p>
-                <p class="text-sm font-medium">Опыт работы: 12 лет. Победитель конкурса "Учитель года".</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Classes Page -->
-    <div id="classes-page" class="page container mx-auto px-4 py-8 hidden">
-        <h2 class="text-3xl font-bold text-center mb-8 animate-slide-down">Управление классами</h2>
-        
-        <!-- Add Student Form (for teachers and admin) -->
-        <div id="add-student-section" class="enhanced-card p-6 mb-8 animate-scale-in hidden">
-            <h3 class="text-xl font-bold text-blue-600 mb-4">Добавить ученика</h3>
-            <div class="grid md:grid-cols-4 gap-4">
-                <div>
-                    <label class="block font-semibold mb-2">Имя ученика</label>
-                    <input type="text" id="student-name" class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Имя">
-                </div>
-                <div>
-                    <label class="block font-semibold mb-2">Класс</label>
-                    <select id="student-class" class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
-                        <option value="5А">5А</option>
-                        <option value="5Б">5Б</option>
-                        <option value="6А">6А</option>
-                        <option value="6Б">6Б</option>
-                        <option value="7А">7А</option>
-                        <option value="7Б">7Б</option>
-                        <option value="8А">8А</option>
-                        <option value="8Б">8Б</option>
-                        <option value="9А">9А</option>
-                        <option value="9Б">9Б</option>
-                        <option value="10А">10А</option>
-                        <option value="10Б">10Б</option>
-                        <option value="11А">11А</option>
-                        <option value="11Б">11Б</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block font-semibold mb-2">Логин</label>
-                    <input type="text" id="student-login" class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Логин">
-                </div>
-                <div class="flex items-end">
-                    <button id="add-student-btn" class="btn-primary w-full py-2 px-4 rounded-xl font-medium transition-all duration-300 transform hover:scale-105">
-                        Добавить
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Classes Grid -->
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            <!-- Classes will be dynamically generated -->
-        </div>
-    </div>
-
-    <!-- Lessons Page -->
-    <div id="lessons-page" class="page container mx-auto px-4 py-8 hidden">
-        <h2 class="text-3xl font-bold text-center mb-8 animate-slide-down">Расписание занятий</h2>
-        
-        <!-- Class Selector for Teachers/Admin -->
-        <div id="class-selector" class="enhanced-card p-6 mb-8 animate-scale-in hidden">
-            <h3 class="text-lg font-semibold text-blue-600 mb-4">Выберите класс для просмотра расписания:</h3>
-            <div class="flex flex-wrap gap-3">
-                <!-- Class buttons will be dynamically generated -->
-            </div>
-        </div>
-
-        <!-- Current Class Info -->
-        <div id="current-class-info" class="enhanced-card p-4 mb-6 bg-blue-50 border-l-4 border-blue-500 hidden">
-            <p class="text-blue-700 font-semibold">Просматриваете расписание для: <span id="selected-class-name"></span></p>
-        </div>
-
-        <div class="enhanced-card p-6 animate-scale-in">
-            <div class="mb-8">
-                <h4 class="text-lg font-semibold text-blue-600 mb-4 flex items-center">
-                    <i data-feather="book" class="w-5 h-5 mr-2"></i>
-                    Основные занятия
-                </h4>
-                <div id="lessons-container" class="grid md:grid-cols-2 gap-4">
-                    <!-- Lessons will be dynamically generated based on class -->
-                </div>
-            </div>
-            
-            <div>
-                <h4 class="text-lg font-semibold text-red-600 mb-4 flex items-center">
-                    <i data-feather="award" class="w-5 h-5 mr-2"></i>
-                    Дополнительные занятия
-                </h4>
-                <div class="grid md:grid-cols-2 gap-4">
-                    <div class="bg-red-50 p-4 rounded-xl border border-red-100 transition-all duration-300 hover:scale-105">
-                        <div class="flex items-center mb-2">
-                            <i data-feather="clock" class="w-4 h-4 text-red-500 mr-2"></i>
-                            <span class="font-medium">Суббота, 10:00-12:00</span>
-                        </div>
-                        <p class="font-medium">Каллиграфия</p>
-                    </div>
-                    <div class="bg-red-50 p-4 rounded-xl border border-red-100 transition-all duration-300 hover:scale-105">
-                        <div class="flex items-center mb-2">
-                            <i data-feather="clock" class="w-4 h-4 text-red-500 mr-2"></i>
-                            <span class="font-medium">Воскресенье, 11:00-13:00</span>
-                        </div>
-                        <p class="font-medium">Чайная церемония</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Resources Page -->
-    <div id="resources-page" class="page container mx-auto px-4 py-8 hidden">
-        <h2 class="text-3xl font-bold text-center mb-8 animate-slide-down">Полезные ресурсы</h2>
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div class="enhanced-card p-6 hover:bg-blue-50 transition-all duration-500 animate-scale-in" style="animation-delay: 0.1s">
-                <div class="flex items-center mb-4">
-                    <div class="bg-blue-100 p-3 rounded-xl mr-4 transition-all duration-300 group-hover:scale-110">
-                        <i data-feather="external-link" class="w-6 h-6 text-blue-600"></i>
-                    </div>
-                    <h3 class="font-semibold text-blue-600">Pleco</h3>
-                </div>
-                <p class="font-medium">Китайский словарь с функцией распознавания иероглифов</p>
-            </div>
-            
-            <div class="enhanced-card p-6 hover:bg-green-50 transition-all duration-500 animate-scale-in" style="animation-delay: 0.2s">
-                <div class="flex items-center mb-4">
-                    <div class="bg-green-100 p-3 rounded-xl mr-4 transition-all duration-300 group-hover:scale-110">
-                        <i data-feather="external-link" class="w-6 h-6 text-green-600"></i>
-                    </div>
-                    <h3 class="font-semibold text-green-600">HelloChinese</h3>
-                </div>
-                <p class="font-medium">Приложение для изучения китайского языка</p>
-            </div>
-            
-            <div class="enhanced-card p-6 hover:bg-purple-50 transition-all duration-500 animate-scale-in" style="animation-delay: 0.3s">
-                <div class="flex items-center mb-4">
-                    <div class="bg-purple-100 p-3 rounded-xl mr-4 transition-all duration-300 group-hover:scale-110">
-                        <i data-feather="download" class="w-6 h-6 text-purple-600"></i>
-                    </div>
-                    <h3 class="font-semibold text-purple-600">Учебные материалы</h3>
-                </div>
-                <p class="font-medium">Рабочие тетради и аудиоматериалы для скачивания</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Additional Lessons Page -->
-    <div id="additional-page" class="page container mx-auto px-4 py-8 hidden">
-        <h2 class="text-3xl font-bold text-center mb-8 animate-slide-down">Дополнительные занятия</h2>
-        <div class="enhanced-card p-8 animate-scale-in">
-            <div class="grid md:grid-cols-2 gap-8">
-                <div>
-                    <h3 class="text-xl font-bold text-red-600 mb-4">Кружки и секции</h3>
-                    <ul class="space-y-4">
-                        <li class="flex items-start transition-all duration-300 hover:translate-x-2">
-                            <i data-feather="award" class="w-5 h-5 text-red-500 mt-1 mr-3"></i>
-                            <div>
-                                <span class="font-medium">Каллиграфия</span>
-                                <p class="text-sm font-medium">Суббота 10:00-12:00</p>
-                            </div>
-                        </li>
-                        <li class="flex items-start transition-all duration-300 hover:translate-x-2">
-                            <i data-feather="award" class="w-5 h-5 text-red-500 mt-1 mr-3"></i>
-                            <div>
-                                <span class="font-medium">Чайная церемония</span>
-                                <p class="text-sm font-medium">Воскресенье 11:00-13:00</p>
-                            </div>
-                        </li>
-                        <li class="flex items-start transition-all duration-300 hover:translate-x-2">
-                            <i data-feather="award" class="w-5 h-5 text-red-500 mt-1 mr-3"></i>
-                            <div>
-                                <span class="font-medium">Китайская живопись</span>
-                                <p class="text-sm font-medium">Пятница 16:00-18:00</p>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 class="text-xl font-bold text-blue-600 mb-4">Летние программы</h3>
-                    <ul class="space-y-4">
-                        <li class="flex items-start transition-all duration-300 hover:translate-x-2">
-                            <i data-feather="sun" class="w-5 h-5 text-blue-500 mt-1 mr-3"></i>
-                            <div>
-                                <span class="font-medium">Летние интенсивные курсы</span>
-                                <p class="text-sm font-medium">Июнь-Август</p>
-                            </div>
-                        </li>
-                        <li class="flex items-start transition-all duration-300 hover:translate-x-2">
-                            <i data-feather="map" class="w-5 h-5 text-blue-500 mt-1 mr-3"></i>
-                            <div>
-                                <span class="font-medium">Языковые лагеря</span>
-                                <p class="text-sm font-medium">Июль, 2 недели</p>
-                            </div>
-                        </li>
-                        <li class="flex items-start transition-all duration-300 hover:translate-x-2">
-                            <i data-feather="users" class="w-5 h-5 text-blue-500 mt-1 mr-3"></i>
-                            <div>
-                                <span class="font-medium">Разговорные клубы</span>
-                                <p class="text-sm font-medium">По субботам</p>
-                            </div>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Auth Modal -->
-    <div id="auth-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden transition-all duration-300">
-        <div class="bg-white rounded-xl shadow-2xl w-full max-w-md mx-4 transform transition-all duration-300 scale-95">
-            <div class="flex justify-between items-center border-b px-6 py-5">
-                <h3 id="modal-title" class="text-xl font-bold text-blue-600">Вход в систему</h3>
-                <button id="close-auth-modal" class="text-gray-500 hover:text-gray-700 transition-colors duration-200">
-                    <i data-feather="x" class="w-6 h-6"></i>
-                </button>
-            </div>
-            
-            <div id="login-form" class="p-6">
-                <div class="mb-5">
-                    <label class="block font-semibold mb-2">Логин</label>
-                    <input type="text" id="login-username" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300" placeholder="Введите ваш логин">
-                </div>
-                <div class="mb-6">
-                    <label class="block font-semibold mb-2">Пароль</label>
-                    <input type="password" id="login-password" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300" placeholder="Введите ваш пароль">
-                </div>
-                <div class="flex items-center justify-between mb-5">
-                    <div class="flex items-center">
-                        <input type="checkbox" id="remember-me" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
-                        <label for="remember-me" class="ml-2 block font-medium">Запомнить меня</label>
-                    </div>
-                    <button id="forgot-password" class="text-blue-600 hover:text-blue-800 text-sm font-medium transition-colors duration-200">Забыли пароль?</button>
-                </div>
-                <button id="login-submit" class="btn-primary w-full py-3 px-4 rounded-xl font-medium transition-all duration-300 transform hover:scale-105">
-                    Войти
-                </button>
-                <p class="text-center mt-5">
-                    Нет аккаунта? 
-                    <button id="switch-to-register" class="text-blue-600 hover:text-blue-800 font-semibold transition-colors duration-200">Зарегистрироваться</button>
-                </p>
-            </div>
-            
-            <div id="register-form" class="p-6 hidden">
-                <div class="mb-5">
-                    <label class="block font-semibold mb-2">Логин</label>
-                    <input type="text" id="reg-username" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300" placeholder="Придумайте логин">
-                </div>
-                <div class="mb-5">
-                    <label class="block font-semibold mb-2">Пароль</label>
-                    <input type="password" id="reg-password" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300" placeholder="Придумайте пароль">
-                </div>
-                <div class="mb-5">
-                    <label class="block font-semibold mb-2">Подтвердите пароль</label>
-                    <input type="password" id="reg-confirm-password" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300" placeholder="Повторите пароль">
-                </div>
-                <div class="mb-6">
-                    <label class="block font-semibold mb-2">Роль</label>
-                    <select id="reg-role" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300">
-                        <option value="student">Ученик</option>
-                        <option value="teacher">Учитель</option>
-                    </select>
-                </div>
-                <button id="register-submit" class="btn-primary w-full py-3 px-4 rounded-xl font-medium transition-all duration-300 transform hover:scale-105">
-                    Зарегистрироваться
-                </button>
-                <p class="text-center mt-5">
-                    Уже есть аккаунт? 
-                    <button id="switch-to-login" class="text-blue-600 hover:text-blue-800 font-semibold transition-colors duration-200">Войти</button>
-                </p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Q&A Modal -->
-    <div id="qa-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden transition-all duration-300">
-        <div class="bg-white rounded-xl shadow-2xl w-full max-w-4xl mx-4 max-h-[90vh] overflow-y-auto transform transition-all duration-300 scale-95">
-            <div class="flex justify-between items-center border-b px-6 py-5 sticky top-0 bg-white">
-                <h3 class="text-xl font-bold text-blue-600">Вопросы и ответы</h3>
-                <button id="close-qa-modal" class="text-gray-500 hover:text-gray-700 transition-colors duration-200">
-                    <i data-feather="x" class="w-6 h-6"></i>
-                </button>
-            </div>
-            
-            <div class="p-6">
-                <div class="mb-8 enhanced-card p-6">
-                    <h4 class="text-lg font-semibold text-blue-600 mb-4 flex items-center">
-                        <i data-feather="help-circle" class="w-5 h-5 mr-2"></i>
-                        Задать вопрос
-                    </h4>
-                    <div class="mb-4">
-                        <textarea id="question-input" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300" rows="4" placeholder="Введите ваш вопрос..."></textarea>
-                    </div>
-                    <button id="submit-question" class="btn-primary px-5 py-3 rounded-xl font-medium transition-all duration-300 transform hover:scale-105 flex items-center">
-                        <i data-feather="send" class="w-4 h-4 mr-2"></i>
-                        Отправить вопрос
-                    </button>
-                </div>
-                
-                <div>
-                    <h4 class="text-lg font-semibold text-blue-600 mb-4 flex items-center">
-                        <i data-feather="message-square" class="w-5 h-5 mr-2"></i>
-                        Часто задаваемые вопросы
-                    </h4>
-                    <div id="qa-list" class="space-y-6">
-                        <div class="qa-item enhanced-card p-5 transition-all duration-300 hover:scale-105">
-                            <div class="qa-question flex items-start">
-                                <i data-feather="help-circle" class="w-5 h-5 text-blue-500 mr-3 mt-0.5"></i>
-                                <span class="font-semibold">Как записаться на дополнительные занятия?</span>
-                            </div>
-                            <div class="qa-answer mt-3 flex items-start">
-                                <i data-feather="check-circle" class="w-5 h-5 text-green-500 mr-3 mt-0.5"></i>
-                                <span class="font-medium">Для записи на дополнительные занятия необходимо обратиться к классному руководителю или в учебную часть школы.</span>
-                            </div>
-                        </div>
-                        <div class="qa-item enhanced-card p-5 transition-all duration-300 hover:scale-105">
-                            <div class="qa-question flex items-start">
-                                <i data-feather="help-circle" class="w-5 h-5 text-blue-500 mr-3 mt-0.5"></i>
-                                <span class="font-semibold">Когда начинается набор на следующий учебный год?</span>
-                            </div>
-                            <div class="qa-answer mt-3 flex items-start">
-                                <i data-feather="check-circle" class="w-5 h-5 text-green-500 mr-3 mt-0.5"></i>
-                                <span class="font-medium">Набор на следующий учебный год начинается в апреле. Следите за объявлениями на сайте и информационных стендах школы.</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <p class="theme-text mb-3 font-medium">Учитель китайского языка</p>
             </div>
         </div>
     </div>
 
     <!-- Footer -->
-    <footer class="bg-gradient-to-br from-blue-800 to-blue-900 text-white py-12 transition-all duration-500" id="footer">
-        <div class="container mx-auto px-4">
-            <div class="md:flex md:justify-between">
-                <div class="mb-8 md:mb-0">
-                    <div class="flex items-center space-x-3 mb-6">
-                        <div class="bg-white/20 p-2 rounded-xl">
-                            <i data-feather="book-open" class="w-6 h-6"></i>
-                        </div>
-                        <div>
-                            <span class="text-2xl font-bold">Школа 105</span>
-                            <p class="text-blue-200 text-sm">Кабинет китайского языка</p>
-                        </div>
-                    </div>
-                    <p class="text-blue-200 max-w-md font-medium">
-                        Средняя общеобразовательная школа №105<br>
-                        г. Минск, ул. Примерная, 105
-                    </p>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    <div>
-                        <h3 class="text-sm font-semibold uppercase tracking-wider mb-4 text-blue-300">Контакты</h3>
-                        <ul class="space-y-3 text-blue-200">
-                            <li class="flex items-center font-medium">
-                                <i data-feather="mail" class="w-4 h-4 mr-3"></i>
-                                school105@edu.by
-                            </li>
-                            <li class="flex items-center font-medium">
-                                <i data-feather="phone" class="w-4 h-4 mr-3"></i>
-                                +375 (17) 123-45-67
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="mt-12 pt-8 border-t border-blue-700 text-center text-blue-300 text-sm font-medium">
-                © 2023 Школа №105. Все права защищены.
-            </div>
+    <footer class="bg-gradient-to-br from-blue-800 to-blue-900 text-white py-12">
+        <div class="container mx-auto px-4 text-center">
+            <p>© 2023 Школа №105. Все права защищены.</p>
         </div>
     </footer>
 
-    <script src="script.js"></script>
+    <script>
+        // ИНИЦИАЛИЗАЦИЯ
+        feather.replace();
+        
+        // ТЕМА
+        document.getElementById('theme-toggle').addEventListener('click', function() {
+            const body = document.body;
+            const themeIcon = document.querySelector('#theme-toggle i');
+            const currentTheme = body.getAttribute('data-theme');
+            
+            if (currentTheme === 'day') {
+                body.setAttribute('data-theme', 'night');
+                themeIcon.setAttribute('data-feather', 'sun');
+            } else {
+                body.setAttribute('data-theme', 'day');
+                themeIcon.setAttribute('data-feather', 'moon');
+            }
+            feather.replace();
+        });
+
+        // СТРАНИЦЫ
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => {
+                page.classList.remove('active');
+                page.classList.add('hidden');
+            });
+            
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            const targetPage = document.getElementById(pageId + '-page');
+            if (targetPage) {
+                targetPage.classList.remove('hidden');
+                targetPage.classList.add('active');
+            }
+            
+            document.querySelectorAll(`[data-page="${pageId}"]`).forEach(item => {
+                item.classList.add('active');
+            });
+        }
+
+        document.querySelectorAll('[data-page]').forEach(button => {
+            button.addEventListener('click', function() {
+                showPage(this.getAttribute('data-page'));
+            });
+        });
+
+        // УВЕДОМЛЕНИЯ
+        function showNotification(message) {
+            const notification = document.getElementById('notification');
+            const notificationText = document.getElementById('notification-text');
+            
+            notificationText.textContent = message;
+            notification.classList.remove('hidden');
+            
+            setTimeout(() => {
+                notification.querySelector('.transform').classList.remove('translate-x-full');
+            }, 100);
+            
+            setTimeout(hideNotification, 3000);
+        }
+
+        function hideNotification() {
+            const notification = document.getElementById('notification');
+            notification.querySelector('.transform').classList.add('translate-x-full');
+            setTimeout(() => {
+                notification.classList.add('hidden');
+            }, 500);
+        }
+
+        // МОБИЛЬНОЕ МЕНЮ
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+            
+            const menuIcon = document.querySelector('#mobile-menu-button i');
+            if (menu.classList.contains('hidden')) {
+                menuIcon.setAttribute('data-feather', 'menu');
+            } else {
+                menuIcon.setAttribute('data-feather', 'x');
+            }
+            feather.replace();
+        });
+
+        // ФАКТЫ О КИТАЕ
+        const chinaFacts = [
+            "Китай - самая населённая страна в мире с более чем 1.4 миллиарда жителей",
+            "Китайский язык является одним из шести официальных языков ООН",
+            "В китайском языке более 50,000 иероглифов, но для чтения газет достаточно знать 3,000",
+            "Великая Китайская стена - самое длинное сооружение, построенное человеком",
+            "Китай является родиной многих изобретений: бумаги, пороха, компаса и книгопечатания"
+        ];
+        
+        let currentFactIndex = 0;
+        
+        function rotateFacts() {
+            currentFactIndex = (currentFactIndex + 1) % chinaFacts.length;
+            document.getElementById('fact-container').innerHTML = 
+                `<p class="text-xl font-medium">${chinaFacts[currentFactIndex]}</p>`;
+        }
+        
+        setInterval(rotateFacts, 5000);
+
+        // АВТОРИЗАЦИЯ
+        document.getElementById('login-btn').addEventListener('click', function() {
+            showNotification('Функция входа в разработке');
+        });
+        
+        document.getElementById('register-btn').addEventListener('click', function() {
+            showNotification('Функция регистрации в разработке');
+        });
+
+        document.getElementById('qa-button').addEventListener('click', function() {
+            showNotification('Вопросы и ответы в разработке');
+        });
+    </script>
 </body>
 </html>
