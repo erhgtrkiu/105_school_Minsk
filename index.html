@@ -9,9 +9,9 @@
     <script src="https://unpkg.com/feather-icons"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body class="bg-gray-50 font-sans" data-theme="day">
+<body class="bg-blue-50 font-sans" data-theme="day">
     <!-- Header -->
-    <header class="header-glow text-white shadow-2xl sticky top-0 z-50 transition-all duration-300" id="header">
+    <header class="header-glow text-white shadow-2xl sticky top-0 z-50" id="header">
         <div class="container mx-auto px-4 py-3">
             <div class="flex justify-between items-center">
                 <div class="flex items-center space-x-3">
@@ -27,21 +27,21 @@
                 <!-- Top Right Buttons -->
                 <div class="flex items-center space-x-3">
                     <!-- Theme Toggle Button -->
-                    <button id="theme-toggle" class="theme-toggle p-3 rounded-xl bg-white/20 hover:bg-white/30 transition-all duration-300 transform hover:scale-110">
+                    <button id="theme-toggle" class="theme-toggle p-3 rounded-xl bg-white/20 hover:bg-white/30">
                         <i data-feather="moon" class="w-5 h-5"></i>
                     </button>
                     
                     <!-- Q&A Button -->
-                    <button id="qa-button" class="theme-toggle p-3 rounded-xl bg-white/20 hover:bg-white/30 transition-all duration-300 transform hover:scale-110">
+                    <button id="qa-button" class="theme-toggle p-3 rounded-xl bg-white/20 hover:bg-white/30">
                         <i data-feather="message-circle" class="w-5 h-5"></i>
                     </button>
                     
                     <!-- Auth Buttons -->
                     <div id="auth-buttons" class="hidden md:flex space-x-3">
-                        <button id="register-btn" class="btn-secondary px-5 py-2.5 rounded-xl font-medium transition-all duration-300">
+                        <button id="register-btn" class="btn-secondary px-5 py-2.5 rounded-xl font-medium">
                             Регистрация
                         </button>
-                        <button id="login-btn" class="btn-primary px-5 py-2.5 rounded-xl font-medium transition-all duration-300">
+                        <button id="login-btn" class="btn-primary px-5 py-2.5 rounded-xl font-medium">
                             Войти
                         </button>
                     </div>
@@ -55,45 +55,45 @@
             <!-- Navigation -->
             <nav class="mt-4 hidden md:block">
                 <div class="flex flex-wrap justify-center gap-3">
-                    <button data-page="main" class="nav-item px-5 py-2.5 rounded-xl font-medium text-white transition-all duration-300 active">Главная</button>
-                    <button data-page="teachers" class="nav-item px-5 py-2.5 rounded-xl font-medium text-white transition-all duration-300">Учителя</button>
-                    <button data-page="lessons" class="nav-item px-5 py-2.5 rounded-xl font-medium text-white transition-all duration-300">Занятия</button>
-                    <button data-page="resources" class="nav-item px-5 py-2.5 rounded-xl font-medium text-white transition-all duration-300">Ресурсы</button>
-                    <button data-page="additional" class="nav-item px-5 py-2.5 rounded-xl font-medium text-white transition-all duration-300">Доп. занятия</button>
+                    <button data-page="main" class="nav-item px-5 py-2.5 rounded-xl font-medium text-white active">Главная</button>
+                    <button data-page="teachers" class="nav-item px-5 py-2.5 rounded-xl font-medium text-white">Учителя</button>
+                    <button data-page="lessons" class="nav-item px-5 py-2.5 rounded-xl font-medium text-white">Занятия</button>
+                    <button data-page="resources" class="nav-item px-5 py-2.5 rounded-xl font-medium text-white">Ресурсы</button>
+                    <button data-page="additional" class="nav-item px-5 py-2.5 rounded-xl font-medium text-white">Доп. занятия</button>
                 </div>
             </nav>
         </div>
     </header>
 
     <!-- Mobile Menu -->
-    <div id="mobile-menu" class="hidden bg-gradient-to-br from-blue-700 to-blue-900 text-white py-4 px-4 md:hidden transition-all duration-300">
+    <div id="mobile-menu" class="hidden bg-gradient-to-br from-blue-700 to-blue-900 text-white py-4 px-4 md:hidden">
         <div class="flex flex-col space-y-3">
-            <button data-page="main" class="px-4 py-3 rounded-xl hover:bg-white/10 transition-all duration-300 flex items-center">
+            <button data-page="main" class="px-4 py-3 rounded-xl hover:bg-white/10 flex items-center">
                 <i data-feather="home" class="w-4 h-4 mr-3"></i>
                 Главная
             </button>
-            <button data-page="teachers" class="px-4 py-3 rounded-xl hover:bg-white/10 transition-all duration-300 flex items-center">
+            <button data-page="teachers" class="px-4 py-3 rounded-xl hover:bg-white/10 flex items-center">
                 <i data-feather="users" class="w-4 h-4 mr-3"></i>
                 Учителя
             </button>
-            <button data-page="lessons" class="px-4 py-3 rounded-xl hover:bg-white/10 transition-all duration-300 flex items-center">
+            <button data-page="lessons" class="px-4 py-3 rounded-xl hover:bg-white/10 flex items-center">
                 <i data-feather="clock" class="w-4 h-4 mr-3"></i>
                 Занятия
             </button>
-            <button data-page="resources" class="px-4 py-3 rounded-xl hover:bg-white/10 transition-all duration-300 flex items-center">
+            <button data-page="resources" class="px-4 py-3 rounded-xl hover:bg-white/10 flex items-center">
                 <i data-feather="book" class="w-4 h-4 mr-3"></i>
                 Ресурсы
             </button>
-            <button data-page="additional" class="px-4 py-3 rounded-xl hover:bg-white/10 transition-all duration-300 flex items-center">
+            <button data-page="additional" class="px-4 py-3 rounded-xl hover:bg-white/10 flex items-center">
                 <i data-feather="award" class="w-4 h-4 mr-3"></i>
                 Доп. занятия
             </button>
             <div class="pt-4 border-t border-blue-600 space-y-3">
-                <button id="mobile-register-btn" class="w-full px-4 py-3 bg-white text-blue-600 rounded-xl font-medium transition-all duration-300 hover:bg-blue-50 flex items-center justify-center">
+                <button id="mobile-register-btn" class="w-full px-4 py-3 bg-white text-blue-600 rounded-xl font-medium hover:bg-blue-50 flex items-center justify-center">
                     <i data-feather="user-plus" class="w-4 h-4 mr-2"></i>
                     Регистрация
                 </button>
-                <button id="mobile-login-btn" class="w-full px-4 py-3 bg-blue-800 text-white rounded-xl font-medium transition-all duration-300 hover:bg-blue-700 flex items-center justify-center">
+                <button id="mobile-login-btn" class="w-full px-4 py-3 bg-blue-800 text-white rounded-xl font-medium hover:bg-blue-700 flex items-center justify-center">
                     <i data-feather="log-in" class="w-4 h-4 mr-2"></i>
                     Войти
                 </button>
@@ -118,7 +118,7 @@
                 <h2 class="text-2xl font-bold">Интересные факты о Китае</h2>
             </div>
             <div id="china-facts" class="min-h-[140px] flex items-center justify-center">
-                <div id="fact-container" class="fact-transition text-center">
+                <div id="fact-container" class="text-center">
                     <p class="text-xl">Китай - самая населённая страна в мире с более чем 1.4 миллиарда жителей</p>
                 </div>
             </div>
@@ -135,9 +135,9 @@
 
         <!-- Quick Info -->
         <div class="grid md:grid-cols-3 gap-6 mb-12">
-            <div class="enhanced-card p-6 group hover:bg-blue-50 transition-all duration-300">
+            <div class="enhanced-card p-6 group hover:bg-blue-50">
                 <div class="flex items-center mb-4">
-                    <div class="bg-blue-100 p-3 rounded-xl mr-4 group-hover:bg-blue-200 transition-all duration-300">
+                    <div class="bg-blue-100 p-3 rounded-xl mr-4">
                         <i data-feather="calendar" class="w-6 h-6 text-blue-600"></i>
                     </div>
                     <h3 class="font-semibold text-blue-600 text-lg">Ближайшие занятия</h3>
@@ -148,9 +148,9 @@
                 </div>
             </div>
             
-            <div class="enhanced-card p-6 group hover:bg-red-50 transition-all duration-300">
+            <div class="enhanced-card p-6 group hover:bg-red-50">
                 <div class="flex items-center mb-4">
-                    <div class="bg-red-100 p-3 rounded-xl mr-4 group-hover:bg-red-200 transition-all duration-300">
+                    <div class="bg-red-100 p-3 rounded-xl mr-4">
                         <i data-feather="award" class="w-6 h-6 text-red-600"></i>
                     </div>
                     <h3 class="font-semibold text-red-600 text-lg">Наши достижения</h3>
@@ -161,9 +161,9 @@
                 </div>
             </div>
             
-            <div class="enhanced-card p-6 group hover:bg-green-50 transition-all duration-300">
+            <div class="enhanced-card p-6 group hover:bg-green-50">
                 <div class="flex items-center mb-4">
-                    <div class="bg-green-100 p-3 rounded-xl mr-4 group-hover:bg-green-200 transition-all duration-300">
+                    <div class="bg-green-100 p-3 rounded-xl mr-4">
                         <i data-feather="users" class="w-6 h-6 text-green-600"></i>
                     </div>
                     <h3 class="font-semibold text-green-600 text-lg">Наши учителя</h3>
@@ -203,7 +203,7 @@
                 <div class="md:w-1/2">
                     <div class="h-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center p-8">
                         <div class="text-white text-center">
-                            <i data-feather="book-open" class="w-16 h-16 mx-auto mb-4 opacity-80"></i>
+                            <i data-feather="book-open" class="w-16 h-16 mx-auto mb-4"></i>
                             <h3 class="text-2xl font-bold mb-2">Школа №105</h3>
                             <p>г. Минск, ул. Примерная, 105</p>
                         </div>
@@ -316,9 +316,9 @@
     <div id="resources-page" class="page container mx-auto px-4 py-8 hidden">
         <h2 class="text-3xl font-bold text-center text-gray-800 mb-8">Полезные ресурсы</h2>
         <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div class="enhanced-card p-6 hover:bg-blue-50 transition-all duration-300 group">
+            <div class="enhanced-card p-6 hover:bg-blue-50">
                 <div class="flex items-center mb-4">
-                    <div class="bg-blue-100 p-3 rounded-xl mr-4 group-hover:bg-blue-200 transition-all duration-300">
+                    <div class="bg-blue-100 p-3 rounded-xl mr-4">
                         <i data-feather="external-link" class="w-6 h-6 text-blue-600"></i>
                     </div>
                     <h3 class="font-semibold text-blue-600">Pleco</h3>
@@ -326,9 +326,9 @@
                 <p class="text-gray-700">Китайский словарь с функцией распознавания иероглифов</p>
             </div>
             
-            <div class="enhanced-card p-6 hover:bg-green-50 transition-all duration-300 group">
+            <div class="enhanced-card p-6 hover:bg-green-50">
                 <div class="flex items-center mb-4">
-                    <div class="bg-green-100 p-3 rounded-xl mr-4 group-hover:bg-green-200 transition-all duration-300">
+                    <div class="bg-green-100 p-3 rounded-xl mr-4">
                         <i data-feather="external-link" class="w-6 h-6 text-green-600"></i>
                     </div>
                     <h3 class="font-semibold text-green-600">HelloChinese</h3>
@@ -336,9 +336,9 @@
                 <p class="text-gray-700">Приложение для изучения китайского языка</p>
             </div>
             
-            <div class="enhanced-card p-6 hover:bg-purple-50 transition-all duration-300 group">
+            <div class="enhanced-card p-6 hover:bg-purple-50">
                 <div class="flex items-center mb-4">
-                    <div class="bg-purple-100 p-3 rounded-xl mr-4 group-hover:bg-purple-200 transition-all duration-300">
+                    <div class="bg-purple-100 p-3 rounded-xl mr-4">
                         <i data-feather="download" class="w-6 h-6 text-purple-600"></i>
                     </div>
                     <h3 class="font-semibold text-purple-600">Учебные материалы</h3>
@@ -410,8 +410,8 @@
     </div>
 
     <!-- Auth Modal -->
-    <div id="auth-modal" class="modal-overlay fixed inset-0 flex items-center justify-center z-50 hidden">
-        <div class="modal-content w-full max-w-md mx-4">
+    <div id="auth-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-md mx-4">
             <div class="flex justify-between items-center border-b px-6 py-5">
                 <h3 id="modal-title" class="text-xl font-bold text-blue-600">Вход в систему</h3>
                 <button id="close-auth-modal" class="text-gray-500 hover:text-gray-700">
@@ -421,11 +421,11 @@
             
             <div id="login-form" class="p-6">
                 <div class="mb-5">
-                    <label class="block text-gray-700 mb-2 font-medium" for="login-username">Логин</label>
+                    <label class="block text-gray-700 mb-2 font-medium">Логин</label>
                     <input type="text" id="login-username" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Введите ваш логин">
                 </div>
                 <div class="mb-6">
-                    <label class="block text-gray-700 mb-2 font-medium" for="login-password">Пароль</label>
+                    <label class="block text-gray-700 mb-2 font-medium">Пароль</label>
                     <input type="password" id="login-password" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Введите ваш пароль">
                 </div>
                 <div class="flex items-center justify-between mb-5">
@@ -446,19 +446,19 @@
             
             <div id="register-form" class="p-6 hidden">
                 <div class="mb-5">
-                    <label class="block text-gray-700 mb-2 font-medium" for="reg-username">Логин</label>
+                    <label class="block text-gray-700 mb-2 font-medium">Логин</label>
                     <input type="text" id="reg-username" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Придумайте логин">
                 </div>
                 <div class="mb-5">
-                    <label class="block text-gray-700 mb-2 font-medium" for="reg-password">Пароль</label>
+                    <label class="block text-gray-700 mb-2 font-medium">Пароль</label>
                     <input type="password" id="reg-password" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Придумайте пароль">
                 </div>
                 <div class="mb-5">
-                    <label class="block text-gray-700 mb-2 font-medium" for="reg-confirm-password">Подтвердите пароль</label>
+                    <label class="block text-gray-700 mb-2 font-medium">Подтвердите пароль</label>
                     <input type="password" id="reg-confirm-password" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Повторите пароль">
                 </div>
                 <div class="mb-6">
-                    <label class="block text-gray-700 mb-2 font-medium" for="reg-role">Роль</label>
+                    <label class="block text-gray-700 mb-2 font-medium">Роль</label>
                     <select id="reg-role" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
                         <option value="student">Ученик</option>
                         <option value="teacher">Учитель</option>
@@ -477,9 +477,9 @@
     </div>
 
     <!-- Q&A Modal -->
-    <div id="qa-modal" class="modal-overlay fixed inset-0 flex items-center justify-center z-50 hidden">
-        <div class="modal-content w-full max-w-4xl mx-4 max-h-[90vh] overflow-y-auto">
-            <div class="flex justify-between items-center border-b px-6 py-5 sticky top-0 bg-white rounded-t-2xl">
+    <div id="qa-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-xl shadow-2xl w-full max-w-4xl mx-4 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center border-b px-6 py-5 sticky top-0 bg-white">
                 <h3 class="text-xl font-bold text-blue-600">Вопросы и ответы</h3>
                 <button id="close-qa-modal" class="text-gray-500 hover:text-gray-700">
                     <i data-feather="x" class="w-6 h-6"></i>
@@ -527,16 +527,6 @@
                                 <span>Набор на следующий учебный год начинается в апреле. Следите за объявлениями на сайте и информационных стендах школы.</span>
                             </div>
                         </div>
-                        <div class="qa-item enhanced-card p-5">
-                            <div class="qa-question flex items-start">
-                                <i data-feather="help-circle" class="w-5 h-5 text-blue-500 mr-3 mt-0.5"></i>
-                                <span>Где можно посмотреть расписание экзаменов?</span>
-                            </div>
-                            <div class="qa-answer mt-3 flex items-start">
-                                <i data-feather="check-circle" class="w-5 h-5 text-green-500 mr-3 mt-0.5"></i>
-                                <span>Расписание экзаменов публикуется на сайте школы и на информационных стендах за 2 недели до начала сессии.</span>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
@@ -573,10 +563,6 @@
                             <li class="flex items-center">
                                 <i data-feather="phone" class="w-4 h-4 mr-3"></i>
                                 +375 (17) 123-45-67
-                            </li>
-                            <li class="flex items-center">
-                                <i data-feather="map-pin" class="w-4 h-4 mr-3"></i>
-                                г. Минск, ул. Примерная, 105
                             </li>
                         </ul>
                     </div>
