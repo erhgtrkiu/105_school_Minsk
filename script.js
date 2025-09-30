@@ -108,38 +108,50 @@ function hasPermission() {
     return currentUser && (currentUser.role === 'teacher' || currentUser.role === 'admin');
 }
 
-// Page management
+// Page management with animations
 function showPage(pageId) {
-    // Hide all pages
+    // Hide all pages with animation
     document.querySelectorAll('.page').forEach(page => {
-        page.classList.remove('active');
-        page.classList.add('hidden');
+        if (page.classList.contains('active')) {
+            page.style.opacity = '0';
+            page.style.transform = 'translateY(20px)';
+            setTimeout(() => {
+                page.classList.remove('active');
+                page.classList.add('hidden');
+            }, 300);
+        }
     });
     
-    // Show selected page
-    const targetPage = document.getElementById(pageId + '-page');
-    if (targetPage) {
-        targetPage.classList.remove('hidden');
-        targetPage.classList.add('active');
-    }
-    
-    // Update active nav
-    document.querySelectorAll('.nav-item').forEach(item => {
-        item.classList.remove('active');
-    });
-    
-    document.querySelectorAll(`[data-page="${pageId}"]`).forEach(item => {
-        item.classList.add('active');
-    });
-    
-    // Load page-specific content
-    loadPageContent(pageId);
-    
-    // Close mobile menu
-    document.getElementById('mobile-menu').classList.add('hidden');
-    const menuIcon = document.querySelector('#mobile-menu-button i');
-    menuIcon.setAttribute('data-feather', 'menu');
-    feather.replace();
+    // Show selected page with animation
+    setTimeout(() => {
+        const targetPage = document.getElementById(pageId + '-page');
+        if (targetPage) {
+            targetPage.classList.remove('hidden');
+            targetPage.classList.add('active');
+            setTimeout(() => {
+                targetPage.style.opacity = '1';
+                targetPage.style.transform = 'translateY(0)';
+            }, 50);
+        }
+        
+        // Update active nav
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.classList.remove('active');
+        });
+        
+        document.querySelectorAll(`[data-page="${pageId}"]`).forEach(item => {
+            item.classList.add('active');
+        });
+        
+        // Load page-specific content
+        loadPageContent(pageId);
+        
+        // Close mobile menu
+        document.getElementById('mobile-menu').classList.add('hidden');
+        const menuIcon = document.querySelector('#mobile-menu-button i');
+        menuIcon.setAttribute('data-feather', 'menu');
+        feather.replace();
+    }, 300);
 }
 
 function loadPageContent(pageId) {
@@ -184,7 +196,7 @@ function loadClassesPage() {
         const classStudents = students.filter(student => student.class === classItem.id);
         
         const classCard = document.createElement('div');
-        classCard.className = 'bg-white p-6 rounded-2xl shadow-lg border border-gray-200 text-center';
+        classCard.className = 'bg-white p-6 rounded-2xl shadow-lg border border-gray-200 text-center class-card animate-scale-in';
         classCard.innerHTML = `
             <div class="w-16 h-16 bg-blue-100 rounded-full mx-auto mb-4 flex items-center justify-center">
                 <i data-feather="users" class="w-8 h-8 text-blue-600"></i>
@@ -220,7 +232,7 @@ function loadLessonsPage() {
         lessons.forEach(lesson => {
             const classItem = classes.find(c => c.id === lesson.classId);
             const lessonElement = document.createElement('div');
-            lessonElement.className = 'bg-blue-50 p-4 rounded-xl border border-blue-100';
+            lessonElement.className = 'bg-blue-50 p-4 rounded-xl border border-blue-100 lesson-card animate-fade-in';
             lessonElement.innerHTML = `
                 <div class="flex items-center mb-2">
                     <i data-feather="clock" class="w-4 h-4 text-blue-500 mr-2"></i>
@@ -251,11 +263,11 @@ function loadResourcesPage() {
     } else {
         resources.forEach(resource => {
             const resourceElement = document.createElement('div');
-            resourceElement.className = 'bg-white p-6 rounded-2xl shadow-lg border border-gray-200';
+            resourceElement.className = 'bg-white p-6 rounded-2xl shadow-lg border border-gray-200 resource-card animate-slide-up';
             resourceElement.innerHTML = `
                 <h3 class="text-xl font-bold text-blue-600 mb-2">${resource.title}</h3>
                 <p class="text-gray-700 mb-4">${resource.description}</p>
-                <a href="${resource.link}" target="_blank" class="bg-blue-600 text-white inline-flex items-center px-4 py-2 rounded-xl text-sm hover:bg-blue-700">
+                <a href="${resource.link}" target="_blank" class="bg-blue-600 text-white inline-flex items-center px-4 py-2 rounded-xl text-sm hover:bg-blue-700 transition-all duration-300 transform hover:scale-105">
                     <i data-feather="external-link" class="w-4 h-4 mr-2"></i>
                     Открыть ресурс
                 </a>
@@ -340,12 +352,12 @@ function toggleTheme() {
     
     if (currentTheme === 'day') {
         body.setAttribute('data-theme', 'night');
-        body.className = 'bg-gray-900 text-white';
+        body.className = 'bg-gray-900 text-white transition-all duration-500';
         themeIcon.setAttribute('data-feather', 'sun');
         showNotification('Ночная тема включена');
     } else {
         body.setAttribute('data-theme', 'day');
-        body.className = 'bg-white text-gray-900';
+        body.className = 'bg-white text-gray-900 transition-all duration-500';
         themeIcon.setAttribute('data-feather', 'moon');
         showNotification('Дневная тема включена');
     }
@@ -353,26 +365,40 @@ function toggleTheme() {
 }
 
 // Mobile menu
-document.getElementById('mobile-menu-button').addEventListener('click', function() {
-    const menu = document.getElementById('mobile-menu');
-    menu.classList.toggle('hidden');
-    
-    const menuIcon = document.querySelector('#mobile-menu-button i');
-    if (menu.classList.contains('hidden')) {
-        menuIcon.setAttribute('data-feather', 'menu');
-    } else {
-        menuIcon.setAttribute('data-feather', 'x');
+function setupMobileMenu() {
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    if (mobileMenuButton) {
+        mobileMenuButton.addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            const menuIcon = document.querySelector('#mobile-menu-button i');
+            
+            menu.classList.toggle('hidden');
+            
+            if (menu.classList.contains('hidden')) {
+                menuIcon.setAttribute('data-feather', 'menu');
+            } else {
+                menuIcon.setAttribute('data-feather', 'x');
+            }
+            feather.replace();
+        });
     }
-    feather.replace();
-});
+}
 
-// Modal functions
+// Modal functions with animations
 function openModal(modalId) {
-    document.getElementById(modalId).classList.remove('hidden');
+    const modal = document.getElementById(modalId);
+    modal.classList.remove('hidden');
+    setTimeout(() => {
+        modal.style.opacity = '1';
+    }, 10);
 }
 
 function closeModal(modalId) {
-    document.getElementById(modalId).classList.add('hidden');
+    const modal = document.getElementById(modalId);
+    modal.style.opacity = '0';
+    setTimeout(() => {
+        modal.classList.add('hidden');
+    }, 300);
 }
 
 // Auth functions
@@ -467,14 +493,13 @@ function updateAuthUI() {
     const authButtons = document.getElementById('auth-buttons');
     const mobileAuthSection = document.querySelector('#mobile-menu .pt-4');
     const qaButton = document.getElementById('qa-button');
-    const addStudentSection = document.getElementById('add-student-section');
     
     if (currentUser) {
         // User is logged in
         authButtons.innerHTML = `
             <div class="flex items-center space-x-3">
                 <span class="text-white">${currentUser.name || currentUser.username}</span>
-                <button onclick="logout()" class="bg-red-600 text-white px-4 py-2 rounded-xl font-medium text-sm hover:bg-red-700">
+                <button id="logout-btn" class="bg-red-600 text-white px-4 py-2 rounded-xl font-medium text-sm hover:bg-red-700 transition-all duration-300 transform hover:scale-105">
                     Выйти
                 </button>
             </div>
@@ -485,7 +510,7 @@ function updateAuthUI() {
                 <div class="text-white text-center py-2">
                     ${currentUser.name || currentUser.username}
                 </div>
-                <button onclick="logout()" class="w-full px-4 py-3 bg-red-600 text-white rounded-xl font-medium flex items-center justify-center">
+                <button id="mobile-logout-btn" class="w-full px-4 py-3 bg-red-600 text-white rounded-xl font-medium flex items-center justify-center transition-all duration-300 transform hover:scale-105">
                     <i data-feather="log-out" class="w-4 h-4 mr-2"></i>
                     Выйти
                 </button>
@@ -495,24 +520,28 @@ function updateAuthUI() {
         // Show Q&A button for all logged in users
         qaButton.classList.remove('hidden');
         
+        // Add logout event listeners
+        document.getElementById('logout-btn').addEventListener('click', logout);
+        document.getElementById('mobile-logout-btn').addEventListener('click', logout);
+        
     } else {
         // User is not logged in
         authButtons.innerHTML = `
-            <button onclick="openAuthModal('register')" class="bg-red-600 text-white px-5 py-2.5 rounded-xl font-medium hover:bg-red-700">
+            <button onclick="openAuthModal('register')" class="bg-red-600 text-white px-5 py-2.5 rounded-xl font-medium hover:bg-red-700 transition-all duration-300 transform hover:scale-105">
                 Регистрация
             </button>
-            <button onclick="openAuthModal('login')" class="bg-blue-700 text-white px-5 py-2.5 rounded-xl font-medium hover:bg-blue-800">
+            <button onclick="openAuthModal('login')" class="bg-blue-700 text-white px-5 py-2.5 rounded-xl font-medium hover:bg-blue-800 transition-all duration-300 transform hover:scale-105">
                 Войти
             </button>
         `;
         
         mobileAuthSection.innerHTML = `
             <div class="pt-4 border-t border-blue-600 space-y-3">
-                <button onclick="openAuthModal('register')" class="w-full px-4 py-3 bg-white text-blue-600 rounded-xl font-medium flex items-center justify-center">
+                <button onclick="openAuthModal('register')" class="w-full px-4 py-3 bg-white text-blue-600 rounded-xl font-medium flex items-center justify-center transition-all duration-300 transform hover:scale-105">
                     <i data-feather="user-plus" class="w-4 h-4 mr-2"></i>
                     Регистрация
                 </button>
-                <button onclick="openAuthModal('login')" class="w-full mt-2 px-4 py-3 bg-blue-700 text-white rounded-xl font-medium flex items-center justify-center">
+                <button onclick="openAuthModal('login')" class="w-full mt-2 px-4 py-3 bg-blue-700 text-white rounded-xl font-medium flex items-center justify-center transition-all duration-300 transform hover:scale-105">
                     <i data-feather="log-in" class="w-4 h-4 mr-2"></i>
                     Войти
                 </button>
@@ -594,7 +623,7 @@ function loadQuestions() {
     
     questions.forEach(q => {
         const questionElement = document.createElement('div');
-        questionElement.className = 'bg-white p-5 rounded-2xl shadow-lg border border-gray-200 mb-4';
+        questionElement.className = 'bg-white p-5 rounded-2xl shadow-lg border border-gray-200 mb-4 qa-item animate-fade-in';
         questionElement.innerHTML = `
             <div class="flex items-start mb-3">
                 <i data-feather="help-circle" class="w-5 h-5 text-blue-500 mr-3 mt-0.5"></i>
@@ -642,6 +671,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Theme toggle
     document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
     
+    // Mobile menu
+    setupMobileMenu();
+    
     // Q&A button
     document.getElementById('qa-button').addEventListener('click', openQAModal);
     
@@ -651,6 +683,12 @@ document.addEventListener('DOMContentLoaded', function() {
             closeModal(event.target.id);
         }
     });
+    
+    // Add student button
+    const addStudentBtn = document.getElementById('add-student-btn');
+    if (addStudentBtn) {
+        addStudentBtn.addEventListener('click', addStudent);
+    }
     
     // Update UI based on current user
     updateAuthUI();
