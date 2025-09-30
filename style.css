@@ -15,74 +15,43 @@ body {
   font-family: 'Inter', sans-serif;
   line-height: 1.6;
   background-color: white;
-  color: #2563eb; /* дневная тема — синий текст */
+  color: #1f2937; /* дневная тема — обычный текст */
+}
+
+/* Класс для синего текста */
+.text-primary-blue {
+  color: #2563eb !important;
 }
 
 /* Animations */
 @keyframes fadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes slideDown {
-  from {
-    opacity: 0;
-    transform: translateY(-30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(-30px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes scaleIn {
-  from {
-    opacity: 0;
-    transform: scale(0.9);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
+  from { opacity: 0; transform: scale(0.9); }
+  to { opacity: 1; transform: scale(1); }
 }
 
-.animate-fade-in {
-  animation: fadeIn 0.8s ease-out;
-}
-
-.animate-slide-down {
-  animation: slideDown 0.6s ease-out;
-}
-
-.animate-slide-up {
-  animation: slideUp 0.6s ease-out;
-}
-
-.animate-scale-in {
-  animation: scaleIn 0.5s ease-out;
-}
+.animate-fade-in { animation: fadeIn 0.8s ease-out; }
+.animate-slide-down { animation: slideDown 0.6s ease-out; }
+.animate-slide-up { animation: slideUp 0.6s ease-out; }
+.animate-scale-in { animation: scaleIn 0.5s ease-out; }
 
 /* Header */
 .header-glow {
   background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-  color: #2563eb; /* дневная тема — синий */
 }
 
 /* Navigation */
@@ -91,7 +60,6 @@ body {
   border: none;
   cursor: pointer;
   transition: all 0.3s ease !important;
-  color: #2563eb; /* дневная тема — синий */
 }
 
 .nav-item:hover {
@@ -102,7 +70,6 @@ body {
 .nav-item.active {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
   box-shadow: 0 5px 15px -3px rgba(0, 0, 0, 0.3) !important;
-  color: #2563eb !important; /* дневная тема — синий */
 }
 
 /* Cards */
@@ -112,7 +79,7 @@ body {
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
   border: 1px solid #e5e7eb;
   transition: all 0.3s ease;
-  color: #2563eb; /* дневная тема — синий текст */
+  color: #1f2937;
 }
 
 .enhanced-card:hover {
@@ -123,7 +90,7 @@ body {
 /* Facts section */
 .facts-container {
   background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-  color: #2563eb; /* дневная тема — синий текст */
+  color: white;
 }
 
 /* Fact dots */
@@ -132,7 +99,7 @@ body {
 }
 
 #china-facts .fact-dot.active {
-  background: #2563eb; /* дневная тема — синий */
+  background: white;
   transform: scale(1.2);
 }
 
@@ -168,14 +135,13 @@ body {
   background: rgba(255, 255, 255, 0.2);
   border: none;
   cursor: pointer;
-  color: #2563eb; /* дневная тема — синий */
+  color: white;
   transition: all 0.3s ease;
 }
 
 /* Teacher cards */
 .teacher-card {
   transition: all 0.4s ease;
-  color: #2563eb; /* дневная тема — синий */
 }
 
 .teacher-card:hover {
@@ -186,7 +152,6 @@ body {
 /* Class cards */
 .class-card {
   transition: all 0.3s ease;
-  color: #2563eb; /* дневная тема — синий */
 }
 
 .class-card:hover {
@@ -194,209 +159,72 @@ body {
   box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.2);
 }
 
-/* Night theme - ИСПРАВЛЕННЫЕ СТИЛИ */
+/* Night theme */
 body[data-theme="night"] {
   background-color: #111827;
   color: #f3f4f6;
 }
 
-body[data-theme="night"] .bg-white {
-  background-color: #1f2937;
-  color: #f3f4f6;
-}
-
-body[data-theme="night"] .enhanced-card {
-  background: #374151;
-  color: #f3f4f6;
-  border-color: #4b5563;
-}
-
-body[data-theme="night"] .text-gray-700 {
-  color: #e5e7eb;
-}
-
-body[data-theme="night"] .text-gray-600 {
-  color: #d1d5db;
-}
-
-body[data-theme="night"] .text-gray-800 {
-  color: #f9fafb;
-}
-
-body[data-theme="night"] .text-gray-500 {
-  color: #9ca3af;
-}
-
-body[data-theme="night"] .bg-blue-50 {
-  background-color: #1e3a8a;
-  color: #f9fafb;
-}
-
-body[data-theme="night"] .bg-red-50 {
-  background-color: #7f1d1d;
-  color: #f9fafb;
-}
-
-body[data-theme="night"] .bg-green-50 {
-  background-color: #14532d;
-  color: #f9fafb;
-}
-
-body[data-theme="night"] .bg-purple-50 {
-  background-color: #4c1d95;
-  color: #f9fafb;
-}
-
-body[data-theme="night"] .bg-blue-100 {
-  background-color: #1e40af;
-  color: #f9fafb;
-}
-
-body[data-theme="night"] .bg-red-100 {
-  background-color: #991b1b;
-  color: #f9fafb;
-}
-
-body[data-theme="night"] .bg-green-100 {
-  background-color: #166534;
-  color: #f9fafb;
-}
-
-body[data-theme="night"] .bg-purple-100 {
-  background-color: #5b21b6;
-  color: #f9fafb;
-}
-
-body[data-theme="night"] .border-gray-100 {
-  border-color: #374151;
-}
-
-body[data-theme="night"] .border-gray-300 {
-  border-color: #4b5563;
-}
+body[data-theme="night"] .bg-white { background-color: #1f2937; color: #f3f4f6; }
+body[data-theme="night"] .enhanced-card { background: #374151; color: #f3f4f6; border-color: #4b5563; }
+body[data-theme="night"] .text-gray-700 { color: #e5e7eb; }
+body[data-theme="night"] .text-gray-600 { color: #d1d5db; }
+body[data-theme="night"] .text-gray-800 { color: #f9fafb; }
+body[data-theme="night"] .text-gray-500 { color: #9ca3af; }
+body[data-theme="night"] .bg-blue-50 { background-color: #1e3a8a; color: #f9fafb; }
+body[data-theme="night"] .bg-red-50 { background-color: #7f1d1d; color: #f9fafb; }
+body[data-theme="night"] .bg-green-50 { background-color: #14532d; color: #f9fafb; }
+body[data-theme="night"] .bg-purple-50 { background-color: #4c1d95; color: #f9fafb; }
+body[data-theme="night"] .bg-blue-100 { background-color: #1e40af; color: #f9fafb; }
+body[data-theme="night"] .bg-red-100 { background-color: #991b1b; color: #f9fafb; }
+body[data-theme="night"] .bg-green-100 { background-color: #166534; color: #f9fafb; }
+body[data-theme="night"] .bg-purple-100 { background-color: #5b21b6; color: #f9fafb; }
+body[data-theme="night"] .border-gray-100 { border-color: #374151; }
+body[data-theme="night"] .border-gray-300 { border-color: #4b5563; }
 
 /* Facts section in night theme */
-body[data-theme="night"] .facts-container {
-  background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
-  color: white;
-}
-
-body[data-theme="night"] #china-facts .fact-dot {
-  background: rgba(255, 255, 255, 0.3);
-}
-
-body[data-theme="night"] #china-facts .fact-dot.active {
-  background: white;
-}
+body[data-theme="night"] .facts-container { background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%); color: white; }
+body[data-theme="night"] #china-facts .fact-dot { background: rgba(255, 255, 255, 0.3); }
+body[data-theme="night"] #china-facts .fact-dot.active { background: white; }
 
 /* Заголовки в ночной теме */
-body[data-theme="night"] h1,
-body[data-theme="night"] h2,
-body[data-theme="night"] h3,
-body[data-theme="night"] h4,
-body[data-theme="night"] h5,
-body[data-theme="night"] h6 {
+body[data-theme="night"] h1, body[data-theme="night"] h2, body[data-theme="night"] h3,
+body[data-theme="night"] h4, body[data-theme="night"] h5, body[data-theme="night"] h6 {
   color: #f9fafb;
 }
 
 /* Текст в параграфах и других элементах */
-body[data-theme="night"] p,
-body[data-theme="night"] span,
-body[data-theme="night"] div {
+body[data-theme="night"] p, body[data-theme="night"] span, body[data-theme="night"] div {
   color: #f3f4f6;
 }
 
-/* Labels в ночной теме */
-body[data-theme="night"] label {
-  color: #e5e7eb;
+/* Labels и input в ночной теме */
+body[data-theme="night"] label { color: #e5e7eb; }
+body[data-theme="night"] input, body[data-theme="night"] select, body[data-theme="night"] textarea {
+  color: #1f2937; background-color: #f9fafb; border-color: #d1d5db;
 }
 
-/* Input fields в ночной теме */
-body[data-theme="night"] input,
-body[data-theme="night"] select,
-body[data-theme="night"] textarea {
-  color: #1f2937;
-  background-color: #f9fafb;
-  border-color: #d1d5db;
-}
+/* Остальной CSS (анимации, страницы, модалки, адаптив) оставляем без изменений */
+.page { display: none; opacity: 0; transform: translateY(20px); transition: all 0.5s ease; }
+.page.active { display: block; opacity: 1; transform: translateY(0); }
 
-/* Остальной CSS (анимации, модалки, страницы, кнопки, адаптив) остается без изменений */
-.page {
-  display: none;
-  opacity: 0;
-  transform: translateY(20px);
-  transition: all 0.5s ease;
-}
+#notification.show { display: block; animation: slideInRight 0.5s ease-out forwards; }
 
-.page.active {
-  display: block;
-  opacity: 1;
-  transform: translateY(0);
-}
+@keyframes slideInRight { from { transform: translateX(100%); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
 
-#notification.show {
-  display: block;
-  animation: slideInRight 0.5s ease-out forwards;
-}
+.modal-content { transition: all 0.3s ease; color: #1f2937; }
+.modal-show { transform: scale(1); opacity: 1; }
 
-@keyframes slideInRight {
-  from {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
-.modal-content {
-  transition: all 0.3s ease;
-  color: #2563eb; /* дневная тема — синий текст */
-}
-
-.modal-show {
-  transform: scale(1);
-  opacity: 1;
-}
-
-.class-badge {
-  transition: all 0.3s ease;
-  color: #2563eb; /* дневная тема — синий */
-}
-
-.class-badge:hover {
-  transform: scale(1.05);
-}
-
+.class-badge { transition: all 0.3s ease; }
+.class-badge:hover { transform: scale(1.05); }
 .class-badge.active {
   background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
   color: white;
   box-shadow: 0 5px 15px -3px rgba(59, 130, 246, 0.4);
 }
 
-/* Mobile responsive */
 @media (max-width: 768px) {
-  .container {
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
-
-  .modal-content {
-    margin: 1rem;
-    width: calc(100% - 2rem);
-  }
-
-  /* Reduce animations on mobile for performance */
-  .enhanced-card:hover {
-    transform: none;
-  }
-
-  .teacher-card:hover {
-    transform: none;
-  }
-
-  .class-card:hover {
-    transform: none;
-  }
+  .container { padding-left: 1rem; padding-right: 1rem; }
+  .modal-content { margin: 1rem; width: calc(100% - 2rem); }
+  .enhanced-card:hover, .teacher-card:hover, .class-card:hover { transform: none; }
 }
