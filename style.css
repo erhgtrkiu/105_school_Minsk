@@ -24,6 +24,7 @@
 body {
   font-family: 'Inter', sans-serif;
   line-height: 1.6;
+  color: #1f2937; /* Добавляем цвет текста по умолчанию */
 }
 
 .fact-transition {
@@ -387,4 +388,13 @@ button:focus, a:focus, input:focus, textarea:focus, select:focus {
 
 .animate-pulse {
   animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Ensure text visibility */
+.text-gray-700 {
+  color: #374151 !important;
+}
+
+.text-gray-600 {
+  color: #4b5563 !important;
 }
