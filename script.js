@@ -39,10 +39,27 @@ function initializeData() {
         localStorage.setItem('lessons', JSON.stringify(lessons));
     }
 
-    // Initialize resources
+    // Initialize resources with real links
     if (resources.length === 0) {
         resources = [
-            { id: 1, title: 'Основы китайской грамматики', description: 'Учебное пособие для начинающих', link: '#' }
+            { 
+                id: 1, 
+                title: 'Основы китайской грамматики', 
+                description: 'Учебное пособие для начинающих', 
+                link: 'https://www.chinese-tools.com/learn/chinese/grammar' 
+            },
+            { 
+                id: 2, 
+                title: 'Китайские иероглифы', 
+                description: 'Изучение основных иероглифов', 
+                link: 'https://www.hanzi5.com/' 
+            },
+            { 
+                id: 3, 
+                title: 'Разговорный китайский', 
+                description: 'Практика разговорной речи', 
+                link: 'https://www.chineseclass101.com/' 
+            }
         ];
         localStorage.setItem('resources', JSON.stringify(resources));
     }
@@ -108,6 +125,11 @@ function hasPermission() {
     return currentUser && (currentUser.role === 'teacher' || currentUser.role === 'admin');
 }
 
+// Check if user is admin
+function isAdmin() {
+    return currentUser && currentUser.role === 'admin';
+}
+
 // Page management with animations
 function showPage(pageId) {
     // Hide all pages with animation
@@ -156,6 +178,9 @@ function showPage(pageId) {
 
 function loadPageContent(pageId) {
     switch(pageId) {
+        case 'teachers':
+            loadTeachersPage();
+            break;
         case 'classes':
             loadClassesPage();
             break;
@@ -165,6 +190,114 @@ function loadPageContent(pageId) {
         case 'resources':
             loadResourcesPage();
             break;
+    }
+}
+
+// Load Teachers Page
+function loadTeachersPage() {
+    const teachersContainer = document.getElementById('teachers-container');
+    const addTeacherBtn = document.getElementById('add-teacher-btn');
+    
+    // Show/hide add teacher button for admin
+    if (isAdmin()) {
+        addTeacherBtn.classList.remove('hidden');
+    } else {
+        addTeacherBtn.classList.add('hidden');
+    }
+    
+    // Get all teachers
+    const teachers = users.filter(user => user.role === 'teacher');
+    
+    teachersContainer.innerHTML = '';
+    
+    if (teachers.length === 0) {
+        teachersContainer.innerHTML = `
+            <div class="col-span-3 text-center py-8">
+                <i data-feather="users" class="w-12 h-12 text-gray-400 mx-auto mb-4"></i>
+                <p class="text-gray-600 font-medium">Учителя пока не добавлены</p>
+            </div>
+        `;
+    } else {
+        teachers.forEach(teacher => {
+            const teacherElement = document.createElement('div');
+            teacherElement.className = 'bg-white p-6 rounded-2xl shadow-lg border border-gray-200 text-center';
+            teacherElement.style.animation = 'fadeIn 0.6s ease-out';
+            teacherElement.innerHTML = `
+                <div class="w-24 h-24 bg-blue-100 rounded-full mx-auto mb-4 flex items-center justify-center">
+                    <i data-feather="user" class="w-12 h-12 text-blue-600"></i>
+                </div>
+                <h3 class="text-xl font-bold text-blue-600 mb-2">${teacher.name}</h3>
+                <p class="text-gray-700 mb-3 font-medium">Учитель китайского языка</p>
+                <p class="text-gray-600 text-sm">Логин: ${teacher.username}</p>
+                ${isAdmin() ? `
+                    <button onclick="deleteTeacher('${teacher.username}')" class="mt-3 bg-red-600 text-white px-3 py-1 rounded-lg text-sm hover:bg-red-700 transition-all duration-300">
+                        Удалить
+                    </button>
+                ` : ''}
+            `;
+            teachersContainer.appendChild(teacherElement);
+        });
+    }
+    
+    feather.replace();
+}
+
+// Add Teacher Function
+function addTeacher() {
+    if (!isAdmin()) {
+        showNotification('Только администратор может добавлять учителей', 'error');
+        return;
+    }
+    
+    const name = document.getElementById('teacher-name').value;
+    const login = document.getElementById('teacher-login').value;
+    const password = document.getElementById('teacher-password').value;
+    
+    if (!name || !login || !password) {
+        showNotification('Заполните все поля', 'error');
+        return;
+    }
+    
+    if (users.find(u => u.username === login)) {
+        showNotification('Пользователь с таким логином уже существует', 'error');
+        return;
+    }
+    
+    const newTeacher = {
+        username: login,
+        password: password,
+        role: 'teacher',
+        name: name
+    };
+    
+    users.push(newTeacher);
+    localStorage.setItem('users', JSON.stringify(users));
+    
+    // Clear form
+    document.getElementById('teacher-name').value = '';
+    document.getElementById('teacher-login').value = '';
+    document.getElementById('teacher-password').value = '';
+    
+    showNotification(`Учитель ${name} добавлен`);
+    closeModal('add-teacher-modal');
+    loadTeachersPage();
+}
+
+// Delete Teacher Function
+function deleteTeacher(username) {
+    if (!isAdmin()) {
+        showNotification('Только администратор может удалять учителей', 'error');
+        return;
+    }
+    
+    if (!confirm('Вы уверены, что хотите удалить этого учителя?')) return;
+    
+    const userIndex = users.findIndex(u => u.username === username);
+    if (userIndex !== -1) {
+        users.splice(userIndex, 1);
+        localStorage.setItem('users', JSON.stringify(users));
+        showNotification('Учитель удален');
+        loadTeachersPage();
     }
 }
 
@@ -624,6 +757,36 @@ function loadQuestions() {
         const questionElement = document.createElement('div');
         questionElement.className = 'bg-white p-5 rounded-2xl shadow-lg border border-gray-200 mb-4';
         questionElement.style.animation = `fadeIn 0.6s ease-out ${index * 0.1}s both`;
+        
+        let answerSection = '';
+        if (q.answer) {
+            answerSection = `
+                <div class="flex items-start bg-green-50 p-3 rounded-lg mt-3">
+                    <i data-feather="check-circle" class="w-5 h-5 text-green-500 mr-3 mt-0.5"></i>
+                    <div class="flex-1">
+                        <span class="text-gray-800 font-medium">${q.answer}</span>
+                        <p class="text-sm text-gray-600 mt-1">Ответ учителя</p>
+                    </div>
+                </div>
+            `;
+        } else if (hasPermission()) {
+            answerSection = `
+                <div class="mt-3">
+                    <textarea id="answer-${q.id}" placeholder="Введите ответ..." class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm resize-none h-20"></textarea>
+                    <button onclick="submitAnswer(${q.id})" class="bg-blue-600 text-white px-3 py-1 rounded-lg text-sm mt-1 hover:bg-blue-700 transition-all duration-300">
+                        Ответить
+                    </button>
+                </div>
+            `;
+        } else {
+            answerSection = `
+                <div class="flex items-start bg-yellow-50 p-3 rounded-lg mt-3">
+                    <i data-feather="clock" class="w-5 h-5 text-yellow-500 mr-3 mt-0.5"></i>
+                    <span class="text-gray-800 font-medium">Вопрос на рассмотрении учителя</span>
+                </div>
+            `;
+        }
+        
         questionElement.innerHTML = `
             <div class="flex items-start mb-3">
                 <i data-feather="help-circle" class="w-5 h-5 text-blue-500 mr-3 mt-0.5"></i>
@@ -632,25 +795,37 @@ function loadQuestions() {
                     <p class="text-sm text-gray-600 mt-1">От: ${q.userName} • ${q.date}</p>
                 </div>
             </div>
-            ${q.answer ? `
-            <div class="flex items-start bg-green-50 p-3 rounded-lg">
-                <i data-feather="check-circle" class="w-5 h-5 text-green-500 mr-3 mt-0.5"></i>
-                <div class="flex-1">
-                    <span class="text-gray-800 font-medium">${q.answer}</span>
-                    <p class="text-sm text-gray-600 mt-1">Ответ учителя</p>
-                </div>
-            </div>
-            ` : `
-            <div class="flex items-start bg-yellow-50 p-3 rounded-lg">
-                <i data-feather="clock" class="w-5 h-5 text-yellow-500 mr-3 mt-0.5"></i>
-                <span class="text-gray-800 font-medium">Вопрос на рассмотрении учителя</span>
-            </div>
-            `}
+            ${answerSection}
         `;
         qaList.appendChild(questionElement);
     });
     
     feather.replace();
+}
+
+function submitAnswer(questionId) {
+    if (!hasPermission()) {
+        showNotification('Только учителя могут отвечать на вопросы', 'error');
+        return;
+    }
+    
+    const answerTextarea = document.getElementById(`answer-${questionId}`);
+    if (!answerTextarea) return;
+    
+    const answerText = answerTextarea.value.trim();
+    
+    if (!answerText) {
+        showNotification('Пожалуйста, введите ответ', 'error');
+        return;
+    }
+    
+    const question = questions.find(q => q.id === questionId);
+    if (question) {
+        question.answer = answerText;
+        localStorage.setItem('questions', JSON.stringify(questions));
+        showNotification('Ответ отправлен');
+        loadQuestions();
+    }
 }
 
 // Initialize application
