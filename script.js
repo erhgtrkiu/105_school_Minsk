@@ -852,15 +852,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // Q&A button
     document.getElementById('qa-button').addEventListener('click', openQAModal);
     
-    // Auth buttons
-    document.getElementById('register-btn').addEventListener('click', () => openAuthModal('register'));
-    document.getElementById('login-btn').addEventListener('click', () => openAuthModal('login'));
-    document.getElementById('mobile-register-btn').addEventListener('click', () => openAuthModal('register'));
-    document.getElementById('mobile-login-btn').addEventListener('click', () => openAuthModal('login'));
-    
-    // Add student button
-    document.getElementById('add-student-btn').addEventListener('click', addStudent);
-    
     // Close modals on outside click
     document.addEventListener('click', function(event) {
         if (event.target.classList.contains('fixed') && event.target.id.includes('modal')) {
