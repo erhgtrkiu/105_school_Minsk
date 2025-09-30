@@ -5,7 +5,7 @@ feather.replace();
 let users = JSON.parse(localStorage.getItem('users')) || [];
 let questions = JSON.parse(localStorage.getItem('questions')) || [];
 
-// School facts about China
+// China facts
 const chinaFacts = [
     "Китай - самая населённая страна в мире с более чем 1.4 миллиарда жителей",
     "Китайский язык является одним из шести официальных языков ООН",
@@ -15,8 +15,6 @@ const chinaFacts = [
 ];
 
 let currentFactIndex = 0;
-const factContainer = document.getElementById('fact-container');
-const factDots = document.querySelectorAll('.fact-dot');
 
 // Page management
 function showPage(pageId) {
@@ -33,7 +31,7 @@ function showPage(pageId) {
         targetPage.classList.remove('hidden');
     }
     
-    // Update active nav item
+    // Update active nav
     document.querySelectorAll('.nav-item').forEach(item => {
         item.classList.remove('active');
     });
@@ -51,51 +49,42 @@ function showPage(pageId) {
 // Facts rotation
 function rotateFacts() {
     currentFactIndex = (currentFactIndex + 1) % chinaFacts.length;
+    const factContainer = document.getElementById('fact-container');
+    const factDots = document.querySelectorAll('.fact-dot');
     
-    factContainer.classList.add('opacity-0');
+    factContainer.innerHTML = `<p class="text-xl">${chinaFacts[currentFactIndex]}</p>`;
     
-    setTimeout(() => {
-        factContainer.innerHTML = `<p class="text-xl">${chinaFacts[currentFactIndex]}</p>`;
-        factContainer.classList.remove('opacity-0');
-        
-        // Update dots
-        factDots.forEach((dot, index) => {
-            dot.classList.remove('active', 'bg-white');
-            dot.classList.add('bg-white/50');
-            if (index === currentFactIndex) {
-                dot.classList.add('active', 'bg-white');
-                dot.classList.remove('bg-white/50');
-            }
-        });
-    }, 300);
+    // Update dots
+    factDots.forEach((dot, index) => {
+        dot.classList.remove('active', 'bg-white');
+        dot.classList.add('bg-white/50');
+        if (index === currentFactIndex) {
+            dot.classList.add('active', 'bg-white');
+            dot.classList.remove('bg-white/50');
+        }
+    });
 }
 
 // Theme switching
 document.getElementById('theme-toggle').addEventListener('click', function() {
     const body = document.body;
     const themeIcon = document.querySelector('#theme-toggle i');
-    const header = document.getElementById('header');
-    const footer = document.getElementById('footer');
     
     if (body.getAttribute('data-theme') === 'day') {
         body.setAttribute('data-theme', 'night');
-        header.classList.remove('header-glow');
-        header.style.background = 'linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%)';
-        footer.style.background = 'linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%)';
-        
+        body.classList.remove('bg-blue-50');
+        body.classList.add('bg-black');
         themeIcon.setAttribute('data-feather', 'sun');
     } else {
         body.setAttribute('data-theme', 'day');
-        header.classList.add('header-glow');
-        header.style.background = '';
-        footer.style.background = '';
-        
+        body.classList.remove('bg-black');
+        body.classList.add('bg-blue-50');
         themeIcon.setAttribute('data-feather', 'moon');
     }
     feather.replace();
 });
 
-// Mobile menu toggle
+// Mobile menu
 document.getElementById('mobile-menu-button').addEventListener('click', function() {
     const menu = document.getElementById('mobile-menu');
     menu.classList.toggle('hidden');
@@ -109,7 +98,7 @@ document.getElementById('mobile-menu-button').addEventListener('click', function
     feather.replace();
 });
 
-// Modal management
+// Modal functions
 function openModal(modalId) {
     document.getElementById(modalId).classList.remove('hidden');
 }
@@ -122,22 +111,14 @@ function closeModal(modalId) {
 function openAuthModal(type) {
     openModal('auth-modal');
     if (type === 'register') {
-        switchToRegister();
+        document.getElementById('login-form').classList.add('hidden');
+        document.getElementById('register-form').classList.remove('hidden');
+        document.getElementById('modal-title').textContent = 'Регистрация';
     } else {
-        switchToLogin();
+        document.getElementById('register-form').classList.add('hidden');
+        document.getElementById('login-form').classList.remove('hidden');
+        document.getElementById('modal-title').textContent = 'Вход в систему';
     }
-}
-
-function switchToRegister() {
-    document.getElementById('login-form').classList.add('hidden');
-    document.getElementById('register-form').classList.remove('hidden');
-    document.getElementById('modal-title').textContent = 'Регистрация';
-}
-
-function switchToLogin() {
-    document.getElementById('register-form').classList.add('hidden');
-    document.getElementById('login-form').classList.remove('hidden');
-    document.getElementById('modal-title').textContent = 'Вход в систему';
 }
 
 function login() {
@@ -153,7 +134,6 @@ function login() {
     if (user) {
         alert(`Добро пожаловать, ${user.username}!`);
         closeModal('auth-modal');
-        // Clear form
         document.getElementById('login-username').value = '';
         document.getElementById('login-password').value = '';
     } else {
@@ -193,7 +173,6 @@ function register() {
     }
     
     closeModal('auth-modal');
-    // Clear form
     document.getElementById('reg-username').value = '';
     document.getElementById('reg-password').value = '';
     document.getElementById('reg-confirm-password').value = '';
@@ -226,7 +205,6 @@ function submitQuestion() {
     
     loadQuestions();
     questionInput.value = '';
-    
     alert('Ваш вопрос отправлен! Ответ появится после проверки учителем.');
 }
 
@@ -234,7 +212,6 @@ function loadQuestions() {
     const qaList = document.getElementById('qa-list');
     qaList.innerHTML = '';
     
-    // Add existing questions
     questions.forEach(q => {
         const questionElement = document.createElement('div');
         questionElement.className = 'qa-item enhanced-card p-5';
@@ -266,37 +243,37 @@ document.addEventListener('DOMContentLoaded', function() {
     // Start facts rotation
     setInterval(rotateFacts, 5000);
     
-    // Navigation events
+    // Navigation
     document.querySelectorAll('[data-page]').forEach(button => {
         button.addEventListener('click', function() {
             showPage(this.getAttribute('data-page'));
         });
     });
     
-    // Auth modal events
+    // Auth
     document.getElementById('register-btn').addEventListener('click', () => openAuthModal('register'));
     document.getElementById('login-btn').addEventListener('click', () => openAuthModal('login'));
     document.getElementById('mobile-register-btn').addEventListener('click', () => openAuthModal('register'));
     document.getElementById('mobile-login-btn').addEventListener('click', () => openAuthModal('login'));
     document.getElementById('close-auth-modal').addEventListener('click', () => closeModal('auth-modal'));
-    document.getElementById('switch-to-register').addEventListener('click', switchToRegister);
-    document.getElementById('switch-to-login').addEventListener('click', switchToLogin);
+    document.getElementById('switch-to-register').addEventListener('click', () => openAuthModal('register'));
+    document.getElementById('switch-to-login').addEventListener('click', () => openAuthModal('login'));
     document.getElementById('login-submit').addEventListener('click', login);
     document.getElementById('register-submit').addEventListener('click', register);
     
-    // Q&A modal events
+    // Q&A
     document.getElementById('qa-button').addEventListener('click', openQAModal);
     document.getElementById('close-qa-modal').addEventListener('click', () => closeModal('qa-modal'));
     document.getElementById('submit-question').addEventListener('click', submitQuestion);
     
-    // Close modals when clicking outside
+    // Close modals on outside click
     document.addEventListener('click', function(event) {
-        if (event.target.classList.contains('modal-overlay')) {
+        if (event.target.classList.contains('fixed')) {
             closeModal('auth-modal');
             closeModal('qa-modal');
         }
     });
     
-    // Load initial data
+    // Load questions
     loadQuestions();
 });
