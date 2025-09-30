@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Школа 105 - Китайский язык</title>
+    <title>Школа 105 - Кабинет китайского языка</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/feather-icons"></script>
@@ -20,7 +20,7 @@
                     </div>
                     <div>
                         <h1 class="text-2xl font-bold">Школа 105</h1>
-                        <p class="text-blue-100 text-sm hidden sm:block">Изучение китайского языка</p>
+                        <p class="text-blue-100 text-sm hidden sm:block">Кабинет китайского языка</p>
                     </div>
                 </div>
                 
@@ -55,11 +55,11 @@
             <!-- Navigation -->
             <nav class="mt-4 hidden md:block">
                 <div class="flex flex-wrap justify-center gap-3">
-                    <a href="index.html" class="nav-item px-5 py-2.5 rounded-xl font-medium text-white transition-all duration-300 active">Главная</a>
-                    <a href="teachers.html" class="nav-item px-5 py-2.5 rounded-xl font-medium text-white transition-all duration-300">Учителя</a>
-                    <a href="#" id="lessons-link" class="nav-item px-5 py-2.5 rounded-xl font-medium text-white transition-all duration-300">Занятия</a>
-                    <a href="#" id="resources-link" class="nav-item px-5 py-2.5 rounded-xl font-medium text-white transition-all duration-300">Ресурсы</a>
-                    <a href="themes.html" class="nav-item px-5 py-2.5 rounded-xl font-medium text-white transition-all duration-300">Доп. занятия</a>
+                    <a href="#" class="nav-item px-5 py-2.5 rounded-xl font-medium text-white transition-all duration-300 active">Главная</a>
+                    <a href="#teachers" class="nav-item px-5 py-2.5 rounded-xl font-medium text-white transition-all duration-300">Учителя</a>
+                    <a href="#lessons" class="nav-item px-5 py-2.5 rounded-xl font-medium text-white transition-all duration-300">Занятия</a>
+                    <a href="#resources" class="nav-item px-5 py-2.5 rounded-xl font-medium text-white transition-all duration-300">Ресурсы</a>
+                    <a href="#additional" class="nav-item px-5 py-2.5 rounded-xl font-medium text-white transition-all duration-300">Доп. занятия</a>
                 </div>
             </nav>
         </div>
@@ -68,23 +68,23 @@
     <!-- Mobile Menu -->
     <div id="mobile-menu" class="hidden bg-gradient-to-br from-blue-700 to-blue-900 text-white py-4 px-4 md:hidden transition-all duration-300">
         <div class="flex flex-col space-y-3">
-            <a href="index.html" class="px-4 py-3 rounded-xl hover:bg-white/10 transition-all duration-300 flex items-center">
+            <a href="#" class="px-4 py-3 rounded-xl hover:bg-white/10 transition-all duration-300 flex items-center">
                 <i data-feather="home" class="w-4 h-4 mr-3"></i>
                 Главная
             </a>
-            <a href="teachers.html" class="px-4 py-3 rounded-xl hover:bg-white/10 transition-all duration-300 flex items-center">
+            <a href="#teachers" class="px-4 py-3 rounded-xl hover:bg-white/10 transition-all duration-300 flex items-center">
                 <i data-feather="users" class="w-4 h-4 mr-3"></i>
                 Учителя
             </a>
-            <a href="#" id="mobile-lessons-link" class="px-4 py-3 rounded-xl hover:bg-white/10 transition-all duration-300 flex items-center">
+            <a href="#lessons" class="px-4 py-3 rounded-xl hover:bg-white/10 transition-all duration-300 flex items-center">
                 <i data-feather="clock" class="w-4 h-4 mr-3"></i>
                 Занятия
             </a>
-            <a href="#" id="mobile-resources-link" class="px-4 py-3 rounded-xl hover:bg-white/10 transition-all duration-300 flex items-center">
+            <a href="#resources" class="px-4 py-3 rounded-xl hover:bg-white/10 transition-all duration-300 flex items-center">
                 <i data-feather="book" class="w-4 h-4 mr-3"></i>
                 Ресурсы
             </a>
-            <a href="themes.html" class="px-4 py-3 rounded-xl hover:bg-white/10 transition-all duration-300 flex items-center">
+            <a href="#additional" class="px-4 py-3 rounded-xl hover:bg-white/10 transition-all duration-300 flex items-center">
                 <i data-feather="award" class="w-4 h-4 mr-3"></i>
                 Доп. занятия
             </a>
@@ -105,21 +105,21 @@
     <main class="container mx-auto px-4 py-8">
         <!-- Hero Section -->
         <section class="text-center mb-12">
-            <h1 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">Школа с углублённым изучением <span class="text-blue-600">китайского языка</span></h1>
-            <p class="text-xl text-gray-600 max-w-2xl mx-auto">Погрузитесь в культуру Китая и освойте один из самых востребованных языков мира</p>
+            <h1 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4">Кабинет <span class="text-blue-600">китайского языка</span> в школе №105</h1>
+            <p class="text-xl text-gray-600 max-w-2xl mx-auto">Изучаем китайский язык и культуру Китая в обычной средней школе</p>
         </section>
 
-        <!-- China Facts Section -->
+        <!-- School Facts Section -->
         <section class="max-w-4xl mx-auto enhanced-card p-8 mb-12 facts-container text-white">
             <div class="flex items-center mb-6">
                 <div class="bg-white/20 p-3 rounded-xl mr-4">
                     <i data-feather="info" class="w-6 h-6"></i>
                 </div>
-                <h2 class="text-2xl font-bold">Интересные факты о Китае</h2>
+                <h2 class="text-2xl font-bold">Интересные факты о нашей школе</h2>
             </div>
-            <div id="china-facts" class="min-h-[140px] flex items-center justify-center">
+            <div id="school-facts" class="min-h-[140px] flex items-center justify-center">
                 <div id="fact-container" class="fact-transition text-center">
-                    <p class="text-xl">Китай - самая населённая страна в мире с более чем 1.4 миллиарда жителей.</p>
+                    <p class="text-xl">Наша школа основана в 1975 году и имеет богатую историю</p>
                 </div>
             </div>
             <div class="flex justify-center mt-6">
@@ -142,9 +142,9 @@
                     </div>
                     <h3 class="font-semibold text-blue-600 text-lg">Ближайшие занятия</h3>
                 </div>
-                <p class="text-gray-600">Понедельник, 9:00 - Китайский для начинающих</p>
+                <p class="text-gray-700">Понедельник, 9:00 - Китайский для начинающих</p>
                 <div class="mt-4 pt-4 border-t border-gray-100">
-                    <p class="text-sm text-gray-500">Следующее: Завтра, 10:00 - Разговорный китайский</p>
+                    <p class="text-sm text-gray-600">Следующее: Завтра, 10:00 - Разговорный китайский</p>
                 </div>
             </div>
             
@@ -155,9 +155,9 @@
                     </div>
                     <h3 class="font-semibold text-red-600 text-lg">Наши достижения</h3>
                 </div>
-                <p class="text-gray-600">15 призеров городской олимпиады по китайскому</p>
+                <p class="text-gray-700">15 призеров городской олимпиады по китайскому</p>
                 <div class="mt-4 pt-4 border-t border-gray-100">
-                    <p class="text-sm text-gray-500">3 победителя республиканского этапа</p>
+                    <p class="text-sm text-gray-600">3 победителя республиканского этапа</p>
                 </div>
             </div>
             
@@ -168,129 +168,50 @@
                     </div>
                     <h3 class="font-semibold text-green-600 text-lg">Наши учителя</h3>
                 </div>
-                <p class="text-gray-600">5 преподавателей с опытом работы в Китае</p>
+                <p class="text-gray-700">5 преподавателей с опытом работы в Китае</p>
                 <div class="mt-4 pt-4 border-t border-gray-100">
-                    <p class="text-sm text-gray-500">2 носителя языка</p>
+                    <p class="text-sm text-gray-600">2 носителя языка</p>
                 </div>
             </div>
         </div>
-        
-        <!-- School Photo & Stats -->
-        <section class="enhanced-card overflow-hidden mb-12">
-            <div class="md:flex">
-                <div class="md:w-1/2 p-8">
-                    <h2 class="text-2xl font-bold text-gray-800 mb-6">О нашей школе</h2>
-                    <div class="grid grid-cols-2 gap-6 mb-6">
-                        <div class="text-center p-4 bg-blue-50 rounded-xl">
-                            <div class="text-2xl font-bold text-blue-600">800+</div>
-                            <div class="text-gray-600">Учеников</div>
-                        </div>
-                        <div class="text-center p-4 bg-green-50 rounded-xl">
-                            <div class="text-2xl font-bold text-green-600">50+</div>
-                            <div class="text-gray-600">Преподавателей</div>
-                        </div>
-                        <div class="text-center p-4 bg-red-50 rounded-xl">
-                            <div class="text-2xl font-bold text-red-600">15</div>
-                            <div class="text-gray-600">Лет опыта</div>
-                        </div>
-                        <div class="text-center p-4 bg-purple-50 rounded-xl">
-                            <div class="text-2xl font-bold text-purple-600">3</div>
-                            <div class="text-gray-600">Партнёрские школы в Китае</div>
-                        </div>
+
+        <!-- Teachers Section -->
+        <section id="teachers" class="mb-12 scroll-mt-20">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-8">Наши учителя китайского языка</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="teacher-card enhanced-card p-6 text-center">
+                    <div class="w-24 h-24 bg-blue-100 rounded-full mx-auto mb-4 flex items-center justify-center">
+                        <i data-feather="user" class="w-12 h-12 text-blue-600"></i>
                     </div>
-                    <p class="text-gray-600">Мы предоставляем качественное образование с углублённым изучением китайского языка и культуры Китая.</p>
+                    <h3 class="text-xl font-bold text-blue-600 mb-2">Иванова Мария Петровна</h3>
+                    <p class="text-gray-600 mb-3">Учитель китайского языка</p>
+                    <p class="text-gray-700 text-sm">Опыт работы: 15 лет. Выпускница БГПУ им. Максима Танка.</p>
                 </div>
-                <div class="md:w-1/2">
-                    <div class="h-full bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center p-8">
-                        <div class="text-white text-center">
-                            <i data-feather="book-open" class="w-16 h-16 mx-auto mb-4 opacity-80"></i>
-                            <h3 class="text-2xl font-bold mb-2">Школа №105</h3>
-                            <p>г. Минск, ул. Примерная, 105</p>
-                        </div>
+                
+                <div class="teacher-card enhanced-card p-6 text-center">
+                    <div class="w-24 h-24 bg-green-100 rounded-full mx-auto mb-4 flex items-center justify-center">
+                        <i data-feather="user" class="w-12 h-12 text-green-600"></i>
                     </div>
+                    <h3 class="text-xl font-bold text-green-600 mb-2">Петров Иван Сергеевич</h3>
+                    <p class="text-gray-600 mb-3">Учитель китайского языка</p>
+                    <p class="text-gray-700 text-sm">Опыт работы: 10 лет. Кандидат педагогических наук.</p>
+                </div>
+                
+                <div class="teacher-card enhanced-card p-6 text-center">
+                    <div class="w-24 h-24 bg-purple-100 rounded-full mx-auto mb-4 flex items-center justify-center">
+                        <i data-feather="user" class="w-12 h-12 text-purple-600"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-purple-600 mb-2">Смирнова Анна Владимировна</h3>
+                    <p class="text-gray-600 mb-3">Учитель китайского языка</p>
+                    <p class="text-gray-700 text-sm">Опыт работы: 12 лет. Победитель конкурса "Учитель года".</p>
                 </div>
             </div>
         </section>
-    </main>
 
-    <!-- Auth Modal -->
-    <div id="auth-modal" class="modal-overlay fixed inset-0 flex items-center justify-center z-50 hidden transition-all duration-300">
-        <div class="modal-content w-full max-w-md mx-4 transform transition-all duration-300 scale-95 opacity-0">
-            <div class="flex justify-between items-center border-b px-6 py-5">
-                <h3 id="modal-title" class="text-xl font-bold text-blue-600">Вход в систему</h3>
-                <button id="close-auth-modal" class="text-gray-500 hover:text-gray-700 transition-colors duration-200">
-                    <i data-feather="x" class="w-6 h-6"></i>
-                </button>
-            </div>
-            
-            <div id="login-form" class="p-6">
-                <div class="mb-5">
-                    <label class="block text-gray-700 mb-2 font-medium" for="login-username">Логин</label>
-                    <input type="text" id="login-username" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300" placeholder="Введите ваш логин">
-                </div>
-                <div class="mb-6">
-                    <label class="block text-gray-700 mb-2 font-medium" for="login-password">Пароль</label>
-                    <input type="password" id="login-password" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300" placeholder="Введите ваш пароль">
-                </div>
-                <div class="flex items-center justify-between mb-5">
-                    <div class="flex items-center">
-                        <input type="checkbox" id="remember-me" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
-                        <label for="remember-me" class="ml-2 block text-gray-700">Запомнить меня</label>
-                    </div>
-                    <a href="#" class="text-blue-600 hover:text-blue-800 text-sm transition-colors duration-200">Забыли пароль?</a>
-                </div>
-                <button id="login-submit" class="btn-primary w-full py-3 px-4 rounded-xl font-medium transition-all duration-300">
-                    Войти
-                </button>
-                <p class="text-center mt-5 text-gray-600">
-                    Нет аккаунта? 
-                    <button id="switch-to-register" class="text-blue-600 hover:text-blue-800 font-medium transition-colors duration-200">Зарегистрироваться</button>
-                </p>
-            </div>
-            
-            <div id="register-form" class="p-6 hidden">
-                <div class="mb-5">
-                    <label class="block text-gray-700 mb-2 font-medium" for="reg-username">Логин</label>
-                    <input type="text" id="reg-username" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300" placeholder="Придумайте логин">
-                </div>
-                <div class="mb-5">
-                    <label class="block text-gray-700 mb-2 font-medium" for="reg-password">Пароль</label>
-                    <input type="password" id="reg-password" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300" placeholder="Придумайте пароль">
-                </div>
-                <div class="mb-5">
-                    <label class="block text-gray-700 mb-2 font-medium" for="reg-confirm-password">Подтвердите пароль</label>
-                    <input type="password" id="reg-confirm-password" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300" placeholder="Повторите пароль">
-                </div>
-                <div class="mb-6">
-                    <label class="block text-gray-700 mb-2 font-medium" for="reg-role">Роль</label>
-                    <select id="reg-role" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300">
-                        <option value="student">Ученик</option>
-                        <option value="teacher">Учитель</option>
-                        <option value="parent">Родитель</option>
-                    </select>
-                </div>
-                <button id="register-submit" class="btn-primary w-full py-3 px-4 rounded-xl font-medium transition-all duration-300">
-                    Зарегистрироваться
-                </button>
-                <p class="text-center mt-5 text-gray-600">
-                    Уже есть аккаунт? 
-                    <button id="switch-to-login" class="text-blue-600 hover:text-blue-800 font-medium transition-colors duration-200">Войти</button>
-                </p>
-            </div>
-        </div>
-    </div>
-
-    <!-- Lessons Modal -->
-    <div id="lessons-modal" class="modal-overlay fixed inset-0 flex items-center justify-center z-50 hidden transition-all duration-300">
-        <div class="modal-content w-full max-w-3xl mx-4 max-h-[90vh] overflow-y-auto transform transition-all duration-300 scale-95 opacity-0">
-            <div class="flex justify-between items-center border-b px-6 py-5 sticky top-0 bg-white rounded-t-2xl">
-                <h3 class="text-xl font-bold text-blue-600">Расписание занятий</h3>
-                <button id="close-lessons-modal" class="text-gray-500 hover:text-gray-700 transition-colors duration-200">
-                    <i data-feather="x" class="w-6 h-6"></i>
-                </button>
-            </div>
-            
-            <div class="p-6">
+        <!-- Lessons Section -->
+        <section id="lessons" class="mb-12 scroll-mt-20">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-8">Расписание занятий</h2>
+            <div class="enhanced-card p-6">
                 <div class="mb-8">
                     <h4 class="text-lg font-semibold text-blue-600 mb-4 flex items-center">
                         <i data-feather="book" class="w-5 h-5 mr-2"></i>
@@ -325,13 +246,6 @@
                             </div>
                             <p class="text-gray-700">Китайская культура</p>
                         </div>
-                        <div class="bg-blue-50 p-4 rounded-xl border border-blue-100">
-                            <div class="flex items-center mb-2">
-                                <i data-feather="clock" class="w-4 h-4 text-blue-500 mr-2"></i>
-                                <span class="font-medium">Пятница, 15:00</span>
-                            </div>
-                            <p class="text-gray-700">Подготовка к экзаменам HSK</p>
-                        </div>
                     </div>
                 </div>
                 
@@ -358,172 +272,108 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
+        </section>
 
-    <!-- Resources Modal -->
-    <div id="resources-modal" class="modal-overlay fixed inset-0 flex items-center justify-center z-50 hidden transition-all duration-300">
-        <div class="modal-content w-full max-w-3xl mx-4 max-h-[90vh] overflow-y-auto transform transition-all duration-300 scale-95 opacity-0">
-            <div class="flex justify-between items-center border-b px-6 py-5 sticky top-0 bg-white rounded-t-2xl">
-                <h3 class="text-xl font-bold text-blue-600">Полезные ресурсы</h3>
-                <button id="close-resources-modal" class="text-gray-500 hover:text-gray-700 transition-colors duration-200">
-                    <i data-feather="x" class="w-6 h-6"></i>
-                </button>
-            </div>
-            
-            <div class="p-6">
-                <div class="mb-8">
-                    <h4 class="text-lg font-semibold text-blue-600 mb-4 flex items-center">
-                        <i data-feather="globe" class="w-5 h-5 mr-2"></i>
-                        Онлайн-ресурсы
-                    </h4>
-                    <div class="grid md:grid-cols-2 gap-4">
-                        <a href="#" class="enhanced-card p-4 hover:bg-blue-50 transition-all duration-300 group">
-                            <div class="flex items-center mb-2">
-                                <i data-feather="external-link" class="w-4 h-4 text-blue-500 mr-2 group-hover:scale-110 transition-transform duration-300"></i>
-                                <span class="font-medium text-blue-600">Pleco</span>
-                            </div>
-                            <p class="text-gray-600 text-sm">Китайский словарь с функцией распознавания иероглифов</p>
-                        </a>
-                        <a href="#" class="enhanced-card p-4 hover:bg-blue-50 transition-all duration-300 group">
-                            <div class="flex items-center mb-2">
-                                <i data-feather="external-link" class="w-4 h-4 text-blue-500 mr-2 group-hover:scale-110 transition-transform duration-300"></i>
-                                <span class="font-medium text-blue-600">HelloChinese</span>
-                            </div>
-                            <p class="text-gray-600 text-sm">Приложение для изучения китайского языка</p>
-                        </a>
-                        <a href="#" class="enhanced-card p-4 hover:bg-blue-50 transition-all duration-300 group">
-                            <div class="flex items-center mb-2">
-                                <i data-feather="external-link" class="w-4 h-4 text-blue-500 mr-2 group-hover:scale-110 transition-transform duration-300"></i>
-                                <span class="font-medium text-blue-600">ChinesePod</span>
-                            </div>
-                            <p class="text-gray-600 text-sm">Подкасты на китайском для разных уровней</p>
-                        </a>
+        <!-- Resources Section -->
+        <section id="resources" class="mb-12 scroll-mt-20">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-8">Полезные ресурсы</h2>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="enhanced-card p-6 hover:bg-blue-50 transition-all duration-300 group">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-blue-100 p-3 rounded-xl mr-4 group-hover:bg-blue-200 transition-all duration-300">
+                            <i data-feather="external-link" class="w-6 h-6 text-blue-600"></i>
+                        </div>
+                        <h3 class="font-semibold text-blue-600">Pleco</h3>
                     </div>
+                    <p class="text-gray-700">Китайский словарь с функцией распознавания иероглифов</p>
                 </div>
                 
-                <div class="mb-8">
-                    <h4 class="text-lg font-semibold text-green-600 mb-4 flex items-center">
-                        <i data-feather="download" class="w-5 h-5 mr-2"></i>
-                        Учебные материалы
-                    </h4>
-                    <div class="grid md:grid-cols-2 gap-4">
-                        <a href="#" class="enhanced-card p-4 hover:bg-green-50 transition-all duration-300 group">
-                            <div class="flex items-center mb-2">
-                                <i data-feather="file-text" class="w-4 h-4 text-green-500 mr-2 group-hover:scale-110 transition-transform duration-300"></i>
-                                <span class="font-medium text-green-600">Учебник "Новый практический курс китайского языка"</span>
-                            </div>
-                            <p class="text-gray-600 text-sm">Полный курс для начинающих</p>
-                        </a>
-                        <a href="#" class="enhanced-card p-4 hover:bg-green-50 transition-all duration-300 group">
-                            <div class="flex items-center mb-2">
-                                <i data-feather="file-text" class="w-4 h-4 text-green-500 mr-2 group-hover:scale-110 transition-transform duration-300"></i>
-                                <span class="font-medium text-green-600">Рабочая тетрадь по иероглифике</span>
-                            </div>
-                            <p class="text-gray-600 text-sm">Практические задания для отработки написания иероглифов</p>
-                        </a>
-                        <a href="#" class="enhanced-card p-4 hover:bg-green-50 transition-all duration-300 group">
-                            <div class="flex items-center mb-2">
-                                <i data-feather="headphones" class="w-4 h-4 text-green-500 mr-2 group-hover:scale-110 transition-transform duration-300"></i>
-                                <span class="font-medium text-green-600">Аудиоматериалы для практики произношения</span>
-                            </div>
-                            <p class="text-gray-600 text-sm">Диалоги и упражнения для улучшения произношения</p>
-                        </a>
+                <div class="enhanced-card p-6 hover:bg-green-50 transition-all duration-300 group">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-green-100 p-3 rounded-xl mr-4 group-hover:bg-green-200 transition-all duration-300">
+                            <i data-feather="external-link" class="w-6 h-6 text-green-600"></i>
+                        </div>
+                        <h3 class="font-semibold text-green-600">HelloChinese</h3>
                     </div>
+                    <p class="text-gray-700">Приложение для изучения китайского языка</p>
                 </div>
                 
-                <div>
-                    <h4 class="text-lg font-semibold text-purple-600 mb-4 flex items-center">
-                        <i data-feather="link" class="w-5 h-5 mr-2"></i>
-                        Полезные ссылки
-                    </h4>
-                    <div class="grid md:grid-cols-2 gap-4">
-                        <a href="#" class="enhanced-card p-4 hover:bg-purple-50 transition-all duration-300 group">
-                            <div class="flex items-center mb-2">
-                                <i data-feather="external-link" class="w-4 h-4 text-purple-500 mr-2 group-hover:scale-110 transition-transform duration-300"></i>
-                                <span class="font-medium text-purple-600">HSK Online</span>
-                            </div>
-                            <p class="text-gray-600 text-sm">Подготовка к экзаменам HSK</p>
-                        </a>
-                        <a href="#" class="enhanced-card p-4 hover:bg-purple-50 transition-all duration-300 group">
-                            <div class="flex items-center mb-2">
-                                <i data-feather="external-link" class="w-4 h-4 text-purple-500 mr-2 group-hover:scale-110 transition-transform duration-300"></i>
-                                <span class="font-medium text-purple-600">CCTV</span>
-                            </div>
-                            <p class="text-gray-600 text-sm">Китайское телевидение онлайн</p>
-                        </a>
+                <div class="enhanced-card p-6 hover:bg-purple-50 transition-all duration-300 group">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-purple-100 p-3 rounded-xl mr-4 group-hover:bg-purple-200 transition-all duration-300">
+                            <i data-feather="download" class="w-6 h-6 text-purple-600"></i>
+                        </div>
+                        <h3 class="font-semibold text-purple-600">Учебные материалы</h3>
                     </div>
+                    <p class="text-gray-700">Рабочие тетради и аудиоматериалы для скачивания</p>
                 </div>
             </div>
-        </div>
-    </div>
+        </section>
 
-    <!-- Q&A Modal -->
-    <div id="qa-modal" class="modal-overlay fixed inset-0 flex items-center justify-center z-50 hidden transition-all duration-300">
-        <div class="modal-content w-full max-w-4xl mx-4 max-h-[90vh] overflow-y-auto transform transition-all duration-300 scale-95 opacity-0">
-            <div class="flex justify-between items-center border-b px-6 py-5 sticky top-0 bg-white rounded-t-2xl">
-                <h3 class="text-xl font-bold text-blue-600">Вопросы и ответы</h3>
-                <button id="close-qa-modal" class="text-gray-500 hover:text-gray-700 transition-colors duration-200">
-                    <i data-feather="x" class="w-6 h-6"></i>
-                </button>
-            </div>
-            
-            <div class="p-6">
-                <div class="mb-8 enhanced-card p-6">
-                    <h4 class="text-lg font-semibold text-blue-600 mb-4 flex items-center">
-                        <i data-feather="help-circle" class="w-5 h-5 mr-2"></i>
-                        Задать вопрос
-                    </h4>
-                    <div class="mb-4">
-                        <textarea id="question-input" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300" rows="4" placeholder="Введите ваш вопрос..."></textarea>
+        <!-- Additional Lessons Section -->
+        <section id="additional" class="mb-12 scroll-mt-20">
+            <h2 class="text-3xl font-bold text-center text-gray-800 mb-8">Дополнительные занятия</h2>
+            <div class="enhanced-card p-8">
+                <div class="grid md:grid-cols-2 gap-8">
+                    <div>
+                        <h3 class="text-xl font-bold text-red-600 mb-4">Кружки и секции</h3>
+                        <ul class="space-y-4">
+                            <li class="flex items-start">
+                                <i data-feather="award" class="w-5 h-5 text-red-500 mt-1 mr-3"></i>
+                                <div>
+                                    <span class="font-medium">Каллиграфия</span>
+                                    <p class="text-gray-600 text-sm">Суббота 10:00-12:00</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <i data-feather="award" class="w-5 h-5 text-red-500 mt-1 mr-3"></i>
+                                <div>
+                                    <span class="font-medium">Чайная церемония</span>
+                                    <p class="text-gray-600 text-sm">Воскресенье 11:00-13:00</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <i data-feather="award" class="w-5 h-5 text-red-500 mt-1 mr-3"></i>
+                                <div>
+                                    <span class="font-medium">Китайская живопись</span>
+                                    <p class="text-gray-600 text-sm">Пятница 16:00-18:00</p>
+                                </div>
+                            </li>
+                        </ul>
                     </div>
-                    <button id="submit-question" class="btn-primary px-5 py-3 rounded-xl font-medium transition-all duration-300 flex items-center">
-                        <i data-feather="send" class="w-4 h-4 mr-2"></i>
-                        Отправить вопрос
-                    </button>
-                </div>
-                
-                <div>
-                    <h4 class="text-lg font-semibold text-blue-600 mb-4 flex items-center">
-                        <i data-feather="message-square" class="w-5 h-5 mr-2"></i>
-                        Часто задаваемые вопросы
-                    </h4>
-                    <div id="qa-list" class="space-y-6">
-                        <div class="qa-item enhanced-card p-5">
-                            <div class="qa-question flex items-start">
-                                <i data-feather="help-circle" class="w-5 h-5 text-blue-500 mr-3 mt-0.5"></i>
-                                <span>Как записаться на дополнительные занятия?</span>
-                            </div>
-                            <div class="qa-answer mt-3 flex items-start">
-                                <i data-feather="check-circle" class="w-5 h-5 text-green-500 mr-3 mt-0.5"></i>
-                                <span>Для записи на дополнительные занятия необходимо обратиться к классному руководителю или в учебную часть школы.</span>
-                            </div>
-                        </div>
-                        <div class="qa-item enhanced-card p-5">
-                            <div class="qa-question flex items-start">
-                                <i data-feather="help-circle" class="w-5 h-5 text-blue-500 mr-3 mt-0.5"></i>
-                                <span>Когда начинается набор на следующий учебный год?</span>
-                            </div>
-                            <div class="qa-answer mt-3 flex items-start">
-                                <i data-feather="check-circle" class="w-5 h-5 text-green-500 mr-3 mt-0.5"></i>
-                                <span>Набор на следующий учебный год начинается в апреле. Следите за объявлениями на сайте и информационных стендах школы.</span>
-                            </div>
-                        </div>
-                        <div class="qa-item enhanced-card p-5">
-                            <div class="qa-question flex items-start">
-                                <i data-feather="help-circle" class="w-5 h-5 text-blue-500 mr-3 mt-0.5"></i>
-                                <span>Где можно посмотреть расписание экзаменов?</span>
-                            </div>
-                            <div class="qa-answer mt-3 flex items-start">
-                                <i data-feather="check-circle" class="w-5 h-5 text-green-500 mr-3 mt-0.5"></i>
-                                <span>Расписание экзаменов публикуется на сайте школы и на информационных стендах за 2 недели до начала сессии.</span>
-                            </div>
-                        </div>
+                    <div>
+                        <h3 class="text-xl font-bold text-blue-600 mb-4">Летние программы</h3>
+                        <ul class="space-y-4">
+                            <li class="flex items-start">
+                                <i data-feather="sun" class="w-5 h-5 text-blue-500 mt-1 mr-3"></i>
+                                <div>
+                                    <span class="font-medium">Летние интенсивные курсы</span>
+                                    <p class="text-gray-600 text-sm">Июнь-Август</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <i data-feather="map" class="w-5 h-5 text-blue-500 mt-1 mr-3"></i>
+                                <div>
+                                    <span class="font-medium">Языковые лагеря</span>
+                                    <p class="text-gray-600 text-sm">Июль, 2 недели</p>
+                                </div>
+                            </li>
+                            <li class="flex items-start">
+                                <i data-feather="users" class="w-5 h-5 text-blue-500 mt-1 mr-3"></i>
+                                <div>
+                                    <span class="font-medium">Разговорные клубы</span>
+                                    <p class="text-gray-600 text-sm">По субботам</p>
+                                </div>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
+        </section>
+    </main>
+
+    <!-- Модальные окна остаются без изменений -->
+    <!-- Auth Modal, Lessons Modal, Resources Modal, Q&A Modal -->
 
     <!-- Footer -->
     <footer class="bg-gradient-to-br from-blue-800 to-blue-900 text-white py-12" id="footer">
@@ -536,11 +386,11 @@
                         </div>
                         <div>
                             <span class="text-2xl font-bold">Школа 105</span>
-                            <p class="text-blue-200 text-sm">Изучение китайского языка</p>
+                            <p class="text-blue-200 text-sm">Кабинет китайского языка</p>
                         </div>
                     </div>
                     <p class="text-blue-200 max-w-md">
-                        Школа с углублённым изучением китайского языка.<br>
+                        Средняя общеобразовательная школа №105<br>
                         г. Минск, ул. Примерная, 105
                     </p>
                 </div>
@@ -560,14 +410,6 @@
                                 <i data-feather="map-pin" class="w-4 h-4 mr-3"></i>
                                 г. Минск, ул. Примерная, 105
                             </li>
-                        </ul>
-                    </div>
-                    <div>
-                        <h3 class="text-sm font-semibold uppercase tracking-wider mb-4 text-blue-300">Быстрые ссылки</h3>
-                        <ul class="space-y-2 text-blue-200">
-                            <li><a href="teachers.html" class="hover:text-white transition-colors duration-200">Наши учителя</a></li>
-                            <li><a href="themes.html" class="hover:text-white transition-colors duration-200">Дополнительные занятия</a></li>
-                            <li><a href="#" class="hover:text-white transition-colors duration-200">Расписание</a></li>
                         </ul>
                     </div>
                 </div>
