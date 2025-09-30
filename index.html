@@ -9,7 +9,7 @@
     <script src="https://unpkg.com/feather-icons"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
-<body class="bg-blue-50 font-sans transition-all duration-500" data-theme="day">
+<body class="bg-white font-sans transition-all duration-500" data-theme="day">
     <!-- Notification System -->
     <div id="notification" class="fixed top-4 right-4 z-50 max-w-sm hidden">
         <div class="bg-white rounded-xl shadow-2xl p-4 border-l-4 border-green-500 transform transition-all duration-500 translate-x-full">
@@ -72,6 +72,7 @@
                 <div class="flex flex-wrap justify-center gap-3">
                     <button data-page="main" class="nav-item px-5 py-2.5 rounded-xl font-medium text-white transition-all duration-300 active">Главная</button>
                     <button data-page="teachers" class="nav-item px-5 py-2.5 rounded-xl font-medium text-white transition-all duration-300">Учителя</button>
+                    <button data-page="classes" class="nav-item px-5 py-2.5 rounded-xl font-medium text-white transition-all duration-300">Классы</button>
                     <button data-page="lessons" class="nav-item px-5 py-2.5 rounded-xl font-medium text-white transition-all duration-300">Занятия</button>
                     <button data-page="resources" class="nav-item px-5 py-2.5 rounded-xl font-medium text-white transition-all duration-300">Ресурсы</button>
                     <button data-page="additional" class="nav-item px-5 py-2.5 rounded-xl font-medium text-white transition-all duration-300">Доп. занятия</button>
@@ -90,6 +91,10 @@
             <button data-page="teachers" class="px-4 py-3 rounded-xl hover:bg-white/10 transition-all duration-300 flex items-center transform hover:translate-x-2">
                 <i data-feather="users" class="w-4 h-4 mr-3"></i>
                 Учителя
+            </button>
+            <button data-page="classes" class="px-4 py-3 rounded-xl hover:bg-white/10 transition-all duration-300 flex items-center transform hover:translate-x-2">
+                <i data-feather="layers" class="w-4 h-4 mr-3"></i>
+                Классы
             </button>
             <button data-page="lessons" class="px-4 py-3 rounded-xl hover:bg-white/10 transition-all duration-300 flex items-center transform hover:translate-x-2">
                 <i data-feather="clock" class="w-4 h-4 mr-3"></i>
@@ -121,7 +126,7 @@
         <!-- Hero Section -->
         <section class="text-center mb-12">
             <h1 class="text-4xl md:text-5xl font-bold text-gray-800 mb-4 animate-slide-down">Кабинет <span class="text-blue-600">китайского языка</span> в школе №105</h1>
-            <p class="text-xl text-gray-600 max-w-2xl mx-auto animate-slide-up">Изучаем китайский язык и культуру Китая в обычной средней школе</p>
+            <p class="text-xl text-gray-700 max-w-2xl mx-auto animate-slide-up">Изучаем китайский язык и культуру Китая в обычной средней школе</p>
         </section>
 
         <!-- China Facts Section -->
@@ -237,7 +242,7 @@
                     <i data-feather="user" class="w-12 h-12 text-blue-600"></i>
                 </div>
                 <h3 class="text-xl font-bold text-blue-600 mb-2">Иванова Мария Петровна</h3>
-                <p class="text-gray-600 mb-3 font-medium">Учитель китайского языка</p>
+                <p class="text-gray-700 mb-3 font-medium">Учитель китайского языка</p>
                 <p class="text-gray-800 text-sm font-medium">Опыт работы: 15 лет. Выпускница БГПУ им. Максима Танка.</p>
             </div>
             
@@ -246,7 +251,7 @@
                     <i data-feather="user" class="w-12 h-12 text-green-600"></i>
                 </div>
                 <h3 class="text-xl font-bold text-green-600 mb-2">Петров Иван Сергеевич</h3>
-                <p class="text-gray-600 mb-3 font-medium">Учитель китайского языка</p>
+                <p class="text-gray-700 mb-3 font-medium">Учитель китайского языка</p>
                 <p class="text-gray-800 text-sm font-medium">Опыт работы: 10 лет. Кандидат педагогических наук.</p>
             </div>
             
@@ -255,50 +260,86 @@
                     <i data-feather="user" class="w-12 h-12 text-purple-600"></i>
                 </div>
                 <h3 class="text-xl font-bold text-purple-600 mb-2">Смирнова Анна Владимировна</h3>
-                <p class="text-gray-600 mb-3 font-medium">Учитель китайского языка</p>
+                <p class="text-gray-700 mb-3 font-medium">Учитель китайского языка</p>
                 <p class="text-gray-800 text-sm font-medium">Опыт работы: 12 лет. Победитель конкурса "Учитель года".</p>
             </div>
+        </div>
+    </div>
+
+    <!-- Classes Page -->
+    <div id="classes-page" class="page container mx-auto px-4 py-8 hidden">
+        <h2 class="text-3xl font-bold text-center text-gray-800 mb-8 animate-slide-down">Управление классами</h2>
+        
+        <!-- Add Student Form (for teachers and admin) -->
+        <div id="add-student-section" class="enhanced-card p-6 mb-8 animate-scale-in hidden">
+            <h3 class="text-xl font-bold text-blue-600 mb-4">Добавить ученика</h3>
+            <div class="grid md:grid-cols-4 gap-4">
+                <div>
+                    <label class="block text-gray-700 font-semibold mb-2">Имя ученика</label>
+                    <input type="text" id="student-name" class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Имя">
+                </div>
+                <div>
+                    <label class="block text-gray-700 font-semibold mb-2">Класс</label>
+                    <select id="student-class" class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        <option value="5А">5А</option>
+                        <option value="5Б">5Б</option>
+                        <option value="6А">6А</option>
+                        <option value="6Б">6Б</option>
+                        <option value="7А">7А</option>
+                        <option value="7Б">7Б</option>
+                        <option value="8А">8А</option>
+                        <option value="8Б">8Б</option>
+                        <option value="9А">9А</option>
+                        <option value="9Б">9Б</option>
+                        <option value="10А">10А</option>
+                        <option value="10Б">10Б</option>
+                        <option value="11А">11А</option>
+                        <option value="11Б">11Б</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-gray-700 font-semibold mb-2">Логин</label>
+                    <input type="text" id="student-login" class="w-full px-4 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Логин">
+                </div>
+                <div class="flex items-end">
+                    <button id="add-student-btn" class="btn-primary w-full py-2 px-4 rounded-xl font-medium transition-all duration-300 transform hover:scale-105">
+                        Добавить
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Classes Grid -->
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <!-- Classes will be dynamically generated -->
         </div>
     </div>
 
     <!-- Lessons Page -->
     <div id="lessons-page" class="page container mx-auto px-4 py-8 hidden">
         <h2 class="text-3xl font-bold text-center text-gray-800 mb-8 animate-slide-down">Расписание занятий</h2>
+        
+        <!-- Class Selector for Teachers/Admin -->
+        <div id="class-selector" class="enhanced-card p-6 mb-8 animate-scale-in hidden">
+            <h3 class="text-lg font-semibold text-blue-600 mb-4">Выберите класс для просмотра расписания:</h3>
+            <div class="flex flex-wrap gap-3">
+                <!-- Class buttons will be dynamically generated -->
+            </div>
+        </div>
+
+        <!-- Current Class Info -->
+        <div id="current-class-info" class="enhanced-card p-4 mb-6 bg-blue-50 border-l-4 border-blue-500 hidden">
+            <p class="text-blue-700 font-semibold">Просматриваете расписание для: <span id="selected-class-name"></span></p>
+        </div>
+
         <div class="enhanced-card p-6 animate-scale-in">
             <div class="mb-8">
                 <h4 class="text-lg font-semibold text-blue-600 mb-4 flex items-center">
                     <i data-feather="book" class="w-5 h-5 mr-2"></i>
                     Основные занятия
                 </h4>
-                <div class="grid md:grid-cols-2 gap-4">
-                    <div class="bg-blue-50 p-4 rounded-xl border border-blue-100 transition-all duration-300 hover:scale-105">
-                        <div class="flex items-center mb-2">
-                            <i data-feather="clock" class="w-4 h-4 text-blue-500 mr-2"></i>
-                            <span class="font-medium text-gray-800">Понедельник, 9:00</span>
-                        </div>
-                        <p class="text-gray-800 font-medium">Китайский для начинающих</p>
-                    </div>
-                    <div class="bg-blue-50 p-4 rounded-xl border border-blue-100 transition-all duration-300 hover:scale-105">
-                        <div class="flex items-center mb-2">
-                            <i data-feather="clock" class="w-4 h-4 text-blue-500 mr-2"></i>
-                            <span class="font-medium text-gray-800">Вторник, 10:00</span>
-                        </div>
-                        <p class="text-gray-800 font-medium">Разговорный китайский</p>
-                    </div>
-                    <div class="bg-blue-50 p-4 rounded-xl border border-blue-100 transition-all duration-300 hover:scale-105">
-                        <div class="flex items-center mb-2">
-                            <i data-feather="clock" class="w-4 h-4 text-blue-500 mr-2"></i>
-                            <span class="font-medium text-gray-800">Среда, 11:00</span>
-                        </div>
-                        <p class="text-gray-800 font-medium">Иероглифика</p>
-                    </div>
-                    <div class="bg-blue-50 p-4 rounded-xl border border-blue-100 transition-all duration-300 hover:scale-105">
-                        <div class="flex items-center mb-2">
-                            <i data-feather="clock" class="w-4 h-4 text-blue-500 mr-2"></i>
-                            <span class="font-medium text-gray-800">Четверг, 14:00</span>
-                        </div>
-                        <p class="text-gray-800 font-medium">Китайская культура</p>
-                    </div>
+                <div id="lessons-container" class="grid md:grid-cols-2 gap-4">
+                    <!-- Lessons will be dynamically generated based on class -->
                 </div>
             </div>
             
@@ -477,7 +518,6 @@
                     <select id="reg-role" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300">
                         <option value="student">Ученик</option>
                         <option value="teacher">Учитель</option>
-                        <option value="parent">Родитель</option>
                     </select>
                 </div>
                 <button id="register-submit" class="btn-primary w-full py-3 px-4 rounded-xl font-medium transition-all duration-300 transform hover:scale-105">
