@@ -1,11 +1,11 @@
 // Data storage with real-time synchronization
-let users = JSON.parse(localStorage.getItem('users')) || [];
-let questions = JSON.parse(localStorage.getItem('questions')) || [];
-let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
-let students = JSON.parse(localStorage.getItem('students')) || [];
-let classes = JSON.parse(localStorage.getItem('classes')) || [];
-let lessons = JSON.parse(localStorage.getItem('lessons')) || [];
-let resources = JSON.parse(localStorage.getItem('resources')) || [];
+let users = JSON.parse(localStorage.getItem('school-users')) || [];
+let questions = JSON.parse(localStorage.getItem('school-questions')) || [];
+let currentUser = JSON.parse(localStorage.getItem('school-currentUser')) || null;
+let students = JSON.parse(localStorage.getItem('school-students')) || [];
+let classes = JSON.parse(localStorage.getItem('school-classes')) || [];
+let lessons = JSON.parse(localStorage.getItem('school-lessons')) || [];
+let resources = JSON.parse(localStorage.getItem('school-resources')) || [];
 
 // Real-time synchronization system
 function initializeSync() {
@@ -201,6 +201,7 @@ function saveData(dataType) {
     syncAllData();
     refreshAllData();
     updateCurrentPage();
+    updateAuthUI();
 }
 
 // Update current page content
@@ -896,6 +897,7 @@ function updateAuthUI() {
     const qaButton = document.getElementById('qa-button');
     const addTeacherBtn = document.getElementById('add-teacher-btn');
     const addStudentSection = document.getElementById('add-student-section');
+    const addClassBtn = document.getElementById('add-class-btn');
     const header = document.querySelector('header');
     
     if (!authButtons) return;
@@ -952,6 +954,14 @@ function updateAuthUI() {
             }
         }
         
+        if (addClassBtn) {
+            if (isAdmin()) {
+                addClassBtn.classList.remove('hidden');
+            } else {
+                addClassBtn.classList.add('hidden');
+            }
+        }
+        
         if (addStudentSection) {
             if (hasPermission()) {
                 addStudentSection.classList.remove('hidden');
@@ -998,6 +1008,7 @@ function updateAuthUI() {
         // Hide Q&A button for anonymous users
         if (qaButton) qaButton.classList.add('hidden');
         if (addTeacherBtn) addTeacherBtn.classList.add('hidden');
+        if (addClassBtn) addClassBtn.classList.add('hidden');
         if (addStudentSection) addStudentSection.classList.add('hidden');
         
         // Вернуть стандартный цвет хедера
