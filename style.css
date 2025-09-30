@@ -46,7 +46,7 @@ body {
 
 /* Header */
 .header-glow {
-  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%) !important;
 }
 
 /* Navigation */
@@ -69,7 +69,7 @@ body {
 
 /* Cards */
 .enhanced-card {
-  background: white;
+  background: white !important;
   border-radius: 16px;
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
   border: 1px solid #e5e7eb;
@@ -84,8 +84,8 @@ body {
 
 /* Facts section */
 .facts-container {
-  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-  color: var(--primary) !important; /* дневная тема: синий текст */
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%) !important;
+  color: white !important;
 }
 
 /* Fact dots */
@@ -156,12 +156,19 @@ body {
 
 /* Night theme */
 body[data-theme="night"] {
-  background-color: #111827;
+  background-color: #111827 !important;
   color: #f3f4f6;
 }
 
-body[data-theme="night"] .bg-white { background-color: #1f2937 !important; color: #f3f4f6; }
-body[data-theme="night"] .enhanced-card { background: #374151 !important; color: #f3f4f6; border-color: #4b5563; }
+body[data-theme="night"] .bg-white { 
+  background-color: #1f2937 !important; 
+  color: #f3f4f6; 
+}
+body[data-theme="night"] .enhanced-card { 
+  background: #374151 !important; 
+  color: #f3f4f6; 
+  border-color: #4b5563; 
+}
 body[data-theme="night"] .text-gray-700 { color: #e5e7eb; }
 body[data-theme="night"] .text-gray-600 { color: #d1d5db; }
 body[data-theme="night"] .text-gray-800 { color: #f9fafb; }
@@ -178,9 +185,44 @@ body[data-theme="night"] .border-gray-100 { border-color: #374151; }
 body[data-theme="night"] .border-gray-300 { border-color: #4b5563; }
 
 /* Facts section night theme */
-body[data-theme="night"] .facts-container { background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%) !important; color: white !important; }
+body[data-theme="night"] .facts-container { 
+  background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%) !important; 
+  color: white !important; 
+}
 body[data-theme="night"] #china-facts .fact-dot { background: rgba(255, 255, 255, 0.3); }
 body[data-theme="night"] #china-facts .fact-dot.active { background: white; }
+
+/* Additional night theme background overrides */
+body[data-theme="night"] .header-glow {
+  background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%) !important;
+}
+body[data-theme="night"] footer {
+  background: linear-gradient(to bottom right, #0f172a 0%, #1e293b 100%) !important;
+}
+body[data-theme="night"] #mobile-menu {
+  background: linear-gradient(to bottom right, #0f172a 0%, #1e293b 100%) !important;
+}
+body[data-theme="night"] .bg-gradient-to-br.from-blue-400.to-blue-600 {
+  background: linear-gradient(to bottom right, #1e3a8a 0%, #1e40af 100%) !important;
+}
+body[data-theme="night"] .bg-gradient-to-br.from-blue-700.to-blue-900 {
+  background: linear-gradient(to bottom right, #0f172a 0%, #1e293b 100%) !important;
+}
+body[data-theme="night"] .bg-gradient-to-br.from-blue-800.to-blue-900 {
+  background: linear-gradient(to bottom right, #0f172a 0%, #1e293b 100%) !important;
+}
+body[data-theme="night"] .bg-white\/20 {
+  background-color: rgba(31, 41, 55, 0.2) !important;
+}
+body[data-theme="night"] .bg-white\/10 {
+  background-color: rgba(31, 41, 55, 0.1) !important;
+}
+body[data-theme="night"] .bg-white\/30 {
+  background-color: rgba(31, 41, 55, 0.3) !important;
+}
+body[data-theme="night"] .bg-white\/50 {
+  background-color: rgba(31, 41, 55, 0.5) !important;
+}
 
 /* Headings */
 h1, h2, h3, h4, h5, h6 { color: #1f2937; }
@@ -229,44 +271,3 @@ body[data-theme="night"] footer, body[data-theme="night"] footer * { color: whit
 body[data-theme="night"] .text-blue-100 { color: #dbeafe !important; }
 body[data-theme="night"] .text-blue-200 { color: #bfdbfe !important; }
 body[data-theme="night"] .text-blue-300 { color: #93c5fd !important; }
-
-/* Additional overrides for backgrounds in night theme */
-body[data-theme="night"] .header-glow {
-  background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%) !important;
-}
-
-body[data-theme="night"] footer {
-  background: linear-gradient(to bottom right, #0f172a 0%, #1e293b 100%) !important;
-}
-
-body[data-theme="night"] #mobile-menu {
-  background: linear-gradient(to bottom right, #0f172a 0%, #1e293b 100%) !important;
-}
-
-body[data-theme="night"] .bg-gradient-to-br.from-blue-400.to-blue-600 {
-  background: linear-gradient(to bottom right, #1e3a8a 0%, #1e40af 100%) !important;
-}
-
-body[data-theme="night"] .bg-gradient-to-br.from-blue-700.to-blue-900 {
-  background: linear-gradient(to bottom right, #0f172a 0%, #1e293b 100%) !important;
-}
-
-body[data-theme="night"] .bg-gradient-to-br.from-blue-800.to-blue-900 {
-  background: linear-gradient(to bottom right, #0f172a 0%, #1e293b 100%) !important;
-}
-
-body[data-theme="night"] .bg-white\/20 {
-  background-color: rgba(31, 41, 55, 0.2) !important; /* Темный фон с прозрачностью */
-}
-
-body[data-theme="night"] .bg-white\/10 {
-  background-color: rgba(31, 41, 55, 0.1) !important;
-}
-
-body[data-theme="night"] .bg-white\/30 {
-  background-color: rgba(31, 41, 55, 0.3) !important;
-}
-
-body[data-theme="night"] .bg-white\/50 {
-  background-color: rgba(31, 41, 55, 0.5) !important;
-}
