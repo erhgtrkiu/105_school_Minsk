@@ -25,13 +25,19 @@ function initializeSync() {
 
 // Sync all data to localStorage
 function syncAllData() {
-    localStorage.setItem('school-users', JSON.stringify(users));
-    localStorage.setItem('school-questions', JSON.stringify(questions));
-    localStorage.setItem('school-currentUser', JSON.stringify(currentUser));
-    localStorage.setItem('school-students', JSON.stringify(students));
-    localStorage.setItem('school-classes', JSON.stringify(classes));
-    localStorage.setItem('school-lessons', JSON.stringify(lessons));
-    localStorage.setItem('school-resources', JSON.stringify(resources));
+    try {
+        localStorage.setItem('school-users', JSON.stringify(users));
+        localStorage.setItem('school-questions', JSON.stringify(questions));
+        localStorage.setItem('school-currentUser', JSON.stringify(currentUser));
+        localStorage.setItem('school-students', JSON.stringify(students));
+        localStorage.setItem('school-classes', JSON.stringify(classes));
+        localStorage.setItem('school-lessons', JSON.stringify(lessons));
+        localStorage.setItem('school-resources', JSON.stringify(resources));
+        console.log('💾 Данные успешно сохранены');
+    } catch (error) {
+        console.error('❌ Ошибка сохранения данных:', error);
+        showNotification('❌ Ошибка сохранения данных', 'error');
+    }
 }
 
 // Initialize default data
@@ -759,6 +765,15 @@ function closeModal(modalId) {
     }, 300);
 }
 
+// Clear auth forms
+function clearAuthForms() {
+    document.getElementById('login-username').value = '';
+    document.getElementById('login-password').value = '';
+    document.getElementById('reg-username').value = '';
+    document.getElementById('reg-password').value = '';
+    document.getElementById('reg-confirm-password').value = '';
+}
+
 // Auth functions
 function openAuthModal(type) {
     openModal('auth-modal');
@@ -771,6 +786,9 @@ function openAuthModal(type) {
         document.getElementById('login-form').classList.remove('hidden');
         document.getElementById('modal-title').textContent = 'Вход в систему';
     }
+    
+    // Очищаем поля при открытии модального окна
+    clearAuthForms();
 }
 
 function login() {
@@ -855,7 +873,9 @@ function register() {
     };
     
     users.push(newUser);
-    saveData('users');
+    
+    // Сохраняем данные сразу после добавления пользователя
+    syncAllData();
     
     // Auto login after registration
     currentUser = newUser;
@@ -871,15 +891,18 @@ function register() {
     showNotification(successMessage, 'success');
     
     closeModal('auth-modal');
+    
+    // Очищаем поля формы
     document.getElementById('reg-username').value = '';
     document.getElementById('reg-password').value = '';
     document.getElementById('reg-confirm-password').value = '';
     
+    // Обновляем интерфейс
     updateAuthUI();
     
-    // Показать изменения сразу
+    // Показываем изменения сразу
     setTimeout(() => {
-        if (role === 'teacher') {
+        if (role === 'teacher' || role === 'admin') {
             showPage('teachers');
         } else {
             showPage('main');
