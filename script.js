@@ -1,45 +1,69 @@
 // Initialize Feather Icons
 feather.replace();
 
-// School facts rotation
-const schoolFacts = [
-    "Наша школа основана в 1975 году и имеет богатую историю",
-    "В школе обучается более 800 учеников разных возрастов",
-    "У нас работает 50 высококвалифицированных преподавателей",
-    "Школа сотрудничает с 3 образовательными центрами в Китае",
-    "Ежегодно наши ученики побеждают в городских и республиканских олимпиадах"
+// Data storage
+let users = JSON.parse(localStorage.getItem('users')) || [];
+let questions = JSON.parse(localStorage.getItem('questions')) || [];
+
+// School facts about China
+const chinaFacts = [
+    "Китай - самая населённая страна в мире с более чем 1.4 миллиарда жителей",
+    "Китайский язык является одним из шести официальных языков ООН",
+    "В китайском языке более 50,000 иероглифов, но для чтения газет достаточно знать 3,000",
+    "Великая Китайская стена - самое длинное сооружение, построенное человеком",
+    "Китай является родиной многих изобретений: бумаги, пороха, компаса и книгопечатания"
 ];
 
 let currentFactIndex = 0;
 const factContainer = document.getElementById('fact-container');
 const factDots = document.querySelectorAll('.fact-dot');
 
-function rotateFacts() {
-    currentFactIndex = (currentFactIndex + 1) % schoolFacts.length;
+// Page management
+function showPage(pageId) {
+    // Hide all pages
+    document.querySelectorAll('.page').forEach(page => {
+        page.classList.remove('active');
+        page.classList.add('hidden');
+    });
     
-    // Fade out
+    // Show selected page
+    const targetPage = document.getElementById(pageId + '-page');
+    if (targetPage) {
+        targetPage.classList.add('active');
+        targetPage.classList.remove('hidden');
+    }
+    
+    // Update active nav item
+    document.querySelectorAll('.nav-item').forEach(item => {
+        item.classList.remove('active');
+    });
+    document.querySelectorAll(`[data-page="${pageId}"]`).forEach(item => {
+        item.classList.add('active');
+    });
+    
+    // Close mobile menu
+    document.getElementById('mobile-menu').classList.add('hidden');
+    const menuIcon = document.querySelector('#mobile-menu-button i');
+    menuIcon.setAttribute('data-feather', 'menu');
+    feather.replace();
+}
+
+// Facts rotation
+function rotateFacts() {
+    currentFactIndex = (currentFactIndex + 1) % chinaFacts.length;
+    
     factContainer.classList.add('opacity-0');
     
     setTimeout(() => {
-        factContainer.innerHTML = `<p class="text-xl">${schoolFacts[currentFactIndex]}</p>`;
-        
-        // Fade in
+        factContainer.innerHTML = `<p class="text-xl">${chinaFacts[currentFactIndex]}</p>`;
         factContainer.classList.remove('opacity-0');
-        factContainer.classList.add('animate-fade');
-        
-        // Reset animation for next time
-        setTimeout(() => {
-            factContainer.classList.remove('animate-fade');
-        }, 500);
         
         // Update dots
         factDots.forEach((dot, index) => {
-            dot.classList.remove('active');
-            dot.classList.remove('bg-white');
+            dot.classList.remove('active', 'bg-white');
             dot.classList.add('bg-white/50');
             if (index === currentFactIndex) {
-                dot.classList.add('active');
-                dot.classList.add('bg-white');
+                dot.classList.add('active', 'bg-white');
                 dot.classList.remove('bg-white/50');
             }
         });
@@ -50,38 +74,25 @@ function rotateFacts() {
 document.getElementById('theme-toggle').addEventListener('click', function() {
     const body = document.body;
     const themeIcon = document.querySelector('#theme-toggle i');
+    const header = document.getElementById('header');
+    const footer = document.getElementById('footer');
     
     if (body.getAttribute('data-theme') === 'day') {
         body.setAttribute('data-theme', 'night');
-        document.getElementById('header').classList.remove('header-glow');
-        document.getElementById('header').classList.add('bg-gradient-to-r', 'from-gray-900', 'to-gray-800');
-        document.getElementById('footer').classList.remove('bg-gradient-to-br', 'from-blue-800', 'to-blue-900');
-        document.getElementById('footer').classList.add('bg-gradient-to-br', 'from-gray-900', 'to-gray-800');
+        header.classList.remove('header-glow');
+        header.style.background = 'linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%)';
+        footer.style.background = 'linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%)';
         
-        // Change icon to sun
         themeIcon.setAttribute('data-feather', 'sun');
-        feather.replace();
-        
-        // Update facts container for night mode
-        const factsContainer = document.querySelector('.facts-container');
-        factsContainer.classList.remove('facts-container');
-        factsContainer.style.background = 'linear-gradient(135deg, #2d3748 0%, #1a202c 100%)';
     } else {
         body.setAttribute('data-theme', 'day');
-        document.getElementById('header').classList.add('header-glow');
-        document.getElementById('header').classList.remove('bg-gradient-to-r', 'from-gray-900', 'to-gray-800');
-        document.getElementById('footer').classList.add('bg-gradient-to-br', 'from-blue-800', 'to-blue-900');
-        document.getElementById('footer').classList.remove('bg-gradient-to-br', 'from-gray-900', 'to-gray-800');
+        header.classList.add('header-glow');
+        header.style.background = '';
+        footer.style.background = '';
         
-        // Change icon to moon
         themeIcon.setAttribute('data-feather', 'moon');
-        feather.replace();
-        
-        // Update facts container for day mode
-        const factsContainer = document.querySelector('.facts-container');
-        factsContainer.classList.add('facts-container');
-        factsContainer.style.background = '';
     }
+    feather.replace();
 });
 
 // Mobile menu toggle
@@ -89,7 +100,6 @@ document.getElementById('mobile-menu-button').addEventListener('click', function
     const menu = document.getElementById('mobile-menu');
     menu.classList.toggle('hidden');
     
-    // Change menu icon
     const menuIcon = document.querySelector('#mobile-menu-button i');
     if (menu.classList.contains('hidden')) {
         menuIcon.setAttribute('data-feather', 'menu');
@@ -99,51 +109,16 @@ document.getElementById('mobile-menu-button').addEventListener('click', function
     feather.replace();
 });
 
-// Smooth scrolling for navigation
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        const target = document.querySelector(this.getAttribute('href'));
-        if (target) {
-            target.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
-            
-            // Close mobile menu if open
-            document.getElementById('mobile-menu').classList.add('hidden');
-            const menuIcon = document.querySelector('#mobile-menu-button i');
-            menuIcon.setAttribute('data-feather', 'menu');
-            feather.replace();
-        }
-    });
-});
-
 // Modal management
 function openModal(modalId) {
-    const modal = document.getElementById(modalId);
-    const modalContent = modal.querySelector('.modal-content');
-    
-    modal.classList.remove('hidden');
-    setTimeout(() => {
-        modalContent.classList.remove('scale-95', 'opacity-0');
-        modalContent.classList.add('scale-100', 'opacity-100');
-    }, 10);
+    document.getElementById(modalId).classList.remove('hidden');
 }
 
 function closeModal(modalId) {
-    const modal = document.getElementById(modalId);
-    const modalContent = modal.querySelector('.modal-content');
-    
-    modalContent.classList.remove('scale-100', 'opacity-100');
-    modalContent.classList.add('scale-95', 'opacity-0');
-    
-    setTimeout(() => {
-        modal.classList.add('hidden');
-    }, 300);
+    document.getElementById(modalId).classList.add('hidden');
 }
 
-// Auth modal functions
+// Auth functions
 function openAuthModal(type) {
     openModal('auth-modal');
     if (type === 'register') {
@@ -151,10 +126,6 @@ function openAuthModal(type) {
     } else {
         switchToLogin();
     }
-}
-
-function closeAuthModal() {
-    closeModal('auth-modal');
 }
 
 function switchToRegister() {
@@ -173,22 +144,21 @@ function login() {
     const username = document.getElementById('login-username').value;
     const password = document.getElementById('login-password').value;
     
-    // Simple validation
     if (!username || !password) {
         alert('Пожалуйста, заполните все поля');
         return;
     }
     
-    // Admin check
-    if (username === 'admin' && password === 'admin123') {
-        alert('Вы вошли как администратор');
-        closeAuthModal();
-        return;
+    const user = users.find(u => u.username === username && u.password === password);
+    if (user) {
+        alert(`Добро пожаловать, ${user.username}!`);
+        closeModal('auth-modal');
+        // Clear form
+        document.getElementById('login-username').value = '';
+        document.getElementById('login-password').value = '';
+    } else {
+        alert('Неверный логин или пароль');
     }
-    
-    // In a real app, you would make an API call here
-    alert('Вход выполнен успешно!');
-    closeAuthModal();
 }
 
 function register() {
@@ -197,7 +167,6 @@ function register() {
     const confirmPassword = document.getElementById('reg-confirm-password').value;
     const role = document.getElementById('reg-role').value;
     
-    // Simple validation
     if (!username || !password || !confirmPassword) {
         alert('Пожалуйста, заполните все поля');
         return;
@@ -208,22 +177,32 @@ function register() {
         return;
     }
     
+    if (users.find(u => u.username === username)) {
+        alert('Пользователь с таким логином уже существует');
+        return;
+    }
+    
+    const newUser = { username, password, role };
+    users.push(newUser);
+    localStorage.setItem('users', JSON.stringify(users));
+    
     if (role === 'teacher') {
         alert('Ваша заявка на регистрацию как учитель отправлена администратору на подтверждение.');
     } else {
         alert('Регистрация выполнена успешно!');
     }
     
-    closeAuthModal();
+    closeModal('auth-modal');
+    // Clear form
+    document.getElementById('reg-username').value = '';
+    document.getElementById('reg-password').value = '';
+    document.getElementById('reg-confirm-password').value = '';
 }
 
-// Q&A modal functions
+// Q&A functions
 function openQAModal() {
     openModal('qa-modal');
-}
-
-function closeQAModal() {
-    closeModal('qa-modal');
+    loadQuestions();
 }
 
 function submitQuestion() {
@@ -235,43 +214,64 @@ function submitQuestion() {
         return;
     }
     
-    const qaList = document.getElementById('qa-list');
-    const newQuestion = document.createElement('div');
-    newQuestion.className = 'qa-item enhanced-card p-5';
-    newQuestion.innerHTML = `
-        <div class="qa-question flex items-start">
-            <i data-feather="help-circle" class="w-5 h-5 text-blue-500 mr-3 mt-0.5"></i>
-            <span>${question}</span>
-        </div>
-        <div class="qa-answer mt-3 flex items-start">
-            <i data-feather="clock" class="w-5 h-5 text-yellow-500 mr-3 mt-0.5"></i>
-            <span>Ваш вопрос отправлен учителю. Ответ появится здесь после проверки.</span>
-        </div>
-    `;
+    const newQuestion = {
+        id: Date.now(),
+        question: question,
+        answer: null,
+        date: new Date().toLocaleDateString()
+    };
     
-    qaList.prepend(newQuestion);
+    questions.push(newQuestion);
+    localStorage.setItem('questions', JSON.stringify(questions));
+    
+    loadQuestions();
     questionInput.value = '';
-    feather.replace();
     
     alert('Ваш вопрос отправлен! Ответ появится после проверки учителем.');
 }
 
-// Close modals when clicking outside
-document.addEventListener('click', function(event) {
-    const modals = ['auth-modal', 'qa-modal'];
+function loadQuestions() {
+    const qaList = document.getElementById('qa-list');
+    qaList.innerHTML = '';
     
-    modals.forEach(modalId => {
-        const modal = document.getElementById(modalId);
-        if (event.target === modal) {
-            closeModal(modalId);
-        }
+    // Add existing questions
+    questions.forEach(q => {
+        const questionElement = document.createElement('div');
+        questionElement.className = 'qa-item enhanced-card p-5';
+        questionElement.innerHTML = `
+            <div class="qa-question flex items-start">
+                <i data-feather="help-circle" class="w-5 h-5 text-blue-500 mr-3 mt-0.5"></i>
+                <span>${q.question}</span>
+            </div>
+            ${q.answer ? `
+            <div class="qa-answer mt-3 flex items-start">
+                <i data-feather="check-circle" class="w-5 h-5 text-green-500 mr-3 mt-0.5"></i>
+                <span>${q.answer}</span>
+            </div>
+            ` : `
+            <div class="qa-answer mt-3 flex items-start">
+                <i data-feather="clock" class="w-5 h-5 text-yellow-500 mr-3 mt-0.5"></i>
+                <span>Вопрос на рассмотрении учителя</span>
+            </div>
+            `}
+        `;
+        qaList.appendChild(questionElement);
     });
-});
+    
+    feather.replace();
+}
 
 // Event Listeners
 document.addEventListener('DOMContentLoaded', function() {
     // Start facts rotation
     setInterval(rotateFacts, 5000);
+    
+    // Navigation events
+    document.querySelectorAll('[data-page]').forEach(button => {
+        button.addEventListener('click', function() {
+            showPage(this.getAttribute('data-page'));
+        });
+    });
     
     // Auth modal events
     document.getElementById('register-btn').addEventListener('click', () => openAuthModal('register'));
@@ -289,35 +289,14 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('close-qa-modal').addEventListener('click', () => closeModal('qa-modal'));
     document.getElementById('submit-question').addEventListener('click', submitQuestion);
     
-    // Add enter key support for question submission
-    const questionInput = document.getElementById('question-input');
-    if (questionInput) {
-        questionInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter' && e.ctrlKey) {
-                submitQuestion();
-            }
-        });
-    }
-    
-    // Update navigation active state on scroll
-    window.addEventListener('scroll', function() {
-        const sections = document.querySelectorAll('section[id]');
-        const navLinks = document.querySelectorAll('.nav-item');
-        
-        let current = '';
-        sections.forEach(section => {
-            const sectionTop = section.offsetTop;
-            const sectionHeight = section.clientHeight;
-            if (scrollY >= sectionTop - 100) {
-                current = section.getAttribute('id');
-            }
-        });
-        
-        navLinks.forEach(link => {
-            link.classList.remove('active');
-            if (link.getAttribute('href') === `#${current}`) {
-                link.classList.add('active');
-            }
-        });
+    // Close modals when clicking outside
+    document.addEventListener('click', function(event) {
+        if (event.target.classList.contains('modal-overlay')) {
+            closeModal('auth-modal');
+            closeModal('qa-modal');
+        }
     });
+    
+    // Load initial data
+    loadQuestions();
 });
