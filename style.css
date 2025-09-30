@@ -189,76 +189,77 @@ body {
   box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.2);
 }
 
-/* Night theme */
+/* Night theme - ИСПРАВЛЕННЫЕ СТИЛИ */
 body[data-theme="night"] {
   background-color: #111827;
-  color: #1f2937;
+  color: #f3f4f6;
 }
 
 body[data-theme="night"] .bg-white {
   background-color: #1f2937;
+  color: #f3f4f6;
 }
 
 body[data-theme="night"] .enhanced-card {
   background: #374151;
-  color: #1f2937;
+  color: #f3f4f6;
   border-color: #4b5563;
 }
 
 body[data-theme="night"] .text-gray-700 {
-  color: #374151;
+  color: #e5e7eb;
 }
 
 body[data-theme="night"] .text-gray-600 {
-  color: #4b5563;
+  color: #d1d5db;
 }
 
 body[data-theme="night"] .text-gray-800 {
-  color: #1f2937;
+  color: #f9fafb;
 }
 
 body[data-theme="night"] .text-gray-500 {
-  color: #6b7280;
+  color: #9ca3af;
 }
 
 body[data-theme="night"] .bg-blue-50 {
   background-color: #1e3a8a;
-  color: #1f2937;
+  color: #f9fafb;
 }
 
 body[data-theme="night"] .bg-red-50 {
   background-color: #7f1d1d;
-  color: #1f2937;
+  color: #f9fafb;
 }
 
 body[data-theme="night"] .bg-green-50 {
   background-color: #14532d;
-  color: #1f2937;
+  color: #f9fafb;
 }
 
 body[data-theme="night"] .bg-purple-50 {
   background-color: #4c1d95;
-  color: #1f2937;
+  color: #f9fafb;
 }
 
 body[data-theme="night"] .bg-blue-100 {
   background-color: #1e40af;
-  color: #1f2937;
+  color: #f9fafb;
 }
 
 body[data-theme="night"] .bg-red-100 {
   background-color: #991b1b;
-  color: #1f2937;
+  color: #f9fafb;
 }
 
 body[data-theme="night"] .bg-green-100 {
   background-color: #166534;
-  color: #1f2937;
+  color: #f9fafb;
 }
 
 body[data-theme="night"] .bg-purple-100 {
   background-color: #5b21b6;
-  color: #1f2937;
+  color: #f9fafb;
 }
 
 body[data-theme="night"] .border-gray-100 {
@@ -281,6 +282,55 @@ body[data-theme="night"] #china-facts .fact-dot {
 
 body[data-theme="night"] #china-facts .fact-dot.active {
   background: white;
+}
+
+/* Заголовки в ночной теме */
+body[data-theme="night"] h1,
+body[data-theme="night"] h2,
+body[data-theme="night"] h3,
+body[data-theme="night"] h4,
+body[data-theme="night"] h5,
+body[data-theme="night"] h6 {
+  color: #f9fafb;
+}
+
+/* Текст в параграфах и других элементах */
+body[data-theme="night"] p,
+body[data-theme="night"] span,
+body[data-theme="night"] div {
+  color: #f3f4f6;
+}
+
+/* Labels в ночной теме */
+body[data-theme="night"] label {
+  color: #e5e7eb;
+}
+
+/* Input fields в ночной теме */
+body[data-theme="night"] input,
+body[data-theme="night"] select,
+body[data-theme="night"] textarea {
+  color: #1f2937;
+  background-color: #f9fafb;
+  border-color: #d1d5db;
+}
+
+/* Убедитесь, что текст в карточках виден в ночной теме */
+body[data-theme="night"] .enhanced-card *:not(i):not([class*="bg-"]):not([class*="text-blue"]):not([class*="text-red"]):not([class*="text-green"]):not([class*="text-purple"]) {
+  color: #f3f4f6 !important;
+}
+
+/* Особенно для текста в карточках с фактами */
+body[data-theme="night"] .facts-container,
+body[data-theme="night"] .facts-container * {
+  color: white !important;
+}
+
+/* Для текста в навигации и кнопках */
+body[data-theme="night"] .nav-item,
+body[data-theme="night"] .btn-primary,
+body[data-theme="night"] .btn-secondary {
+  color: white !important;
 }
 
 /* Page management */
@@ -394,7 +444,7 @@ body[data-theme="night"] h3,
 body[data-theme="night"] h4,
 body[data-theme="night"] h5,
 body[data-theme="night"] h6 {
-  color: #1f2937;
+  color: #f9fafb;
 }
 
 p, span, div {
@@ -411,8 +461,8 @@ body[data-theme="night"] input,
 body[data-theme="night"] select,
 body[data-theme="night"] textarea {
   color: #1f2937;
-  background-color: #374151;
-  border-color: #4b5563;
+  background-color: #f9fafb;
+  border-color: #d1d5db;
 }
 
 /* Labels */
@@ -421,7 +471,7 @@ label {
 }
 
 body[data-theme="night"] label {
-  color: #1f2937;
+  color: #e5e7eb;
 }
 
 /* Fix for facts section text */
@@ -433,4 +483,27 @@ body[data-theme="night"] label {
 body[data-theme="night"] .facts-container,
 body[data-theme="night"] .facts-container * {
   color: white !important;
+}
+
+/* Дополнительные исправления для видимости текста */
+body[data-theme="night"] .header-glow,
+body[data-theme="night"] .header-glow * {
+  color: white !important;
+}
+
+body[data-theme="night"] footer,
+body[data-theme="night"] footer * {
+  color: white !important;
+}
+
+body[data-theme="night"] .text-blue-100 {
+  color: #dbeafe !important;
+}
+
+body[data-theme="night"] .text-blue-200 {
+  color: #bfdbfe !important;
+}
+
+body[data-theme="night"] .text-blue-300 {
+  color: #93c5fd !important;
 }
