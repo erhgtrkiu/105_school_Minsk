@@ -15,10 +15,10 @@ body {
   font-family: 'Inter', sans-serif;
   line-height: 1.6;
   background-color: white;
-  color: #1f2937; /* дневная тема — обычный текст */
+  color: #1f2937;
 }
 
-/* Класс для синего текста */
+/* Класс для дневной темы: синие надписи */
 .text-primary-blue {
   color: #2563eb !important;
 }
