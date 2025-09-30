@@ -24,7 +24,7 @@
 body {
   font-family: 'Inter', sans-serif;
   line-height: 1.6;
-  color: #1f2937; /* Добавляем цвет текста по умолчанию */
+  color: #1f2937;
 }
 
 .fact-transition {
@@ -36,6 +36,8 @@ body {
   overflow: hidden;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   background: var(--gradient-blue) !important;
+  border: none;
+  cursor: pointer;
 }
 
 .nav-item:hover {
@@ -54,21 +56,6 @@ body {
   border: 1px solid #e5e7eb;
   position: relative;
   overflow: hidden;
-}
-
-.teacher-card::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-  transition: left 0.5s;
-}
-
-.teacher-card:hover::before {
-  left: 100%;
 }
 
 .teacher-card:hover {
@@ -109,21 +96,6 @@ body {
   cursor: pointer;
 }
 
-.btn-primary::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-  transition: left 0.5s;
-}
-
-.btn-primary:hover::before {
-  left: 100%;
-}
-
 .btn-primary:hover {
   transform: translateY(-2px);
   box-shadow: var(--shadow);
@@ -148,7 +120,6 @@ body {
   border-radius: 16px;
   box-shadow: var(--shadow);
   border: 1px solid rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -165,23 +136,6 @@ body {
   overflow: hidden;
 }
 
-.facts-container::before {
-  content: '';
-  position: absolute;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  background: radial-gradient(circle, rgba(255,255,255,0.1) 1px, transparent 1px);
-  background-size: 20px 20px;
-  animation: float 20s linear infinite;
-}
-
-@keyframes float {
-  0% { transform: translate(0, 0) rotate(0deg); }
-  100% { transform: translate(-20px, -20px) rotate(360deg); }
-}
-
 .fact-dot {
   transition: all 0.3s ease;
 }
@@ -193,7 +147,6 @@ body {
 
 /* Modal enhancements */
 .modal-overlay {
-  backdrop-filter: blur(8px);
   background: rgba(0, 0, 0, 0.5);
 }
 
@@ -201,7 +154,6 @@ body {
   background: var(--bg-white);
   border-radius: 20px;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 /* Theme toggle button */
@@ -222,7 +174,7 @@ body {
 /* Night theme styles */
 body[data-theme="night"] {
   background-color: #1a202c;
-  color: #e2e8f0;
+  color: #000000;
 }
 
 body[data-theme="night"] .bg-gray-50 {
@@ -235,27 +187,11 @@ body[data-theme="night"] .bg-white {
 
 body[data-theme="night"] .text-gray-600,
 body[data-theme="night"] .text-gray-700 {
-  color: #e2e8f0;
-}
-
-body[data-theme="night"] .text-blue-200 {
-  color: #bee3f8;
-}
-
-body[data-theme="night"] .border {
-  border-color: #4a5568;
-}
-
-body[data-theme="night"] .text-blue-300 {
-  color: #90cdf4;
-}
-
-body[data-theme="night"] .border-blue-700 {
-  border-color: #2c5282;
+  color: #000000;
 }
 
 body[data-theme="night"] .header-glow {
-  background: linear-gradient(135deg, #2d3748 0%, #1a202c 100%);
+  background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
 }
 
 body[data-theme="night"] .enhanced-card {
@@ -296,16 +232,25 @@ body[data-theme="night"] .qa-item {
 }
 
 body[data-theme="night"] .qa-question {
-  color: #e2e8f0;
+  color: #000000;
 }
 
 .qa-answer {
   margin-left: 1rem;
-  color: #4a5568;
+  color: #4b5563;
 }
 
 body[data-theme="night"] .qa-answer {
-  color: #cbd5e0;
+  color: #000000;
+}
+
+/* Page management */
+.page {
+  display: none;
+}
+
+.page.active {
+  display: block;
 }
 
 /* Mobile responsiveness */
@@ -335,11 +280,6 @@ body[data-theme="night"] .qa-answer {
   .enhanced-card {
     border-radius: 12px;
   }
-  
-  .btn-primary, .btn-secondary {
-    padding: 0.75rem 1.5rem;
-    font-size: 0.9rem;
-  }
 }
 
 @media (max-width: 640px) {
@@ -365,31 +305,6 @@ body[data-theme="night"] .qa-answer {
   }
 }
 
-/* Smooth scrolling */
-html {
-  scroll-behavior: smooth;
-}
-
-/* Focus styles for accessibility */
-button:focus, a:focus, input:focus, textarea:focus, select:focus {
-  outline: 2px solid var(--primary-light);
-  outline-offset: 2px;
-}
-
-/* Loading animation */
-@keyframes pulse {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.5;
-  }
-}
-
-.animate-pulse {
-  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-
 /* Ensure text visibility */
 .text-gray-700 {
   color: #374151 !important;
@@ -397,4 +312,9 @@ button:focus, a:focus, input:focus, textarea:focus, select:focus {
 
 .text-gray-600 {
   color: #4b5563 !important;
+}
+
+body[data-theme="night"] .text-gray-700,
+body[data-theme="night"] .text-gray-600 {
+  color: #000000 !important;
 }
