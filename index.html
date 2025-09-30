@@ -194,10 +194,10 @@
                     </button>
                     
                     <div id="auth-buttons" class="hidden md:flex space-x-3">
-                        <button id="register-btn" class="bg-red-600 text-white px-5 py-2.5 rounded-xl font-medium hover:bg-red-700 transition-all duration-300">
+                        <button onclick="openAuthModal('register')" class="bg-red-600 text-white px-5 py-2.5 rounded-xl font-medium hover:bg-red-700 transition-all duration-300">
                             Регистрация
                         </button>
-                        <button id="login-btn" class="bg-blue-700 text-white px-5 py-2.5 rounded-xl font-medium hover:bg-blue-800 transition-all duration-300">
+                        <button onclick="openAuthModal('login')" class="bg-blue-700 text-white px-5 py-2.5 rounded-xl font-medium hover:bg-blue-800 transition-all duration-300">
                             Войти
                         </button>
                     </div>
@@ -239,10 +239,10 @@
                 <i data-feather="book" class="w-4 h-4 mr-3"></i>Ресурсы
             </button>
             <div class="pt-4 border-t border-blue-600 space-y-3">
-                <button id="mobile-register-btn" class="w-full px-4 py-3 bg-white text-blue-600 rounded-xl font-medium flex items-center justify-center transition-all duration-300">
+                <button onclick="openAuthModal('register')" class="w-full px-4 py-3 bg-white text-blue-600 rounded-xl font-medium flex items-center justify-center transition-all duration-300">
                     <i data-feather="user-plus" class="w-4 h-4 mr-2"></i>Регистрация
                 </button>
-                <button id="mobile-login-btn" class="w-full mt-2 px-4 py-3 bg-blue-700 text-white rounded-xl font-medium flex items-center justify-center transition-all duration-300">
+                <button onclick="openAuthModal('login')" class="w-full mt-2 px-4 py-3 bg-blue-700 text-white rounded-xl font-medium flex items-center justify-center transition-all duration-300">
                     <i data-feather="log-in" class="w-4 h-4 mr-2"></i>Войти
                 </button>
             </div>
@@ -327,7 +327,7 @@
     <div id="teachers-page" class="page container mx-auto px-4 py-8 hidden">
         <div class="flex justify-between items-center mb-8">
             <h2 class="text-3xl font-bold text-center text-gray-900">Наши учителя</h2>
-            <button id="add-teacher-btn" onclick="openModal('add-teacher-modal')" class="bg-blue-600 text-white px-6 py-3 rounded-xl font-medium hover:bg-blue-700 transition-all duration-300 hidden">
+            <button onclick="openModal('add-teacher-modal')" class="bg-blue-600 text-white px-6 py-3 rounded-xl font-medium hover:bg-blue-700 transition-all duration-300 hidden" id="add-teacher-btn">
                 Добавить учителя
             </button>
         </div>
@@ -359,7 +359,7 @@
                     <input type="text" id="student-login" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                 </div>
             </div>
-            <button id="add-student-btn" class="bg-blue-600 text-white px-6 py-3 rounded-xl font-medium mt-4 hover:bg-blue-700 transition-all duration-300">
+            <button onclick="addStudent()" class="bg-blue-600 text-white px-6 py-3 rounded-xl font-medium mt-4 hover:bg-blue-700 transition-all duration-300">
                 Добавить ученика
             </button>
         </div>
