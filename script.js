@@ -7,20 +7,6 @@ let classes = JSON.parse(localStorage.getItem('classes')) || [];
 let lessons = JSON.parse(localStorage.getItem('lessons')) || [];
 let resources = JSON.parse(localStorage.getItem('resources')) || [];
 
-// Event system for real-time updates
-const EventBus = {
-    events: {},
-    on(event, callback) {
-        if (!this.events[event]) this.events[event] = [];
-        this.events[event].push(callback);
-    },
-    emit(event, data) {
-        if (this.events[event]) {
-            this.events[event].forEach(callback => callback(data));
-        }
-    }
-};
-
 // Initialize default data
 function initializeData() {
     try {
@@ -163,15 +149,22 @@ function refreshAllData() {
     classes = JSON.parse(localStorage.getItem('classes')) || [];
     lessons = JSON.parse(localStorage.getItem('lessons')) || [];
     resources = JSON.parse(localStorage.getItem('resources')) || [];
-    
-    console.log('Data refreshed from localStorage');
 }
 
-// Save data and emit event
-function saveDataAndNotify(dataType) {
+// Save data and force UI update
+function saveData(dataType) {
     localStorage.setItem(dataType, JSON.stringify(eval(dataType)));
-    EventBus.emit('dataChanged', { type: dataType });
-    console.log(`Data saved and event emitted: ${dataType}`);
+    refreshAllData();
+    updateCurrentPage();
+}
+
+// Update current page content
+function updateCurrentPage() {
+    const activePage = document.querySelector('.page.active');
+    if (activePage) {
+        const pageId = activePage.id.replace('-page', '');
+        loadPageContent(pageId);
+    }
 }
 
 // Page management with animations
@@ -221,7 +214,6 @@ function showPage(pageId) {
 }
 
 function loadPageContent(pageId) {
-    // Always refresh data before loading page
     refreshAllData();
     
     switch(pageId) {
@@ -320,7 +312,7 @@ function addTeacher() {
     };
     
     users.push(newTeacher);
-    saveDataAndNotify('users');
+    saveData('users');
     
     // Clear form
     document.getElementById('teacher-name').value = '';
@@ -329,7 +321,6 @@ function addTeacher() {
     
     showNotification(`Учитель ${name} добавлен`);
     closeModal('add-teacher-modal');
-    loadTeachersPage();
 }
 
 // Delete Teacher Function
@@ -344,9 +335,8 @@ function deleteTeacher(username) {
     const userIndex = users.findIndex(u => u.username === username);
     if (userIndex !== -1) {
         users.splice(userIndex, 1);
-        saveDataAndNotify('users');
+        saveData('users');
         showNotification('Учитель удален');
-        loadTeachersPage();
     }
 }
 
@@ -500,7 +490,7 @@ function addStudent() {
     };
     
     users.push(studentUser);
-    saveDataAndNotify('users');
+    saveData('users');
     
     // Add student to students list
     const newStudent = {
@@ -510,14 +500,13 @@ function addStudent() {
     };
     
     students.push(newStudent);
-    saveDataAndNotify('students');
+    saveData('students');
     
     // Clear form
     document.getElementById('student-name').value = '';
     document.getElementById('student-login').value = '';
     
     showNotification(`Ученик ${name} добавлен`);
-    loadClassesPage();
 }
 
 // Facts rotation
@@ -622,7 +611,6 @@ function login() {
         showNotification('Добро пожаловать, Администратор!');
         closeModal('auth-modal');
         updateAuthUI();
-        EventBus.emit('userChanged');
         return;
     }
     
@@ -633,7 +621,6 @@ function login() {
         showNotification(`Добро пожаловать, ${user.name || user.username}!`);
         closeModal('auth-modal');
         updateAuthUI();
-        EventBus.emit('userChanged');
     } else {
         showNotification('Неверный логин или пароль', 'error');
     }
@@ -668,7 +655,7 @@ function register() {
     };
     
     users.push(newUser);
-    saveDataAndNotify('users');
+    saveData('users');
     
     // Auto login after registration
     currentUser = newUser;
@@ -682,7 +669,6 @@ function register() {
     document.getElementById('reg-confirm-password').value = '';
     
     updateAuthUI();
-    EventBus.emit('userChanged');
 }
 
 function forgotPassword() {
@@ -783,7 +769,6 @@ function logout() {
     localStorage.removeItem('currentUser');
     showNotification('Вы успешно вышли из системы');
     updateAuthUI();
-    EventBus.emit('userChanged');
     showPage('main');
 }
 
@@ -795,7 +780,6 @@ function openQAModal() {
         return;
     }
     
-    // Перезагружаем вопросы из localStorage перед открытием
     refreshAllData();
     openModal('qa-modal');
     loadQuestions();
@@ -824,13 +808,10 @@ function submitQuestion() {
         userName: currentUser.name || currentUser.username
     };
     
-    // Обновляем локальную переменную и localStorage
     questions.push(newQuestion);
-    saveDataAndNotify('questions');
+    saveData('questions');
     
-    // Очищаем поле и перезагружаем вопросы
     questionInput.value = '';
-    loadQuestions();
     showNotification('Ваш вопрос отправлен!');
 }
 
@@ -838,7 +819,6 @@ function loadQuestions() {
     const qaList = document.getElementById('qa-list');
     if (!qaList) return;
     
-    // Всегда перезагружаем вопросы из localStorage
     refreshAllData();
     
     qaList.innerHTML = '';
@@ -854,16 +834,13 @@ function loadQuestions() {
         return;
     }
     
-    // Определяем какие вопросы показывать
     let questionsToShow;
     if (hasPermission()) {
-        // Учителя и админы видят все вопросы
-        questionsToShow = [...questions].reverse(); // новые вопросы сверху
+        questionsToShow = [...questions].reverse();
     } else {
-        // Ученики видят только свои вопросы
         questionsToShow = questions
             .filter(q => q.user === currentUser.username)
-            .reverse(); // новые вопросы сверху
+            .reverse();
     }
     
     if (questionsToShow.length === 0) {
@@ -946,91 +923,44 @@ function submitAnswer(questionId) {
         return;
     }
     
-    // Находим вопрос и обновляем его
     const questionIndex = questions.findIndex(q => q.id === questionId);
     if (questionIndex !== -1) {
         questions[questionIndex].answer = answerText;
-        saveDataAndNotify('questions');
+        saveData('questions');
         showNotification('Ответ отправлен');
-        
-        // Перезагружаем вопросы сразу после ответа
-        loadQuestions();
     } else {
         showNotification('Ошибка: вопрос не найден', 'error');
     }
 }
 
-// Storage event listener for cross-tab communication
-function setupStorageListener() {
-    window.addEventListener('storage', function(e) {
-        console.log('Storage changed:', e.key);
-        refreshAllData();
-        updateAuthUI();
-        
-        // Reload current page if needed
-        const activePage = document.querySelector('.page.active');
-        if (activePage) {
-            const pageId = activePage.id.replace('-page', '');
-            loadPageContent(pageId);
-        }
-    });
-}
-
 // Initialize application
 document.addEventListener('DOMContentLoaded', function() {
     try {
-        // Initialize data
         initializeData();
         
-        // Start facts rotation
         setInterval(rotateFacts, 5000);
         
-        // Navigation
         document.querySelectorAll('[data-page]').forEach(button => {
             button.addEventListener('click', function() {
                 showPage(this.getAttribute('data-page'));
             });
         });
         
-        // Theme toggle
         document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
         
-        // Mobile menu
         setupMobileMenu();
         
-        // Q&A button
         document.getElementById('qa-button').addEventListener('click', openQAModal);
         
-        // Close modals on outside click
         document.addEventListener('click', function(event) {
             if (event.target.classList.contains('fixed') && event.target.id.includes('modal')) {
                 closeModal(event.target.id);
             }
         });
         
-        // Setup event listeners for real-time updates
-        EventBus.on('dataChanged', (data) => {
-            console.log('Data changed event received:', data);
-            refreshAllData();
-        });
-        
-        EventBus.on('userChanged', () => {
-            console.log('User changed event received');
-            refreshAllData();
-            updateAuthUI();
-        });
-        
-        // Setup storage listener for cross-tab updates
-        setupStorageListener();
-        
-        // Update UI based on current user
         updateAuthUI();
         
-        // Initialize feather icons
         feather.replace();
-        
-        // Периодическое обновление данных (каждые 3 секунды)
-        setInterval(refreshAllData, 3000);
         
         console.log('School 105 application initialized');
         console.log('Admin: admin / admin123');
