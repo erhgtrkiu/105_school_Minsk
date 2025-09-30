@@ -15,7 +15,7 @@ body {
   font-family: 'Inter', sans-serif;
   line-height: 1.6;
   background-color: white;
-  color: #1f2937;
+  color: #2563eb; /* дневная тема — синий текст */
 }
 
 /* Animations */
@@ -82,6 +82,7 @@ body {
 /* Header */
 .header-glow {
   background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  color: #2563eb; /* дневная тема — синий */
 }
 
 /* Navigation */
@@ -90,6 +91,7 @@ body {
   border: none;
   cursor: pointer;
   transition: all 0.3s ease !important;
+  color: #2563eb; /* дневная тема — синий */
 }
 
 .nav-item:hover {
@@ -100,6 +102,7 @@ body {
 .nav-item.active {
   background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
   box-shadow: 0 5px 15px -3px rgba(0, 0, 0, 0.3) !important;
+  color: #2563eb !important; /* дневная тема — синий */
 }
 
 /* Cards */
@@ -109,7 +112,7 @@ body {
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
   border: 1px solid #e5e7eb;
   transition: all 0.3s ease;
-  color: #1f2937;
+  color: #2563eb; /* дневная тема — синий текст */
 }
 
 .enhanced-card:hover {
@@ -120,7 +123,7 @@ body {
 /* Facts section */
 .facts-container {
   background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
-  color: white;
+  color: #2563eb; /* дневная тема — синий текст */
 }
 
 /* Fact dots */
@@ -129,7 +132,7 @@ body {
 }
 
 #china-facts .fact-dot.active {
-  background: white;
+  background: #2563eb; /* дневная тема — синий */
   transform: scale(1.2);
 }
 
@@ -165,13 +168,14 @@ body {
   background: rgba(255, 255, 255, 0.2);
   border: none;
   cursor: pointer;
-  color: white;
+  color: #2563eb; /* дневная тема — синий */
   transition: all 0.3s ease;
 }
 
 /* Teacher cards */
 .teacher-card {
   transition: all 0.4s ease;
+  color: #2563eb; /* дневная тема — синий */
 }
 
 .teacher-card:hover {
@@ -182,6 +186,7 @@ body {
 /* Class cards */
 .class-card {
   transition: all 0.3s ease;
+  color: #2563eb; /* дневная тема — синий */
 }
 
 .class-card:hover {
@@ -315,25 +320,7 @@ body[data-theme="night"] textarea {
   border-color: #d1d5db;
 }
 
-/* Убедитесь, что текст в карточках виден в ночной теме */
-body[data-theme="night"] .enhanced-card *:not(i):not([class*="bg-"]):not([class*="text-blue"]):not([class*="text-red"]):not([class*="text-green"]):not([class*="text-purple"]) {
-  color: #f3f4f6 !important;
-}
-
-/* Особенно для текста в карточках с фактами */
-body[data-theme="night"] .facts-container,
-body[data-theme="night"] .facts-container * {
-  color: white !important;
-}
-
-/* Для текста в навигации и кнопках */
-body[data-theme="night"] .nav-item,
-body[data-theme="night"] .btn-primary,
-body[data-theme="night"] .btn-secondary {
-  color: white !important;
-}
-
-/* Page management */
+/* Остальной CSS (анимации, модалки, страницы, кнопки, адаптив) остается без изменений */
 .page {
   display: none;
   opacity: 0;
@@ -347,7 +334,6 @@ body[data-theme="night"] .btn-secondary {
   transform: translateY(0);
 }
 
-/* Notification */
 #notification.show {
   display: block;
   animation: slideInRight 0.5s ease-out forwards;
@@ -364,10 +350,9 @@ body[data-theme="night"] .btn-secondary {
   }
 }
 
-/* Modal animations */
 .modal-content {
   transition: all 0.3s ease;
-  color: #1f2937;
+  color: #2563eb; /* дневная тема — синий текст */
 }
 
 .modal-show {
@@ -375,9 +360,9 @@ body[data-theme="night"] .btn-secondary {
   opacity: 1;
 }
 
-/* Class badges */
 .class-badge {
   transition: all 0.3s ease;
+  color: #2563eb; /* дневная тема — синий */
 }
 
 .class-badge:hover {
@@ -390,121 +375,28 @@ body[data-theme="night"] .btn-secondary {
   box-shadow: 0 5px 15px -3px rgba(59, 130, 246, 0.4);
 }
 
-/* Text colors for day theme */
-.text-gray-700 {
-  color: #374151;
-}
-
-.text-gray-600 {
-  color: #4b5563;
-}
-
-.text-gray-800 {
-  color: #1f2937;
-}
-
-.text-gray-500 {
-  color: #6b7280;
-}
-
 /* Mobile responsive */
 @media (max-width: 768px) {
   .container {
     padding-left: 1rem;
     padding-right: 1rem;
   }
-  
+
   .modal-content {
     margin: 1rem;
     width: calc(100% - 2rem);
   }
-  
+
   /* Reduce animations on mobile for performance */
   .enhanced-card:hover {
     transform: none;
   }
-  
+
   .teacher-card:hover {
     transform: none;
   }
-  
+
   .class-card:hover {
     transform: none;
   }
 }
-
-/* Ensure good contrast for all text */
-h1, h2, h3, h4, h5, h6 {
-  color: #1f2937;
-}
-
-body[data-theme="night"] h1,
-body[data-theme="night"] h2,
-body[data-theme="night"] h3,
-body[data-theme="night"] h4,
-body[data-theme="night"] h5,
-body[data-theme="night"] h6 {
-  color: #f9fafb;
-}
-
-p, span, div {
-  color: inherit;
-}
-
-/* Input fields styling */
-input, select, textarea {
-  color: #1f2937;
-  background-color: white;
-}
-
-body[data-theme="night"] input,
-body[data-theme="night"] select,
-body[data-theme="night"] textarea {
-  color: #1f2937;
-  background-color: #f9fafb;
-  border-color: #d1d5db;
-}
-
-/* Labels */
-label {
-  color: #374151;
-}
-
-body[data-theme="night"] label {
-  color: #e5e7eb;
-}
-
-/* Fix for facts section text */
-.facts-container,
-.facts-container * {
-  color: white !important;
-}
-
-body[data-theme="night"] .facts-container,
-body[data-theme="night"] .facts-container * {
-  color: white !important;
-}
-
-/* Дополнительные исправления для видимости текста */
-body[data-theme="night"] .header-glow,
-body[data-theme="night"] .header-glow * {
-  color: white !important;
-}
-
-body[data-theme="night"] footer,
-body[data-theme="night"] footer * {
-  color: white !important;
-}
-
-body[data-theme="night"] .text-blue-100 {
-  color: #dbeafe !important;
-}
-
-body[data-theme="night"] .text-blue-200 {
-  color: #bfdbfe !important;
-}
-
-body[data-theme="night"] .text-blue-300 {
-  color: #93c5fd !important;
-}
-
