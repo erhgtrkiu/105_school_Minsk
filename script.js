@@ -51,6 +51,7 @@ function initializeData() {
                 role: 'admin',
                 name: 'Администратор'
             });
+            syncAllData();
         }
 
         // Initialize classes with proper structure
@@ -61,6 +62,7 @@ function initializeData() {
                 { id: '6A', name: '6А', grade: '6', letter: 'А', students: [] },
                 { id: '6B', name: '6Б', grade: '6', letter: 'Б', students: [] }
             ];
+            syncAllData();
         }
 
         // Initialize lessons
@@ -69,6 +71,7 @@ function initializeData() {
                 { id: 1, classId: '5A', day: 'Понедельник', time: '9:00', subject: 'Китайский для начинающих' },
                 { id: 2, classId: '6A', day: 'Вторник', time: '10:00', subject: 'Разговорный китайский' }
             ];
+            syncAllData();
         }
 
         // Initialize resources with REAL Chinese learning links
@@ -117,9 +120,8 @@ function initializeData() {
                     type: 'website'
                 }
             ];
+            syncAllData();
         }
-        
-        syncAllData();
         
     } catch (error) {
         console.error('Error initializing data:', error);
@@ -193,13 +195,22 @@ function isAdmin() {
 
 // Force refresh all data from localStorage
 function refreshAllData() {
-    users = JSON.parse(localStorage.getItem('school-users')) || [];
-    questions = JSON.parse(localStorage.getItem('school-questions')) || [];
-    currentUser = JSON.parse(localStorage.getItem('school-currentUser')) || null;
-    students = JSON.parse(localStorage.getItem('school-students')) || [];
-    classes = JSON.parse(localStorage.getItem('school-classes')) || [];
-    lessons = JSON.parse(localStorage.getItem('school-lessons')) || [];
-    resources = JSON.parse(localStorage.getItem('school-resources')) || [];
+    const storedUsers = JSON.parse(localStorage.getItem('school-users')) || [];
+    const storedQuestions = JSON.parse(localStorage.getItem('school-questions')) || [];
+    const storedCurrentUser = JSON.parse(localStorage.getItem('school-currentUser')) || null;
+    const storedStudents = JSON.parse(localStorage.getItem('school-students')) || [];
+    const storedClasses = JSON.parse(localStorage.getItem('school-classes')) || [];
+    const storedLessons = JSON.parse(localStorage.getItem('school-lessons')) || [];
+    const storedResources = JSON.parse(localStorage.getItem('school-resources')) || [];
+    
+    // Update global variables only if they are different
+    if (JSON.stringify(users) !== JSON.stringify(storedUsers)) users = storedUsers;
+    if (JSON.stringify(questions) !== JSON.stringify(storedQuestions)) questions = storedQuestions;
+    if (JSON.stringify(currentUser) !== JSON.stringify(storedCurrentUser)) currentUser = storedCurrentUser;
+    if (JSON.stringify(students) !== JSON.stringify(storedStudents)) students = storedStudents;
+    if (JSON.stringify(classes) !== JSON.stringify(storedClasses)) classes = storedClasses;
+    if (JSON.stringify(lessons) !== JSON.stringify(storedLessons)) lessons = storedLessons;
+    if (JSON.stringify(resources) !== JSON.stringify(storedResources)) resources = storedResources;
 }
 
 // Save data and force UI update
@@ -254,8 +265,7 @@ function showPage(pageId) {
             item.classList.add('active');
         });
         
-        // Load page-specific content (принудительно обновляем)
-        refreshAllData();
+        // Load page-specific content
         loadPageContent(pageId);
         
         // Close mobile menu
@@ -808,14 +818,17 @@ function login() {
         showNotification('🎉 Добро пожаловать, Администратор! Теперь у вас есть полный доступ к системе', 'success');
         closeModal('auth-modal');
         
-        // Немедленно обновляем интерфейс
-        refreshAllData();
-        updateAuthUI();
-        
-        // Переходим на страницу учителей
-        showPage('teachers');
+        // Force refresh and update UI
+        setTimeout(() => {
+            refreshAllData();
+            updateAuthUI();
+            showPage('teachers');
+        }, 100);
         return;
     }
+    
+    // Refresh data before checking login
+    refreshAllData();
     
     const user = users.find(u => u.username === username && u.password === password);
     if (user) {
@@ -832,16 +845,16 @@ function login() {
         showNotification(welcomeMessage, 'success');
         closeModal('auth-modal');
         
-        // Немедленно обновляем интерфейс
-        refreshAllData();
-        updateAuthUI();
-        
-        // Переходим на соответствующую страницу
-        if (user.role === 'teacher' || user.role === 'admin') {
-            showPage('teachers');
-        } else {
-            showPage('main');
-        }
+        // Force refresh and update UI
+        setTimeout(() => {
+            refreshAllData();
+            updateAuthUI();
+            if (user.role === 'teacher' || user.role === 'admin') {
+                showPage('teachers');
+            } else {
+                showPage('main');
+            }
+        }, 100);
     } else {
         showNotification('❌ Неверный логин или пароль', 'error');
     }
@@ -863,6 +876,9 @@ function register() {
         return;
     }
     
+    // Refresh data before checking if user exists
+    refreshAllData();
+    
     if (users.find(u => u.username === username)) {
         showNotification('❌ Пользователь с таким логином уже существует', 'error');
         return;
@@ -879,7 +895,6 @@ function register() {
     
     // Сохраняем данные сразу после добавления пользователя
     syncAllData();
-    refreshAllData(); // Обновляем данные из localStorage
     
     // Auto login after registration
     currentUser = newUser;
@@ -901,15 +916,16 @@ function register() {
     document.getElementById('reg-password').value = '';
     document.getElementById('reg-confirm-password').value = '';
     
-    // Немедленно обновляем интерфейс
-    updateAuthUI();
-    
-    // Показываем изменения сразу без задержки
-    if (role === 'teacher' || role === 'admin') {
-        showPage('teachers');
-    } else {
-        showPage('main');
-    }
+    // Force refresh and update UI
+    setTimeout(() => {
+        refreshAllData();
+        updateAuthUI();
+        if (role === 'teacher' || role === 'admin') {
+            showPage('teachers');
+        } else {
+            showPage('main');
+        }
+    }, 100);
 }
 
 function forgotPassword() {
@@ -923,7 +939,6 @@ function updateAuthUI() {
     const addTeacherBtn = document.getElementById('add-teacher-btn');
     const addStudentSection = document.getElementById('add-student-section');
     const addClassBtn = document.getElementById('add-class-btn');
-    const header = document.querySelector('header');
     
     if (!authButtons) return;
     
@@ -998,9 +1013,6 @@ function updateAuthUI() {
             }
         }
         
-        // Обновляем текущую страницу
-        updateCurrentPage();
-        
     } else {
         // User is not logged in
         authButtons.innerHTML = `
@@ -1046,10 +1058,12 @@ function logout() {
     localStorage.removeItem('school-currentUser');
     showNotification('🔒 Вы успешно вышли из системы. Чтобы снова войти, нажмите кнопку "Войти"', 'info');
     
-    // Немедленно обновляем интерфейс
-    refreshAllData();
-    updateAuthUI();
-    showPage('main');
+    // Force refresh and update UI
+    setTimeout(() => {
+        refreshAllData();
+        updateAuthUI();
+        showPage('main');
+    }, 100);
 }
 
 // Q&A functions
