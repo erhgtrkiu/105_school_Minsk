@@ -192,7 +192,7 @@ body {
 /* Night theme */
 body[data-theme="night"] {
   background-color: #111827;
-  color: #f9fafb;
+  color: #1f2937;
 }
 
 body[data-theme="night"] .bg-white {
@@ -201,64 +201,64 @@ body[data-theme="night"] .bg-white {
 
 body[data-theme="night"] .enhanced-card {
   background: #374151;
-  color: #f9fafb;
+  color: #1f2937;
   border-color: #4b5563;
 }
 
 body[data-theme="night"] .text-gray-700 {
-  color: #d1d5db;
+  color: #374151;
 }
 
 body[data-theme="night"] .text-gray-600 {
-  color: #9ca3af;
+  color: #4b5563;
 }
 
 body[data-theme="night"] .text-gray-800 {
-  color: #f9fafb;
+  color: #1f2937;
 }
 
 body[data-theme="night"] .text-gray-500 {
-  color: #d1d5db;
+  color: #6b7280;
 }
 
 body[data-theme="night"] .bg-blue-50 {
   background-color: #1e3a8a;
-  color: #f9fafb;
+  color: #1f2937;
 }
 
 body[data-theme="night"] .bg-red-50 {
   background-color: #7f1d1d;
-  color: #f9fafb;
+  color: #1f2937;
 }
 
 body[data-theme="night"] .bg-green-50 {
   background-color: #14532d;
-  color: #f9fafb;
+  color: #1f2937;
 }
 
 body[data-theme="night"] .bg-purple-50 {
   background-color: #4c1d95;
-  color: #f9fafb;
+  color: #1f2937;
 }
 
 body[data-theme="night"] .bg-blue-100 {
   background-color: #1e40af;
-  color: #f9fafb;
+  color: #1f2937;
 }
 
 body[data-theme="night"] .bg-red-100 {
   background-color: #991b1b;
-  color: #f9fafb;
+  color: #1f2937;
 }
 
 body[data-theme="night"] .bg-green-100 {
   background-color: #166534;
-  color: #f9fafb;
+  color: #1f2937;
 }
 
 body[data-theme="night"] .bg-purple-100 {
   background-color: #5b21b6;
-  color: #f9fafb;
+  color: #1f2937;
 }
 
 body[data-theme="night"] .border-gray-100 {
@@ -394,7 +394,7 @@ body[data-theme="night"] h3,
 body[data-theme="night"] h4,
 body[data-theme="night"] h5,
 body[data-theme="night"] h6 {
-  color: #f9fafb;
+  color: #1f2937;
 }
 
 p, span, div {
@@ -410,7 +410,7 @@ input, select, textarea {
 body[data-theme="night"] input,
 body[data-theme="night"] select,
 body[data-theme="night"] textarea {
-  color: #f9fafb;
+  color: #1f2937;
   background-color: #374151;
   border-color: #4b5563;
 }
@@ -421,5 +421,16 @@ label {
 }
 
 body[data-theme="night"] label {
-  color: #f9fafb;
+  color: #1f2937;
+}
+
+/* Fix for facts section text */
+.facts-container,
+.facts-container * {
+  color: white !important;
+}
+
+body[data-theme="night"] .facts-container,
+body[data-theme="night"] .facts-container * {
+  color: white !important;
 }
