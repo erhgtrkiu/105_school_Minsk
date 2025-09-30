@@ -48,7 +48,7 @@
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Пароль</label>
                                 <input type="password" id="login-password" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                             </div>
-                            <button onclick="login()" class="w-full bg-blue-600 text-white py-3 rounded-xl font-medium hover:bg-blue-700">
+                            <button onclick="login()" class="w-full bg-blue-600 text-white py-3 rounded-xl font-medium hover:bg-blue-700 transition-all duration-300">
                                 Войти
                             </button>
                             <div class="text-center">
@@ -89,7 +89,7 @@
                                     <option value="teacher">Учитель</option>
                                 </select>
                             </div>
-                            <button onclick="register()" class="w-full bg-blue-600 text-white py-3 rounded-xl font-medium hover:bg-blue-700">
+                            <button onclick="register()" class="w-full bg-blue-600 text-white py-3 rounded-xl font-medium hover:bg-blue-700 transition-all duration-300">
                                 Зарегистрироваться
                             </button>
                             <div class="text-center pt-4 border-t border-gray-200">
@@ -122,7 +122,7 @@
                     <!-- Ask Question -->
                     <div class="mb-6">
                         <textarea id="question-input" placeholder="Задайте свой вопрос..." class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 h-24 resize-none"></textarea>
-                        <button onclick="submitQuestion()" class="bg-blue-600 text-white px-6 py-3 rounded-xl font-medium mt-3 hover:bg-blue-700">
+                        <button onclick="submitQuestion()" class="bg-blue-600 text-white px-6 py-3 rounded-xl font-medium mt-3 hover:bg-blue-700 transition-all duration-300">
                             Отправить вопрос
                         </button>
                     </div>
@@ -151,19 +151,19 @@
                 </div>
                 
                 <div class="flex items-center space-x-3">
-                    <button id="theme-toggle" class="bg-white/20 p-3 rounded-xl hover:bg-white/30 transition-all">
+                    <button id="theme-toggle" class="bg-white/20 p-3 rounded-xl hover:bg-white/30 transition-all duration-300">
                         <i data-feather="moon" class="w-5 h-5"></i>
                     </button>
                     
-                    <button id="qa-button" class="bg-white/20 p-3 rounded-xl hover:bg-white/30 transition-all">
+                    <button id="qa-button" class="bg-white/20 p-3 rounded-xl hover:bg-white/30 transition-all duration-300">
                         <i data-feather="message-circle" class="w-5 h-5"></i>
                     </button>
                     
                     <div id="auth-buttons" class="hidden md:flex space-x-3">
-                        <button onclick="openAuthModal('register')" class="bg-red-600 text-white px-5 py-2.5 rounded-xl font-medium hover:bg-red-700">
+                        <button id="register-btn" class="bg-red-600 text-white px-5 py-2.5 rounded-xl font-medium hover:bg-red-700 transition-all duration-300">
                             Регистрация
                         </button>
-                        <button onclick="openAuthModal('login')" class="bg-blue-700 text-white px-5 py-2.5 rounded-xl font-medium hover:bg-blue-800">
+                        <button id="login-btn" class="bg-blue-700 text-white px-5 py-2.5 rounded-xl font-medium hover:bg-blue-800 transition-all duration-300">
                             Войти
                         </button>
                     </div>
@@ -189,26 +189,26 @@
     <!-- Mobile Menu -->
     <div id="mobile-menu" class="hidden bg-blue-800 text-white py-4 px-4 md:hidden">
         <div class="flex flex-col space-y-3">
-            <button data-page="main" class="px-4 py-3 rounded-xl hover:bg-white/10 flex items-center">
+            <button data-page="main" class="px-4 py-3 rounded-xl hover:bg-white/10 flex items-center transition-all duration-300">
                 <i data-feather="home" class="w-4 h-4 mr-3"></i>Главная
             </button>
-            <button data-page="teachers" class="px-4 py-3 rounded-xl hover:bg-white/10 flex items-center">
+            <button data-page="teachers" class="px-4 py-3 rounded-xl hover:bg-white/10 flex items-center transition-all duration-300">
                 <i data-feather="users" class="w-4 h-4 mr-3"></i>Учителя
             </button>
-            <button data-page="classes" class="px-4 py-3 rounded-xl hover:bg-white/10 flex items-center">
+            <button data-page="classes" class="px-4 py-3 rounded-xl hover:bg-white/10 flex items-center transition-all duration-300">
                 <i data-feather="layers" class="w-4 h-4 mr-3"></i>Классы
             </button>
-            <button data-page="lessons" class="px-4 py-3 rounded-xl hover:bg-white/10 flex items-center">
+            <button data-page="lessons" class="px-4 py-3 rounded-xl hover:bg-white/10 flex items-center transition-all duration-300">
                 <i data-feather="clock" class="w-4 h-4 mr-3"></i>Занятия
             </button>
-            <button data-page="resources" class="px-4 py-3 rounded-xl hover:bg-white/10 flex items-center">
+            <button data-page="resources" class="px-4 py-3 rounded-xl hover:bg-white/10 flex items-center transition-all duration-300">
                 <i data-feather="book" class="w-4 h-4 mr-3"></i>Ресурсы
             </button>
             <div class="pt-4 border-t border-blue-600 space-y-3">
-                <button onclick="openAuthModal('register')" class="w-full px-4 py-3 bg-white text-blue-600 rounded-xl font-medium flex items-center justify-center">
+                <button id="mobile-register-btn" class="w-full px-4 py-3 bg-white text-blue-600 rounded-xl font-medium flex items-center justify-center transition-all duration-300">
                     <i data-feather="user-plus" class="w-4 h-4 mr-2"></i>Регистрация
                 </button>
-                <button onclick="openAuthModal('login')" class="w-full mt-2 px-4 py-3 bg-blue-700 text-white rounded-xl font-medium flex items-center justify-center">
+                <button id="mobile-login-btn" class="w-full mt-2 px-4 py-3 bg-blue-700 text-white rounded-xl font-medium flex items-center justify-center transition-all duration-300">
                     <i data-feather="log-in" class="w-4 h-4 mr-2"></i>Войти
                 </button>
             </div>
@@ -217,7 +217,7 @@
 
     <!-- Main Content -->
     <main id="main-page" class="page container mx-auto px-4 py-8 active">
-        <section class="text-center mb-12">
+        <section class="text-center mb-12 animate-fade-in">
             <h1 class="text-4xl md:text-5xl font-bold text-gray-900 mb-4">Кабинет <span class="text-blue-600">китайского языка</span></h1>
             <p class="text-xl text-gray-700 max-w-2xl mx-auto">Изучаем китайский язык и культуру Китая</p>
         </section>
@@ -225,14 +225,14 @@
         <!-- Theme Images Section -->
         <section class="mb-12">
             <div class="grid md:grid-cols-2 gap-6">
-                <div class="bg-white p-6 rounded-2xl shadow-lg border border-gray-200 text-center">
+                <div class="bg-white p-6 rounded-2xl shadow-lg border border-gray-200 text-center animate-scale-in">
                     <div class="w-32 h-32 bg-blue-100 rounded-full mx-auto mb-4 flex items-center justify-center">
                         <i data-feather="sun" class="w-16 h-16 text-yellow-500"></i>
                     </div>
                     <h3 class="text-xl font-bold text-blue-600 mb-2">Дневная тема</h3>
                     <p class="text-gray-700">Светлый интерфейс для комфортной работы днем</p>
                 </div>
-                <div class="bg-white p-6 rounded-2xl shadow-lg border border-gray-200 text-center">
+                <div class="bg-white p-6 rounded-2xl shadow-lg border border-gray-200 text-center animate-scale-in">
                     <div class="w-32 h-32 bg-blue-900 rounded-full mx-auto mb-4 flex items-center justify-center">
                         <i data-feather="moon" class="w-16 h-16 text-blue-300"></i>
                     </div>
@@ -242,7 +242,7 @@
             </div>
         </section>
 
-        <section class="max-w-4xl mx-auto bg-blue-600 text-white p-8 rounded-2xl shadow-lg mb-12">
+        <section class="max-w-4xl mx-auto bg-blue-600 text-white p-8 rounded-2xl shadow-lg mb-12 animate-slide-up">
             <div class="flex items-center mb-6">
                 <div class="bg-white/20 p-3 rounded-xl mr-4">
                     <i data-feather="info" class="w-6 h-6"></i>
@@ -257,7 +257,7 @@
         </section>
 
         <div class="grid md:grid-cols-3 gap-6 mb-12">
-            <div class="bg-blue-50 p-6 rounded-2xl shadow-lg border border-blue-100">
+            <div class="bg-blue-50 p-6 rounded-2xl shadow-lg border border-blue-100 animate-fade-in">
                 <div class="flex items-center mb-4">
                     <div class="bg-blue-100 p-3 rounded-xl mr-4">
                         <i data-feather="calendar" class="w-6 h-6 text-blue-600"></i>
@@ -267,7 +267,7 @@
                 <p class="text-gray-800 font-medium">Понедельник, 9:00 - Китайский для начинающих</p>
             </div>
             
-            <div class="bg-red-50 p-6 rounded-2xl shadow-lg border border-red-100">
+            <div class="bg-red-50 p-6 rounded-2xl shadow-lg border border-red-100 animate-fade-in">
                 <div class="flex items-center mb-4">
                     <div class="bg-red-100 p-3 rounded-xl mr-4">
                         <i data-feather="award" class="w-6 h-6 text-red-600"></i>
@@ -277,7 +277,7 @@
                 <p class="text-gray-800 font-medium">15 призеров городской олимпиады</p>
             </div>
             
-            <div class="bg-green-50 p-6 rounded-2xl shadow-lg border border-green-100">
+            <div class="bg-green-50 p-6 rounded-2xl shadow-lg border border-green-100 animate-fade-in">
                 <div class="flex items-center mb-4">
                     <div class="bg-green-100 p-3 rounded-xl mr-4">
                         <i data-feather="users" class="w-6 h-6 text-green-600"></i>
@@ -293,7 +293,7 @@
     <div id="teachers-page" class="page container mx-auto px-4 py-8 hidden">
         <h2 class="text-3xl font-bold text-center text-gray-900 mb-8">Наши учителя</h2>
         <div class="grid md:grid-cols-3 gap-6">
-            <div class="bg-white p-6 rounded-2xl shadow-lg border border-gray-200 text-center">
+            <div class="bg-white p-6 rounded-2xl shadow-lg border border-gray-200 text-center animate-scale-in">
                 <div class="w-24 h-24 bg-blue-100 rounded-full mx-auto mb-4 flex items-center justify-center">
                     <i data-feather="user" class="w-12 h-12 text-blue-600"></i>
                 </div>
@@ -327,7 +327,7 @@
                     <input type="text" id="student-login" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                 </div>
             </div>
-            <button onclick="addStudent()" class="bg-blue-600 text-white px-6 py-3 rounded-xl font-medium mt-4 hover:bg-blue-700">
+            <button id="add-student-btn" class="bg-blue-600 text-white px-6 py-3 rounded-xl font-medium mt-4 hover:bg-blue-700 transition-all duration-300">
                 Добавить ученика
             </button>
         </div>
