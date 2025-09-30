@@ -1,4 +1,4 @@
-// Data storage with proper initialization
+// Data storage
 let users = JSON.parse(localStorage.getItem('users')) || [];
 let questions = JSON.parse(localStorage.getItem('questions')) || [];
 let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
@@ -196,7 +196,8 @@ function loadClassesPage() {
         const classStudents = students.filter(student => student.class === classItem.id);
         
         const classCard = document.createElement('div');
-        classCard.className = 'bg-white p-6 rounded-2xl shadow-lg border border-gray-200 text-center class-card animate-scale-in';
+        classCard.className = 'bg-white p-6 rounded-2xl shadow-lg border border-gray-200 text-center class-card';
+        classCard.style.animation = 'fadeIn 0.6s ease-out';
         classCard.innerHTML = `
             <div class="w-16 h-16 bg-blue-100 rounded-full mx-auto mb-4 flex items-center justify-center">
                 <i data-feather="users" class="w-8 h-8 text-blue-600"></i>
@@ -229,10 +230,11 @@ function loadLessonsPage() {
             </div>
         `;
     } else {
-        lessons.forEach(lesson => {
+        lessons.forEach((lesson, index) => {
             const classItem = classes.find(c => c.id === lesson.classId);
             const lessonElement = document.createElement('div');
-            lessonElement.className = 'bg-blue-50 p-4 rounded-xl border border-blue-100 lesson-card animate-fade-in';
+            lessonElement.className = 'bg-blue-50 p-4 rounded-xl border border-blue-100 lesson-card';
+            lessonElement.style.animation = `fadeIn 0.6s ease-out ${index * 0.1}s both`;
             lessonElement.innerHTML = `
                 <div class="flex items-center mb-2">
                     <i data-feather="clock" class="w-4 h-4 text-blue-500 mr-2"></i>
@@ -261,13 +263,14 @@ function loadResourcesPage() {
             </div>
         `;
     } else {
-        resources.forEach(resource => {
+        resources.forEach((resource, index) => {
             const resourceElement = document.createElement('div');
-            resourceElement.className = 'bg-white p-6 rounded-2xl shadow-lg border border-gray-200 resource-card animate-slide-up';
+            resourceElement.className = 'bg-white p-6 rounded-2xl shadow-lg border border-gray-200 resource-card';
+            resourceElement.style.animation = `slideUp 0.6s ease-out ${index * 0.1}s both`;
             resourceElement.innerHTML = `
                 <h3 class="text-xl font-bold text-blue-600 mb-2">${resource.title}</h3>
                 <p class="text-gray-700 mb-4">${resource.description}</p>
-                <a href="${resource.link}" target="_blank" class="bg-blue-600 text-white inline-flex items-center px-4 py-2 rounded-xl text-sm hover:bg-blue-700 transition-all duration-300 transform hover:scale-105">
+                <a href="${resource.link}" target="_blank" class="bg-blue-600 text-white inline-flex items-center px-4 py-2 rounded-xl text-sm hover:bg-blue-700 transition-all duration-300">
                     <i data-feather="external-link" class="w-4 h-4 mr-2"></i>
                     Открыть ресурс
                 </a>
@@ -384,7 +387,7 @@ function setupMobileMenu() {
     }
 }
 
-// Modal functions with animations
+// Modal functions
 function openModal(modalId) {
     const modal = document.getElementById(modalId);
     modal.classList.remove('hidden');
@@ -499,7 +502,7 @@ function updateAuthUI() {
         authButtons.innerHTML = `
             <div class="flex items-center space-x-3">
                 <span class="text-white">${currentUser.name || currentUser.username}</span>
-                <button id="logout-btn" class="bg-red-600 text-white px-4 py-2 rounded-xl font-medium text-sm hover:bg-red-700 transition-all duration-300 transform hover:scale-105">
+                <button onclick="logout()" class="bg-red-600 text-white px-4 py-2 rounded-xl font-medium text-sm hover:bg-red-700 transition-all duration-300">
                     Выйти
                 </button>
             </div>
@@ -510,7 +513,7 @@ function updateAuthUI() {
                 <div class="text-white text-center py-2">
                     ${currentUser.name || currentUser.username}
                 </div>
-                <button id="mobile-logout-btn" class="w-full px-4 py-3 bg-red-600 text-white rounded-xl font-medium flex items-center justify-center transition-all duration-300 transform hover:scale-105">
+                <button onclick="logout()" class="w-full px-4 py-3 bg-red-600 text-white rounded-xl font-medium flex items-center justify-center transition-all duration-300">
                     <i data-feather="log-out" class="w-4 h-4 mr-2"></i>
                     Выйти
                 </button>
@@ -520,28 +523,24 @@ function updateAuthUI() {
         // Show Q&A button for all logged in users
         qaButton.classList.remove('hidden');
         
-        // Add logout event listeners
-        document.getElementById('logout-btn').addEventListener('click', logout);
-        document.getElementById('mobile-logout-btn').addEventListener('click', logout);
-        
     } else {
         // User is not logged in
         authButtons.innerHTML = `
-            <button onclick="openAuthModal('register')" class="bg-red-600 text-white px-5 py-2.5 rounded-xl font-medium hover:bg-red-700 transition-all duration-300 transform hover:scale-105">
+            <button onclick="openAuthModal('register')" class="bg-red-600 text-white px-5 py-2.5 rounded-xl font-medium hover:bg-red-700 transition-all duration-300">
                 Регистрация
             </button>
-            <button onclick="openAuthModal('login')" class="bg-blue-700 text-white px-5 py-2.5 rounded-xl font-medium hover:bg-blue-800 transition-all duration-300 transform hover:scale-105">
+            <button onclick="openAuthModal('login')" class="bg-blue-700 text-white px-5 py-2.5 rounded-xl font-medium hover:bg-blue-800 transition-all duration-300">
                 Войти
             </button>
         `;
         
         mobileAuthSection.innerHTML = `
             <div class="pt-4 border-t border-blue-600 space-y-3">
-                <button onclick="openAuthModal('register')" class="w-full px-4 py-3 bg-white text-blue-600 rounded-xl font-medium flex items-center justify-center transition-all duration-300 transform hover:scale-105">
+                <button onclick="openAuthModal('register')" class="w-full px-4 py-3 bg-white text-blue-600 rounded-xl font-medium flex items-center justify-center transition-all duration-300">
                     <i data-feather="user-plus" class="w-4 h-4 mr-2"></i>
                     Регистрация
                 </button>
-                <button onclick="openAuthModal('login')" class="w-full mt-2 px-4 py-3 bg-blue-700 text-white rounded-xl font-medium flex items-center justify-center transition-all duration-300 transform hover:scale-105">
+                <button onclick="openAuthModal('login')" class="w-full mt-2 px-4 py-3 bg-blue-700 text-white rounded-xl font-medium flex items-center justify-center transition-all duration-300">
                     <i data-feather="log-in" class="w-4 h-4 mr-2"></i>
                     Войти
                 </button>
@@ -621,9 +620,10 @@ function loadQuestions() {
         return;
     }
     
-    questions.forEach(q => {
+    questions.forEach((q, index) => {
         const questionElement = document.createElement('div');
-        questionElement.className = 'bg-white p-5 rounded-2xl shadow-lg border border-gray-200 mb-4 qa-item animate-fade-in';
+        questionElement.className = 'bg-white p-5 rounded-2xl shadow-lg border border-gray-200 mb-4';
+        questionElement.style.animation = `fadeIn 0.6s ease-out ${index * 0.1}s both`;
         questionElement.innerHTML = `
             <div class="flex items-start mb-3">
                 <i data-feather="help-circle" class="w-5 h-5 text-blue-500 mr-3 mt-0.5"></i>
@@ -677,18 +677,21 @@ document.addEventListener('DOMContentLoaded', function() {
     // Q&A button
     document.getElementById('qa-button').addEventListener('click', openQAModal);
     
+    // Auth buttons
+    document.getElementById('register-btn').addEventListener('click', () => openAuthModal('register'));
+    document.getElementById('login-btn').addEventListener('click', () => openAuthModal('login'));
+    document.getElementById('mobile-register-btn').addEventListener('click', () => openAuthModal('register'));
+    document.getElementById('mobile-login-btn').addEventListener('click', () => openAuthModal('login'));
+    
+    // Add student button
+    document.getElementById('add-student-btn').addEventListener('click', addStudent);
+    
     // Close modals on outside click
     document.addEventListener('click', function(event) {
         if (event.target.classList.contains('fixed') && event.target.id.includes('modal')) {
             closeModal(event.target.id);
         }
     });
-    
-    // Add student button
-    const addStudentBtn = document.getElementById('add-student-btn');
-    if (addStudentBtn) {
-        addStudentBtn.addEventListener('click', addStudent);
-    }
     
     // Update UI based on current user
     updateAuthUI();
