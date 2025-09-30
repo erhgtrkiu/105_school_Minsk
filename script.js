@@ -5,6 +5,56 @@ feather.replace();
 let users = JSON.parse(localStorage.getItem('users')) || [];
 let questions = JSON.parse(localStorage.getItem('questions')) || [];
 let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
+let students = JSON.parse(localStorage.getItem('students')) || [];
+let classes = JSON.parse(localStorage.getItem('classes')) || [];
+let lessons = JSON.parse(localStorage.getItem('lessons')) || [];
+
+// Initialize default data if empty
+if (users.length === 0) {
+    users = [
+        { username: 'admin', password: 'admin123', role: 'admin' }
+    ];
+    localStorage.setItem('users', JSON.stringify(users));
+}
+
+if (classes.length === 0) {
+    classes = ['5А', '5Б', '6А', '6Б', '7А', '7Б', '8А', '8Б', '9А', '9Б', '10А', '10Б', '11А', '11Б'];
+    localStorage.setItem('classes', JSON.stringify(classes));
+}
+
+if (lessons.length === 0) {
+    lessons = [
+        { class: '5А', day: 'Понедельник', time: '9:00', subject: 'Китайский для начинающих' },
+        { class: '5А', day: 'Среда', time: '10:00', subject: 'Разговорный китайский' },
+        { class: '5Б', day: 'Вторник', time: '9:00', subject: 'Китайский для начинающих' },
+        { class: '5Б', day: 'Четверг', time: '10:00', subject: 'Разговорный китайский' },
+        { class: '6А', day: 'Понедельник', time: '11:00', subject: 'Иероглифика' },
+        { class: '6А', day: 'Среда', time: '12:00', subject: 'Китайская культура' },
+        { class: '6Б', day: 'Вторник', time: '11:00', subject: 'Иероглифика' },
+        { class: '6Б', day: 'Четверг', time: '12:00', subject: 'Китайская культура' },
+        { class: '7А', day: 'Понедельник', time: '13:00', subject: 'Продвинутый китайский' },
+        { class: '7А', day: 'Среда', time: '14:00', subject: 'Китайская литература' },
+        { class: '7Б', day: 'Вторник', time: '13:00', subject: 'Продвинутый китайский' },
+        { class: '7Б', day: 'Четверг', time: '14:00', subject: 'Китайская литература' },
+        { class: '8А', day: 'Понедельник', time: '15:00', subject: 'Деловой китайский' },
+        { class: '8А', day: 'Среда', time: '16:00', subject: 'Подготовка к HSK' },
+        { class: '8Б', day: 'Вторник', time: '15:00', subject: 'Деловой китайский' },
+        { class: '8Б', day: 'Четверг', time: '16:00', subject: 'Подготовка к HSK' },
+        { class: '9А', day: 'Понедельник', time: '14:00', subject: 'Китайский для экзаменов' },
+        { class: '9А', day: 'Среда', time: '15:00', subject: 'Разговорная практика' },
+        { class: '9Б', day: 'Вторник', time: '14:00', subject: 'Китайский для экзаменов' },
+        { class: '9Б', day: 'Четверг', time: '15:00', subject: 'Разговорная практика' },
+        { class: '10А', day: 'Понедельник', time: '16:00', subject: 'Академический китайский' },
+        { class: '10А', day: 'Среда', time: '17:00', subject: 'Китайская история' },
+        { class: '10Б', day: 'Вторник', time: '16:00', subject: 'Академический китайский' },
+        { class: '10Б', day: 'Четверг', time: '17:00', subject: 'Китайская история' },
+        { class: '11А', day: 'Понедельник', time: '17:00', subject: 'Подготовка к поступлению' },
+        { class: '11А', day: 'Среда', time: '18:00', subject: 'Профессиональный китайский' },
+        { class: '11Б', day: 'Вторник', time: '17:00', subject: 'Подготовка к поступлению' },
+        { class: '11Б', day: 'Четверг', time: '18:00', subject: 'Профессиональный китайский' }
+    ];
+    localStorage.setItem('lessons', JSON.stringify(lessons));
+}
 
 // China facts
 const chinaFacts = [
@@ -16,6 +66,7 @@ const chinaFacts = [
 ];
 
 let currentFactIndex = 0;
+let selectedClass = null;
 
 // Notification system
 function showNotification(message, type = 'success') {
@@ -95,12 +146,200 @@ function showPage(pageId) {
             item.classList.add('active');
         });
         
+        // Load page-specific content
+        if (pageId === 'classes') {
+            loadClassesPage();
+        } else if (pageId === 'lessons') {
+            loadLessonsPage();
+        }
+        
         // Close mobile menu
         document.getElementById('mobile-menu').classList.add('hidden');
         const menuIcon = document.querySelector('#mobile-menu-button i');
         menuIcon.setAttribute('data-feather', 'menu');
         feather.replace();
     }, 300);
+}
+
+// Load Classes Page
+function loadClassesPage() {
+    const classesContainer = document.querySelector('#classes-page .grid');
+    const addStudentSection = document.getElementById('add-student-section');
+    
+    // Show/hide add student section based on user role
+    if (currentUser && (currentUser.role === 'teacher' || currentUser.role === 'admin')) {
+        addStudentSection.classList.remove('hidden');
+    } else {
+        addStudentSection.classList.add('hidden');
+    }
+    
+    // Clear container
+    classesContainer.innerHTML = '';
+    
+    // Create class cards
+    classes.forEach(className => {
+        const classStudents = students.filter(student => student.class === className);
+        
+        const classCard = document.createElement('div');
+        classCard.className = 'class-card enhanced-card p-6 text-center animate-scale-in';
+        classCard.innerHTML = `
+            <div class="w-16 h-16 bg-blue-100 rounded-full mx-auto mb-4 flex items-center justify-center">
+                <i data-feather="users" class="w-8 h-8 text-blue-600"></i>
+            </div>
+            <h3 class="text-xl font-bold text-blue-600 mb-2">${className} класс</h3>
+            <p class="text-gray-700 font-medium mb-3">${classStudents.length} учеников</p>
+            <div class="max-h-32 overflow-y-auto">
+                ${classStudents.map(student => `
+                    <div class="text-sm text-gray-600 py-1 border-b border-gray-100">${student.name}</div>
+                `).join('')}
+            </div>
+        `;
+        
+        classesContainer.appendChild(classCard);
+    });
+    
+    feather.replace();
+}
+
+// Load Lessons Page
+function loadLessonsPage() {
+    const classSelector = document.getElementById('class-selector');
+    const currentClassInfo = document.getElementById('current-class-info');
+    const lessonsContainer = document.getElementById('lessons-container');
+    
+    // Show/hide class selector based on user role
+    if (currentUser && (currentUser.role === 'teacher' || currentUser.role === 'admin')) {
+        classSelector.classList.remove('hidden');
+        loadClassSelector();
+    } else {
+        classSelector.classList.add('hidden');
+    }
+    
+    // Show current class info for students
+    if (currentUser && currentUser.role === 'student') {
+        const student = students.find(s => s.login === currentUser.username);
+        if (student) {
+            selectedClass = student.class;
+            currentClassInfo.classList.remove('hidden');
+            document.getElementById('selected-class-name').textContent = student.class;
+        }
+    }
+    
+    loadLessonsForClass();
+}
+
+function loadClassSelector() {
+    const classSelectorContainer = document.querySelector('#class-selector .flex');
+    classSelectorContainer.innerHTML = '';
+    
+    classes.forEach(className => {
+        const classButton = document.createElement('button');
+        classButton.className = `class-badge px-4 py-2 rounded-xl font-medium transition-all duration-300 ${selectedClass === className ? 'active text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`;
+        classButton.textContent = className;
+        classButton.onclick = () => selectClass(className);
+        
+        classSelectorContainer.appendChild(classButton);
+    });
+}
+
+function selectClass(className) {
+    selectedClass = className;
+    loadClassSelector();
+    
+    const currentClassInfo = document.getElementById('current-class-info');
+    currentClassInfo.classList.remove('hidden');
+    document.getElementById('selected-class-name').textContent = className;
+    
+    loadLessonsForClass();
+}
+
+function loadLessonsForClass() {
+    const lessonsContainer = document.getElementById('lessons-container');
+    lessonsContainer.innerHTML = '';
+    
+    let classLessons = [];
+    
+    if (currentUser && currentUser.role === 'student') {
+        const student = students.find(s => s.login === currentUser.username);
+        if (student) {
+            classLessons = lessons.filter(lesson => lesson.class === student.class);
+        }
+    } else if (selectedClass) {
+        classLessons = lessons.filter(lesson => lesson.class === selectedClass);
+    } else {
+        // Show all lessons for admin/teacher when no class selected
+        classLessons = lessons;
+    }
+    
+    if (classLessons.length === 0) {
+        lessonsContainer.innerHTML = `
+            <div class="col-span-2 text-center py-8">
+                <i data-feather="calendar" class="w-12 h-12 text-gray-400 mx-auto mb-4"></i>
+                <p class="text-gray-600 font-medium">Расписание занятий пока не добавлено</p>
+            </div>
+        `;
+    } else {
+        classLessons.forEach(lesson => {
+            const lessonElement = document.createElement('div');
+            lessonElement.className = 'bg-blue-50 p-4 rounded-xl border border-blue-100 transition-all duration-300 hover:scale-105';
+            lessonElement.innerHTML = `
+                <div class="flex items-center mb-2">
+                    <i data-feather="clock" class="w-4 h-4 text-blue-500 mr-2"></i>
+                    <span class="font-medium text-gray-800">${lesson.day}, ${lesson.time}</span>
+                    ${currentUser && (currentUser.role === 'teacher' || currentUser.role === 'admin') ? 
+                    `<span class="ml-2 px-2 py-1 bg-blue-200 text-blue-700 text-xs rounded-full">${lesson.class}</span>` : ''}
+                </div>
+                <p class="text-gray-800 font-medium">${lesson.subject}</p>
+            `;
+            lessonsContainer.appendChild(lessonElement);
+        });
+    }
+    
+    feather.replace();
+}
+
+// Add Student Function
+function addStudent() {
+    const name = document.getElementById('student-name').value;
+    const studentClass = document.getElementById('student-class').value;
+    const login = document.getElementById('student-login').value;
+    
+    if (!name || !studentClass || !login) {
+        showNotification('Пожалуйста, заполните все поля', 'error');
+        return;
+    }
+    
+    if (students.find(s => s.login === login)) {
+        showNotification('Ученик с таким логином уже существует', 'error');
+        return;
+    }
+    
+    // Create user account for student
+    const studentUser = {
+        username: login,
+        password: 'student123', // Default password
+        role: 'student'
+    };
+    
+    users.push(studentUser);
+    localStorage.setItem('users', JSON.stringify(users));
+    
+    // Add student to class
+    const newStudent = {
+        name: name,
+        class: studentClass,
+        login: login
+    };
+    
+    students.push(newStudent);
+    localStorage.setItem('students', JSON.stringify(students));
+    
+    // Clear form
+    document.getElementById('student-name').value = '';
+    document.getElementById('student-login').value = '';
+    
+    showNotification(`Ученик ${name} добавлен в ${studentClass} класс`);
+    loadClassesPage();
 }
 
 // Facts rotation
@@ -139,14 +378,10 @@ document.getElementById('theme-toggle').addEventListener('click', function() {
     
     if (body.getAttribute('data-theme') === 'day') {
         body.setAttribute('data-theme', 'night');
-        body.classList.remove('bg-blue-50');
-        body.classList.add('bg-black');
         themeIcon.setAttribute('data-feather', 'sun');
         showNotification('Ночная тема включена');
     } else {
         body.setAttribute('data-theme', 'day');
-        body.classList.remove('bg-black');
-        body.classList.add('bg-blue-50');
         themeIcon.setAttribute('data-feather', 'moon');
         showNotification('Дневная тема включена');
     }
@@ -214,6 +449,18 @@ function login() {
         return;
     }
     
+    // Check for admin
+    if (username === 'admin' && password === 'admin123') {
+        currentUser = { username: 'admin', role: 'admin' };
+        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+        showNotification('Добро пожаловать, Администратор!');
+        closeModal('auth-modal');
+        document.getElementById('login-username').value = '';
+        document.getElementById('login-password').value = '';
+        updateAuthUI();
+        return;
+    }
+    
     const user = users.find(u => u.username === username && u.password === password);
     if (user) {
         currentUser = user;
@@ -222,8 +469,6 @@ function login() {
         closeModal('auth-modal');
         document.getElementById('login-username').value = '';
         document.getElementById('login-password').value = '';
-        
-        // Update UI for logged in user
         updateAuthUI();
     } else {
         showNotification('Неверный логин или пароль', 'error');
@@ -255,11 +500,7 @@ function register() {
     users.push(newUser);
     localStorage.setItem('users', JSON.stringify(users));
     
-    if (role === 'teacher') {
-        showNotification('Ваша заявка на регистрацию как учитель отправлена администратору на подтверждение.');
-    } else {
-        showNotification('Регистрация выполнена успешно!');
-    }
+    showNotification('Регистрация выполнена успешно!');
     
     closeModal('auth-modal');
     document.getElementById('reg-username').value = '';
@@ -268,7 +509,7 @@ function register() {
 }
 
 function forgotPassword() {
-    showNotification('Функция восстановления пароля временно недоступна. Обратитесь к администратору.', 'error');
+    showNotification('Для восстановления пароля обратитесь к администратору школы.', 'error');
 }
 
 function updateAuthUI() {
@@ -288,11 +529,19 @@ function updateAuthUI() {
         
         document.getElementById('logout-btn').addEventListener('click', logout);
         document.getElementById('mobile-logout-btn').addEventListener('click', logout);
+        
+        // Reload current page to update content based on user role
+        const currentPage = document.querySelector('.page.active');
+        if (currentPage) {
+            const pageId = currentPage.id.replace('-page', '');
+            showPage(pageId);
+        }
     }
 }
 
 function logout() {
     currentUser = null;
+    selectedClass = null;
     localStorage.removeItem('currentUser');
     showNotification('Вы успешно вышли из системы');
     
@@ -317,6 +566,13 @@ function logout() {
     `;
     feather.replace();
     setupAuthEvents();
+    
+    // Reload current page
+    const currentPage = document.querySelector('.page.active');
+    if (currentPage) {
+        const pageId = currentPage.id.replace('-page', '');
+        showPage(pageId);
+    }
 }
 
 // Q&A functions
@@ -415,6 +671,9 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('qa-button').addEventListener('click', openQAModal);
     document.getElementById('close-qa-modal').addEventListener('click', () => closeModal('qa-modal'));
     document.getElementById('submit-question').addEventListener('click', submitQuestion);
+    
+    // Classes events
+    document.getElementById('add-student-btn').addEventListener('click', addStudent);
     
     // Close modals on outside click
     document.addEventListener('click', function(event) {
