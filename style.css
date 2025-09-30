@@ -50,31 +50,16 @@
   }
 }
 
-@keyframes slideInRight {
-  from {
-    transform: translateX(100%);
-    opacity: 0;
-  }
-  to {
-    transform: translateX(0);
-    opacity: 1;
-  }
-}
-
 .animate-fade-in {
-  animation: fadeIn 0.6s ease-out;
+  animation: fadeIn 0.8s ease-out;
 }
 
 .animate-slide-up {
-  animation: slideUp 0.6s ease-out;
+  animation: slideUp 0.8s ease-out;
 }
 
 .animate-scale-in {
-  animation: scaleIn 0.5s ease-out;
-}
-
-.animate-slide-in-right {
-  animation: slideInRight 0.5s ease-out;
+  animation: scaleIn 0.6s ease-out;
 }
 
 /* Card hover effects */
@@ -93,7 +78,6 @@
 
 .lesson-card:hover {
   transform: scale(1.05);
-  box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.1);
 }
 
 .resource-card {
@@ -103,15 +87,6 @@
 .resource-card:hover {
   transform: translateY(-3px);
   box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.15);
-}
-
-.qa-item {
-  transition: all 0.3s ease;
-}
-
-.qa-item:hover {
-  transform: translateX(5px);
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
 }
 
 /* Page transitions */
