@@ -160,25 +160,51 @@ body[data-theme="night"] {
   color: #f3f4f6;
 }
 
-body[data-theme="night"] .bg-white { background-color: #1f2937; color: #f3f4f6; }
-body[data-theme="night"] .enhanced-card { background: #374151; color: #f3f4f6; border-color: #4b5563; }
+body[data-theme="night"] .bg-white { 
+  background-color: #1f2937 !important; 
+  color: #f3f4f6; 
+}
+
+body[data-theme="night"] .enhanced-card { 
+  background: #374151; 
+  color: #f3f4f6; 
+  border-color: #4b5563; 
+}
+
 body[data-theme="night"] .text-gray-700 { color: #e5e7eb; }
 body[data-theme="night"] .text-gray-600 { color: #d1d5db; }
 body[data-theme="night"] .text-gray-800 { color: #f9fafb; }
 body[data-theme="night"] .text-gray-500 { color: #9ca3af; }
-body[data-theme="night"] .bg-blue-50 { background-color: #1e3a8a; color: #f9fafb; }
-body[data-theme="night"] .bg-red-50 { background-color: #7f1d1d; color: #f9fafb; }
-body[data-theme="night"] .bg-green-50 { background-color: #14532d; color: #f9fafb; }
-body[data-theme="night"] .bg-purple-50 { background-color: #4c1d95; color: #f9fafb; }
-body[data-theme="night"] .bg-blue-100 { background-color: #1e40af; color: #f9fafb; }
-body[data-theme="night"] .bg-red-100 { background-color: #991b1b; color: #f9fafb; }
-body[data-theme="night"] .bg-green-100 { background-color: #166534; color: #f9fafb; }
-body[data-theme="night"] .bg-purple-100 { background-color: #5b21b6; color: #f9fafb; }
+
+/* Background colors for night theme */
+body[data-theme="night"] .bg-blue-50 { background-color: #1e3a8a !important; color: #f9fafb; }
+body[data-theme="night"] .bg-red-50 { background-color: #7f1d1d !important; color: #f9fafb; }
+body[data-theme="night"] .bg-green-50 { background-color: #14532d !important; color: #f9fafb; }
+body[data-theme="night"] .bg-purple-50 { background-color: #4c1d95 !important; color: #f9fafb; }
+body[data-theme="night"] .bg-blue-100 { background-color: #1e40af !important; color: #f9fafb; }
+body[data-theme="night"] .bg-red-100 { background-color: #991b1b !important; color: #f9fafb; }
+body[data-theme="night"] .bg-green-100 { background-color: #166534 !important; color: #f9fafb; }
+body[data-theme="night"] .bg-purple-100 { background-color: #5b21b6 !important; color: #f9fafb; }
+
 body[data-theme="night"] .border-gray-100 { border-color: #374151; }
 body[data-theme="night"] .border-gray-300 { border-color: #4b5563; }
 
+/* Hover states for night theme */
+body[data-theme="night"] .hover\:bg-blue-50:hover { background-color: #1e3a8a !important; }
+body[data-theme="night"] .hover\:bg-red-50:hover { background-color: #7f1d1d !important; }
+body[data-theme="night"] .hover\:bg-green-50:hover { background-color: #14532d !important; }
+body[data-theme="night"] .hover\:bg-purple-50:hover { background-color: #4c1d95 !important; }
+
+body[data-theme="night"] .hover\:bg-blue-200:hover { background-color: #1e40af !important; }
+body[data-theme="night"] .hover\:bg-red-200:hover { background-color: #991b1b !important; }
+body[data-theme="night"] .hover\:bg-green-200:hover { background-color: #166534 !important; }
+
 /* Facts section night theme */
-body[data-theme="night"] .facts-container { background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%); color: white !important; }
+body[data-theme="night"] .facts-container { 
+  background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%); 
+  color: white !important; 
+}
+
 body[data-theme="night"] #china-facts .fact-dot { background: rgba(255, 255, 255, 0.3); }
 body[data-theme="night"] #china-facts .fact-dot.active { background: white; }
 
@@ -229,3 +255,15 @@ body[data-theme="night"] footer, body[data-theme="night"] footer * { color: whit
 body[data-theme="night"] .text-blue-100 { color: #dbeafe !important; }
 body[data-theme="night"] .text-blue-200 { color: #bfdbfe !important; }
 body[data-theme="night"] .text-blue-300 { color: #93c5fd !important; }
+
+/* Additional background fixes for night theme */
+body[data-theme="night"] main,
+body[data-theme="night"] .container,
+body[data-theme="night"] .page {
+  background-color: #111827 !important;
+}
+
+/* Footer night theme */
+body[data-theme="night"] footer {
+  background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%) !important;
+}
