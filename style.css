@@ -169,3 +169,60 @@ body,
 .bg-yellow-50 {
   transition: all 0.5s ease;
 }
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  /* Better touch targets */
+  button, 
+  .nav-item,
+  [data-page] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Improved readability */
+  .text-sm {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+  
+  /* Better spacing */
+  .space-y-3 > * + * {
+    margin-top: 0.75rem;
+  }
+  
+  .gap-4 {
+    gap: 1rem;
+  }
+}
+
+/* Prevent zoom on input focus on iOS */
+@media (max-width: 768px) {
+  input, select, textarea {
+    font-size: 16px;
+  }
+}
+
+/* Improved scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
