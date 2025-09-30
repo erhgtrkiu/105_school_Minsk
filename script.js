@@ -3,11 +3,11 @@ feather.replace();
 
 // School facts rotation
 const schoolFacts = [
-    "Китай - самая населённая страна в мире с более чем 1.4 миллиарда жителей.",
-    "Китайский язык является одним из шести официальных языков ООН.",
-    "В китайском языке более 50,000 иероглифов, но для чтения газет достаточно знать 3,000.",
-    "Великая Китайская стена - самое длинное сооружение, построенное человеком.",
-    "Китай является родиной многих изобретений: бумаги, пороха, компаса и книгопечатания."
+    "Наша школа основана в 1975 году и имеет богатую историю",
+    "В школе обучается более 800 учеников разных возрастов",
+    "У нас работает 50 высококвалифицированных преподавателей",
+    "Школа сотрудничает с 3 образовательными центрами в Китае",
+    "Ежегодно наши ученики побеждают в городских и республиканских олимпиадах"
 ];
 
 let currentFactIndex = 0;
@@ -63,8 +63,9 @@ document.getElementById('theme-toggle').addEventListener('click', function() {
         feather.replace();
         
         // Update facts container for night mode
-        document.querySelector('.facts-container').classList.remove('facts-container');
-        document.querySelector('.facts-container').style.background = 'linear-gradient(135deg, #2d3748 0%, #1a202c 100%)';
+        const factsContainer = document.querySelector('.facts-container');
+        factsContainer.classList.remove('facts-container');
+        factsContainer.style.background = 'linear-gradient(135deg, #2d3748 0%, #1a202c 100%)';
     } else {
         body.setAttribute('data-theme', 'day');
         document.getElementById('header').classList.add('header-glow');
@@ -77,8 +78,9 @@ document.getElementById('theme-toggle').addEventListener('click', function() {
         feather.replace();
         
         // Update facts container for day mode
-        document.querySelector('.facts-container').classList.add('facts-container');
-        document.querySelector('.facts-container').style.background = '';
+        const factsContainer = document.querySelector('.facts-container');
+        factsContainer.classList.add('facts-container');
+        factsContainer.style.background = '';
     }
 });
 
@@ -95,6 +97,26 @@ document.getElementById('mobile-menu-button').addEventListener('click', function
         menuIcon.setAttribute('data-feather', 'x');
     }
     feather.replace();
+});
+
+// Smooth scrolling for navigation
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+            target.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+            
+            // Close mobile menu if open
+            document.getElementById('mobile-menu').classList.add('hidden');
+            const menuIcon = document.querySelector('#mobile-menu-button i');
+            menuIcon.setAttribute('data-feather', 'menu');
+            feather.replace();
+        }
+    });
 });
 
 // Modal management
@@ -195,24 +217,6 @@ function register() {
     closeAuthModal();
 }
 
-// Lessons modal functions
-function openLessonsModal() {
-    openModal('lessons-modal');
-}
-
-function closeLessonsModal() {
-    closeModal('lessons-modal');
-}
-
-// Resources modal functions
-function openResourcesModal() {
-    openModal('resources-modal');
-}
-
-function closeResourcesModal() {
-    closeModal('resources-modal');
-}
-
 // Q&A modal functions
 function openQAModal() {
     openModal('qa-modal');
@@ -254,7 +258,7 @@ function submitQuestion() {
 
 // Close modals when clicking outside
 document.addEventListener('click', function(event) {
-    const modals = ['auth-modal', 'lessons-modal', 'resources-modal', 'qa-modal'];
+    const modals = ['auth-modal', 'qa-modal'];
     
     modals.forEach(modalId => {
         const modal = document.getElementById(modalId);
@@ -280,37 +284,40 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('login-submit').addEventListener('click', login);
     document.getElementById('register-submit').addEventListener('click', register);
     
-    // Lessons modal events
-    document.getElementById('lessons-link').addEventListener('click', openLessonsModal);
-    document.getElementById('mobile-lessons-link').addEventListener('click', openLessonsModal);
-    document.getElementById('close-lessons-modal').addEventListener('click', () => closeModal('lessons-modal'));
-    
-    // Resources modal events
-    document.getElementById('resources-link').addEventListener('click', openResourcesModal);
-    document.getElementById('mobile-resources-link').addEventListener('click', openResourcesModal);
-    document.getElementById('close-resources-modal').addEventListener('click', () => closeModal('resources-modal'));
-    
     // Q&A modal events
     document.getElementById('qa-button').addEventListener('click', openQAModal);
     document.getElementById('close-qa-modal').addEventListener('click', () => closeModal('qa-modal'));
     document.getElementById('submit-question').addEventListener('click', submitQuestion);
     
     // Add enter key support for question submission
-    document.getElementById('question-input').addEventListener('keypress', function(e) {
-        if (e.key === 'Enter' && e.ctrlKey) {
-            submitQuestion();
-        }
-    });
+    const questionInput = document.getElementById('question-input');
+    if (questionInput) {
+        questionInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter' && e.ctrlKey) {
+                submitQuestion();
+            }
+        });
+    }
     
-    // Add loading animation to images
-    const images = document.querySelectorAll('img');
-    images.forEach(img => {
-        img.addEventListener('load', function() {
-            this.classList.remove('animate-pulse');
+    // Update navigation active state on scroll
+    window.addEventListener('scroll', function() {
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.nav-item');
+        
+        let current = '';
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.clientHeight;
+            if (scrollY >= sectionTop - 100) {
+                current = section.getAttribute('id');
+            }
         });
         
-        if (!img.complete) {
-            img.classList.add('animate-pulse');
-        }
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === `#${current}`) {
+                link.classList.add('active');
+            }
+        });
     });
 });
