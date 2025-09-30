@@ -7,6 +7,20 @@ let classes = JSON.parse(localStorage.getItem('classes')) || [];
 let lessons = JSON.parse(localStorage.getItem('lessons')) || [];
 let resources = JSON.parse(localStorage.getItem('resources')) || [];
 
+// Event system for real-time updates
+const EventBus = {
+    events: {},
+    on(event, callback) {
+        if (!this.events[event]) this.events[event] = [];
+        this.events[event].push(callback);
+    },
+    emit(event, data) {
+        if (this.events[event]) {
+            this.events[event].forEach(callback => callback(data));
+        }
+    }
+};
+
 // Initialize default data
 function initializeData() {
     try {
@@ -140,6 +154,26 @@ function isAdmin() {
     return currentUser !== null && currentUser.role === 'admin';
 }
 
+// Force refresh all data from localStorage
+function refreshAllData() {
+    users = JSON.parse(localStorage.getItem('users')) || [];
+    questions = JSON.parse(localStorage.getItem('questions')) || [];
+    currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
+    students = JSON.parse(localStorage.getItem('students')) || [];
+    classes = JSON.parse(localStorage.getItem('classes')) || [];
+    lessons = JSON.parse(localStorage.getItem('lessons')) || [];
+    resources = JSON.parse(localStorage.getItem('resources')) || [];
+    
+    console.log('Data refreshed from localStorage');
+}
+
+// Save data and emit event
+function saveDataAndNotify(dataType) {
+    localStorage.setItem(dataType, JSON.stringify(eval(dataType)));
+    EventBus.emit('dataChanged', { type: dataType });
+    console.log(`Data saved and event emitted: ${dataType}`);
+}
+
 // Page management with animations
 function showPage(pageId) {
     // Hide all pages with animation
@@ -187,6 +221,9 @@ function showPage(pageId) {
 }
 
 function loadPageContent(pageId) {
+    // Always refresh data before loading page
+    refreshAllData();
+    
     switch(pageId) {
         case 'teachers':
             loadTeachersPage();
@@ -283,7 +320,7 @@ function addTeacher() {
     };
     
     users.push(newTeacher);
-    localStorage.setItem('users', JSON.stringify(users));
+    saveDataAndNotify('users');
     
     // Clear form
     document.getElementById('teacher-name').value = '';
@@ -307,7 +344,7 @@ function deleteTeacher(username) {
     const userIndex = users.findIndex(u => u.username === username);
     if (userIndex !== -1) {
         users.splice(userIndex, 1);
-        localStorage.setItem('users', JSON.stringify(users));
+        saveDataAndNotify('users');
         showNotification('Учитель удален');
         loadTeachersPage();
     }
@@ -463,7 +500,7 @@ function addStudent() {
     };
     
     users.push(studentUser);
-    localStorage.setItem('users', JSON.stringify(users));
+    saveDataAndNotify('users');
     
     // Add student to students list
     const newStudent = {
@@ -473,7 +510,7 @@ function addStudent() {
     };
     
     students.push(newStudent);
-    localStorage.setItem('students', JSON.stringify(students));
+    saveDataAndNotify('students');
     
     // Clear form
     document.getElementById('student-name').value = '';
@@ -585,6 +622,7 @@ function login() {
         showNotification('Добро пожаловать, Администратор!');
         closeModal('auth-modal');
         updateAuthUI();
+        EventBus.emit('userChanged');
         return;
     }
     
@@ -595,6 +633,7 @@ function login() {
         showNotification(`Добро пожаловать, ${user.name || user.username}!`);
         closeModal('auth-modal');
         updateAuthUI();
+        EventBus.emit('userChanged');
     } else {
         showNotification('Неверный логин или пароль', 'error');
     }
@@ -629,7 +668,7 @@ function register() {
     };
     
     users.push(newUser);
-    localStorage.setItem('users', JSON.stringify(users));
+    saveDataAndNotify('users');
     
     // Auto login after registration
     currentUser = newUser;
@@ -643,6 +682,7 @@ function register() {
     document.getElementById('reg-confirm-password').value = '';
     
     updateAuthUI();
+    EventBus.emit('userChanged');
 }
 
 function forgotPassword() {
@@ -743,6 +783,7 @@ function logout() {
     localStorage.removeItem('currentUser');
     showNotification('Вы успешно вышли из системы');
     updateAuthUI();
+    EventBus.emit('userChanged');
     showPage('main');
 }
 
@@ -755,7 +796,7 @@ function openQAModal() {
     }
     
     // Перезагружаем вопросы из localStorage перед открытием
-    questions = JSON.parse(localStorage.getItem('questions')) || [];
+    refreshAllData();
     openModal('qa-modal');
     loadQuestions();
 }
@@ -785,7 +826,7 @@ function submitQuestion() {
     
     // Обновляем локальную переменную и localStorage
     questions.push(newQuestion);
-    localStorage.setItem('questions', JSON.stringify(questions));
+    saveDataAndNotify('questions');
     
     // Очищаем поле и перезагружаем вопросы
     questionInput.value = '';
@@ -798,7 +839,7 @@ function loadQuestions() {
     if (!qaList) return;
     
     // Всегда перезагружаем вопросы из localStorage
-    questions = JSON.parse(localStorage.getItem('questions')) || [];
+    refreshAllData();
     
     qaList.innerHTML = '';
     
@@ -909,7 +950,7 @@ function submitAnswer(questionId) {
     const questionIndex = questions.findIndex(q => q.id === questionId);
     if (questionIndex !== -1) {
         questions[questionIndex].answer = answerText;
-        localStorage.setItem('questions', JSON.stringify(questions));
+        saveDataAndNotify('questions');
         showNotification('Ответ отправлен');
         
         // Перезагружаем вопросы сразу после ответа
@@ -919,17 +960,20 @@ function submitAnswer(questionId) {
     }
 }
 
-// Функция для принудительного обновления всех данных
-function refreshAllData() {
-    users = JSON.parse(localStorage.getItem('users')) || [];
-    questions = JSON.parse(localStorage.getItem('questions')) || [];
-    currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
-    students = JSON.parse(localStorage.getItem('students')) || [];
-    classes = JSON.parse(localStorage.getItem('classes')) || [];
-    lessons = JSON.parse(localStorage.getItem('lessons')) || [];
-    resources = JSON.parse(localStorage.getItem('resources')) || [];
-    
-    updateAuthUI();
+// Storage event listener for cross-tab communication
+function setupStorageListener() {
+    window.addEventListener('storage', function(e) {
+        console.log('Storage changed:', e.key);
+        refreshAllData();
+        updateAuthUI();
+        
+        // Reload current page if needed
+        const activePage = document.querySelector('.page.active');
+        if (activePage) {
+            const pageId = activePage.id.replace('-page', '');
+            loadPageContent(pageId);
+        }
+    });
 }
 
 // Initialize application
@@ -964,14 +1008,29 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
         
+        // Setup event listeners for real-time updates
+        EventBus.on('dataChanged', (data) => {
+            console.log('Data changed event received:', data);
+            refreshAllData();
+        });
+        
+        EventBus.on('userChanged', () => {
+            console.log('User changed event received');
+            refreshAllData();
+            updateAuthUI();
+        });
+        
+        // Setup storage listener for cross-tab updates
+        setupStorageListener();
+        
         // Update UI based on current user
         updateAuthUI();
         
         // Initialize feather icons
         feather.replace();
         
-        // Периодическое обновление данных (каждые 10 секунд)
-        setInterval(refreshAllData, 10000);
+        // Периодическое обновление данных (каждые 3 секунды)
+        setInterval(refreshAllData, 3000);
         
         console.log('School 105 application initialized');
         console.log('Admin: admin / admin123');
