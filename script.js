@@ -254,7 +254,8 @@ function showPage(pageId) {
             item.classList.add('active');
         });
         
-        // Load page-specific content
+        // Load page-specific content (принудительно обновляем)
+        refreshAllData();
         loadPageContent(pageId);
         
         // Close mobile menu
@@ -806,12 +807,13 @@ function login() {
         localStorage.setItem('school-currentUser', JSON.stringify(currentUser));
         showNotification('🎉 Добро пожаловать, Администратор! Теперь у вас есть полный доступ к системе', 'success');
         closeModal('auth-modal');
+        
+        // Немедленно обновляем интерфейс
+        refreshAllData();
         updateAuthUI();
         
-        // Показать изменения сразу
-        setTimeout(() => {
-            showPage('teachers'); // Переходим на страницу учителей где видны изменения
-        }, 1000);
+        // Переходим на страницу учителей
+        showPage('teachers');
         return;
     }
     
@@ -829,16 +831,17 @@ function login() {
         
         showNotification(welcomeMessage, 'success');
         closeModal('auth-modal');
+        
+        // Немедленно обновляем интерфейс
+        refreshAllData();
         updateAuthUI();
         
-        // Показать изменения сразу
-        setTimeout(() => {
-            if (user.role === 'teacher' || user.role === 'admin') {
-                showPage('teachers');
-            } else {
-                showPage('main');
-            }
-        }, 1000);
+        // Переходим на соответствующую страницу
+        if (user.role === 'teacher' || user.role === 'admin') {
+            showPage('teachers');
+        } else {
+            showPage('main');
+        }
     } else {
         showNotification('❌ Неверный логин или пароль', 'error');
     }
@@ -876,6 +879,7 @@ function register() {
     
     // Сохраняем данные сразу после добавления пользователя
     syncAllData();
+    refreshAllData(); // Обновляем данные из localStorage
     
     // Auto login after registration
     currentUser = newUser;
@@ -897,17 +901,15 @@ function register() {
     document.getElementById('reg-password').value = '';
     document.getElementById('reg-confirm-password').value = '';
     
-    // Обновляем интерфейс
+    // Немедленно обновляем интерфейс
     updateAuthUI();
     
-    // Показываем изменения сразу
-    setTimeout(() => {
-        if (role === 'teacher' || role === 'admin') {
-            showPage('teachers');
-        } else {
-            showPage('main');
-        }
-    }, 1000);
+    // Показываем изменения сразу без задержки
+    if (role === 'teacher' || role === 'admin') {
+        showPage('teachers');
+    } else {
+        showPage('main');
+    }
 }
 
 function forgotPassword() {
@@ -925,8 +927,11 @@ function updateAuthUI() {
     
     if (!authButtons) return;
     
+    // Принудительно обновляем данные
+    refreshAllData();
+    
     if (currentUser) {
-        // User is logged in - Показать явные изменения
+        // User is logged in
         authButtons.innerHTML = `
             <div class="flex items-center space-x-2 sm:space-x-3 bg-green-500/20 p-2 rounded-xl border border-green-500/30">
                 <i data-feather="user-check" class="w-4 h-4 sm:w-5 sm:h-5 text-green-400"></i>
@@ -961,14 +966,14 @@ function updateAuthUI() {
             `;
         }
         
-        // Show Q&A button for all logged in users with special styling
+        // Show Q&A button for all logged in users
         if (qaButton) {
             qaButton.classList.remove('hidden');
             qaButton.innerHTML = `<i data-feather="message-circle" class="w-4 h-4 sm:w-5 sm:h-5"></i>`;
             qaButton.title = "Задать вопрос учителю";
         }
         
-        // Update permissions for admin/teacher features - сделать более заметными
+        // Update permissions for admin/teacher features
         if (addTeacherBtn) {
             if (isAdmin()) {
                 addTeacherBtn.classList.remove('hidden');
@@ -993,13 +998,11 @@ function updateAuthUI() {
             }
         }
         
-        // Добавить визуальный индикатор в хедер
-        if (header) {
-            header.classList.add('bg-gradient-to-r', 'from-blue-600', 'to-green-600');
-        }
+        // Обновляем текущую страницу
+        updateCurrentPage();
         
     } else {
-        // User is not logged in - стандартный вид
+        // User is not logged in
         authButtons.innerHTML = `
             <div class="flex items-center space-x-2 sm:space-x-3">
                 <button onclick="openAuthModal('register')" class="bg-red-600 text-white px-3 py-2 sm:px-5 sm:py-2.5 rounded-xl font-medium hover:bg-red-700 transition-all duration-300 flex items-center text-xs sm:text-base">
@@ -1033,11 +1036,6 @@ function updateAuthUI() {
         if (addTeacherBtn) addTeacherBtn.classList.add('hidden');
         if (addClassBtn) addClassBtn.classList.add('hidden');
         if (addStudentSection) addStudentSection.classList.add('hidden');
-        
-        // Вернуть стандартный цвет хедера
-        if (header) {
-            header.classList.remove('bg-gradient-to-r', 'from-blue-600', 'to-green-600');
-        }
     }
     
     feather.replace();
@@ -1047,6 +1045,9 @@ function logout() {
     currentUser = null;
     localStorage.removeItem('school-currentUser');
     showNotification('🔒 Вы успешно вышли из системы. Чтобы снова войти, нажмите кнопку "Войти"', 'info');
+    
+    // Немедленно обновляем интерфейс
+    refreshAllData();
     updateAuthUI();
     showPage('main');
 }
