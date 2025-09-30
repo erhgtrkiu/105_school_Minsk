@@ -88,16 +88,6 @@ body {
   color: white !important;
 }
 
-/* Fact dots */
-#china-facts .fact-dot {
-  background: rgba(255, 255, 255, 0.5);
-}
-
-#china-facts .fact-dot.active {
-  background: white;
-  transform: scale(1.2);
-}
-
 /* Buttons */
 .btn-primary {
   background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
@@ -134,16 +124,6 @@ body {
   transition: all 0.3s ease;
 }
 
-/* Teacher cards */
-.teacher-card {
-  transition: all 0.4s ease;
-}
-
-.teacher-card:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-}
-
 /* Class cards */
 .class-card {
   transition: all 0.3s ease;
@@ -176,69 +156,31 @@ body[data-theme="night"] .text-gray-500 { color: #9ca3af; }
 body[data-theme="night"] .bg-blue-50 { background-color: #1e3a8a !important; color: #f9fafb; }
 body[data-theme="night"] .bg-red-50 { background-color: #7f1d1d !important; color: #f9fafb; }
 body[data-theme="night"] .bg-green-50 { background-color: #14532d !important; color: #f9fafb; }
-body[data-theme="night"] .bg-purple-50 { background-color: #4c1d95 !important; color: #f9fafb; }
 body[data-theme="night"] .bg-blue-100 { background-color: #1e40af !important; color: #f9fafb; }
 body[data-theme="night"] .bg-red-100 { background-color: #991b1b !important; color: #f9fafb; }
 body[data-theme="night"] .bg-green-100 { background-color: #166534 !important; color: #f9fafb; }
-body[data-theme="night"] .bg-purple-100 { background-color: #5b21b6 !important; color: #f9fafb; }
 body[data-theme="night"] .border-gray-100 { border-color: #374151; }
 body[data-theme="night"] .border-gray-300 { border-color: #4b5563; }
 
 /* Facts section night theme */
 body[data-theme="night"] .facts-container { 
   background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%) !important; 
-  color: white !important; 
-}
-body[data-theme="night"] #china-facts .fact-dot { background: rgba(255, 255, 255, 0.3); }
-body[data-theme="night"] #china-facts .fact-dot.active { background: white; }
-
-/* Additional night theme background overrides */
-body[data-theme="night"] .header-glow {
-  background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%) !important;
-}
-body[data-theme="night"] footer {
-  background: linear-gradient(to bottom right, #0f172a 0%, #1e293b 100%) !important;
-}
-body[data-theme="night"] #mobile-menu {
-  background: linear-gradient(to bottom right, #0f172a 0%, #1e293b 100%) !important;
-}
-body[data-theme="night"] .bg-gradient-to-br.from-blue-400.to-blue-600 {
-  background: linear-gradient(to bottom right, #1e3a8a 0%, #1e40af 100%) !important;
-}
-body[data-theme="night"] .bg-gradient-to-br.from-blue-700.to-blue-900 {
-  background: linear-gradient(to bottom right, #0f172a 0%, #1e293b 100%) !important;
-}
-body[data-theme="night"] .bg-gradient-to-br.from-blue-800.to-blue-900 {
-  background: linear-gradient(to bottom right, #0f172a 0%, #1e293b 100%) !important;
-}
-body[data-theme="night"] .bg-white\/20 {
-  background-color: rgba(31, 41, 55, 0.2) !important;
-}
-body[data-theme="night"] .bg-white\/10 {
-  background-color: rgba(31, 41, 55, 0.1) !important;
-}
-body[data-theme="night"] .bg-white\/30 {
-  background-color: rgba(31, 41, 55, 0.3) !important;
-}
-body[data-theme="night"] .bg-white\/50 {
-  background-color: rgba(31, 41, 55, 0.5) !important;
 }
 
-/* Headings */
-h1, h2, h3, h4, h5, h6 { color: #1f2937; }
-body[data-theme="night"] h1, body[data-theme="night"] h2, body[data-theme="night"] h3,
-body[data-theme="night"] h4, body[data-theme="night"] h5, body[data-theme="night"] h6 { color: #f9fafb; }
+/* Theme classes */
+.theme-bg { background-color: white; }
+.theme-text { color: #1f2937; }
+.theme-card { background: white; border-color: #e5e7eb; color: #1f2937; }
+.theme-bg-blue { background-color: #dbeafe; }
+.theme-bg-red { background-color: #fee2e2; }
+.theme-bg-green { background-color: #dcfce7; }
 
-/* Paragraphs and spans */
-p, span, div { color: inherit; }
-
-/* Input fields & labels */
-input, select, textarea { color: #1f2937; background-color: white; }
-body[data-theme="night"] input, body[data-theme="night"] select, body[data-theme="night"] textarea {
-  color: #1f2937; background-color: #f9fafb; border-color: #d1d5db;
-}
-label { color: #374151; }
-body[data-theme="night"] label { color: #e5e7eb; }
+body[data-theme="night"] .theme-bg { background-color: #111827; }
+body[data-theme="night"] .theme-text { color: #f3f4f6; }
+body[data-theme="night"] .theme-card { background: #1f2937; border-color: #374151; color: #f3f4f6; }
+body[data-theme="night"] .theme-bg-blue { background-color: #1e3a8a; }
+body[data-theme="night"] .theme-bg-red { background-color: #7f1d1d; }
+body[data-theme="night"] .theme-bg-green { background-color: #14532d; }
 
 /* Page management */
 .page { display: none; opacity: 0; transform: translateY(20px); transition: all 0.5s ease; }
@@ -257,17 +199,23 @@ body[data-theme="night"] label { color: #e5e7eb; }
 .class-badge:hover { transform: scale(1.05); }
 .class-badge.active { background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); color: white; box-shadow: 0 5px 15px -3px rgba(59, 130, 246, 0.4); }
 
+/* Q&A styles */
+.qa-item {
+  border-left: 4px solid #3b82f6;
+  transition: all 0.3s ease;
+}
+
+.qa-item:hover {
+  transform: translateX(5px);
+}
+
 /* Mobile responsive */
 @media (max-width: 768px) {
   .container { padding-left: 1rem; padding-right: 1rem; }
   .modal-content { margin: 1rem; width: calc(100% - 2rem); }
-  .enhanced-card:hover, .teacher-card:hover, .class-card:hover { transform: none; }
+  .enhanced-card:hover, .class-card:hover { transform: none; }
 }
 
 /* Additional fixes for night theme text */
-body[data-theme="night"] .enhanced-card *:not(i):not([class*="bg-"]):not([class*="text-"]) { color: #f3f4f6 !important; }
 body[data-theme="night"] .header-glow, body[data-theme="night"] .header-glow * { color: white !important; }
 body[data-theme="night"] footer, body[data-theme="night"] footer * { color: white !important; }
-body[data-theme="night"] .text-blue-100 { color: #dbeafe !important; }
-body[data-theme="night"] .text-blue-200 { color: #bfdbfe !important; }
-body[data-theme="night"] .text-blue-300 { color: #93c5fd !important; }
