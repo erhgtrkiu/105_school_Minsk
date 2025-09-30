@@ -123,13 +123,13 @@ body {
   color: white;
 }
 
-/* Fact dots - FIXED */
+/* Fact dots */
 #china-facts .fact-dot {
-  background: rgba(255, 255, 255, 0.5) !important;
+  background: rgba(255, 255, 255, 0.5);
 }
 
 #china-facts .fact-dot.active {
-  background: white !important;
+  background: white;
   transform: scale(1.2);
 }
 
@@ -139,7 +139,7 @@ body {
   color: white;
   border: none;
   cursor: pointer;
-  transition: all 0.3s ease !important;
+  transition: all 0.3s ease;
 }
 
 .btn-primary:hover {
@@ -152,7 +152,7 @@ body {
   color: white;
   border: none;
   cursor: pointer;
-  transition: all 0.3s ease !important;
+  transition: all 0.3s ease;
 }
 
 .btn-secondary:hover {
@@ -166,17 +166,17 @@ body {
   border: none;
   cursor: pointer;
   color: white;
-  transition: all 0.3s ease !important;
+  transition: all 0.3s ease;
 }
 
 /* Teacher cards */
 .teacher-card {
-  transition: all 0.4s ease !important;
+  transition: all 0.4s ease;
 }
 
 .teacher-card:hover {
-  transform: translateY(-8px) !important;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25) !important;
+  transform: translateY(-8px);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
 }
 
 /* Class cards */
@@ -191,89 +191,96 @@ body {
 
 /* Night theme */
 body[data-theme="night"] {
-  background-color: #111827 !important;
-  color: #f9fafb !important;
+  background-color: #111827;
+  color: #f9fafb;
 }
 
 body[data-theme="night"] .bg-white {
-  background-color: #1f2937 !important;
+  background-color: #1f2937;
 }
 
 body[data-theme="night"] .enhanced-card {
   background: #374151;
-  color: #f9fafb !important;
+  color: #f9fafb;
   border-color: #4b5563;
 }
 
-body[data-theme="night"] .text-gray-700,
-body[data-theme="night"] .text-gray-600,
+body[data-theme="night"] .text-gray-700 {
+  color: #d1d5db;
+}
+
+body[data-theme="night"] .text-gray-600 {
+  color: #9ca3af;
+}
+
 body[data-theme="night"] .text-gray-800 {
-  color: #f9fafb !important;
+  color: #f9fafb;
 }
 
 body[data-theme="night"] .text-gray-500 {
-  color: #d1d5db !important;
+  color: #d1d5db;
 }
 
 body[data-theme="night"] .bg-blue-50 {
   background-color: #1e3a8a;
-  color: #f9fafb !important;
+  color: #f9fafb;
 }
 
 body[data-theme="night"] .bg-red-50 {
   background-color: #7f1d1d;
-  color: #f9fafb !important;
+  color: #f9fafb;
 }
 
 body[data-theme="night"] .bg-green-50 {
   background-color: #14532d;
-  color: #f9fafb !important;
+  color: #f9fafb;
 }
 
 body[data-theme="night"] .bg-purple-50 {
   background-color: #4c1d95;
-  color: #f9fafb !important;
+  color: #f9fafb;
 }
 
 body[data-theme="night"] .bg-blue-100 {
   background-color: #1e40af;
-  color: #f9fafb !important;
+  color: #f9fafb;
 }
 
 body[data-theme="night"] .bg-red-100 {
   background-color: #991b1b;
-  color: #f9fafb !important;
+  color: #f9fafb;
 }
 
 body[data-theme="night"] .bg-green-100 {
   background-color: #166534;
-  color: #f9fafb !important;
+  color: #f9fafb;
 }
 
 body[data-theme="night"] .bg-purple-100 {
   background-color: #5b21b6;
-  color: #f9fafb !important;
+  color: #f9fafb;
 }
 
 body[data-theme="night"] .border-gray-100 {
-  border-color: #374151 !important;
+  border-color: #374151;
 }
 
 body[data-theme="night"] .border-gray-300 {
-  border-color: #4b5563 !important;
+  border-color: #4b5563;
 }
 
-/* Facts section in night theme - FIXED */
+/* Facts section in night theme */
 body[data-theme="night"] .facts-container {
   background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+  color: white;
 }
 
 body[data-theme="night"] #china-facts .fact-dot {
-  background: rgba(255, 255, 255, 0.3) !important;
+  background: rgba(255, 255, 255, 0.3);
 }
 
 body[data-theme="night"] #china-facts .fact-dot.active {
-  background: white !important;
+  background: white;
 }
 
 /* Page management */
@@ -335,19 +342,19 @@ body[data-theme="night"] #china-facts .fact-dot.active {
 
 /* Text colors for day theme */
 .text-gray-700 {
-  color: #374151 !important;
+  color: #374151;
 }
 
 .text-gray-600 {
-  color: #4b5563 !important;
+  color: #4b5563;
 }
 
 .text-gray-800 {
-  color: #1f2937 !important;
+  color: #1f2937;
 }
 
 .text-gray-500 {
-  color: #6b7280 !important;
+  color: #6b7280;
 }
 
 /* Mobile responsive */
@@ -396,23 +403,23 @@ p, span, div {
 
 /* Input fields styling */
 input, select, textarea {
-  color: #1f2937 !important;
-  background-color: white !important;
+  color: #1f2937;
+  background-color: white;
 }
 
 body[data-theme="night"] input,
 body[data-theme="night"] select,
 body[data-theme="night"] textarea {
-  color: #f9fafb !important;
-  background-color: #374151 !important;
-  border-color: #4b5563 !important;
+  color: #f9fafb;
+  background-color: #374151;
+  border-color: #4b5563;
 }
 
 /* Labels */
 label {
-  color: #374151 !important;
+  color: #374151;
 }
 
 body[data-theme="night"] label {
-  color: #f9fafb !important;
+  color: #f9fafb;
 }
