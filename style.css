@@ -16,6 +16,129 @@
   box-shadow: 0 5px 15px -3px rgba(0, 0, 0, 0.3);
 }
 
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.6s ease-out;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.6s ease-out;
+}
+
+.animate-scale-in {
+  animation: scaleIn 0.5s ease-out;
+}
+
+.animate-slide-in-right {
+  animation: slideInRight 0.5s ease-out;
+}
+
+/* Card hover effects */
+.class-card {
+  transition: all 0.3s ease;
+}
+
+.class-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.15);
+}
+
+.lesson-card {
+  transition: all 0.3s ease;
+}
+
+.lesson-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.1);
+}
+
+.resource-card {
+  transition: all 0.3s ease;
+}
+
+.resource-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 30px -5px rgba(0, 0, 0, 0.15);
+}
+
+.qa-item {
+  transition: all 0.3s ease;
+}
+
+.qa-item:hover {
+  transform: translateX(5px);
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+/* Page transitions */
+.page {
+  display: none;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.5s ease;
+}
+
+.page.active {
+  display: block;
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Modal animations */
+#auth-modal,
+#qa-modal {
+  transition: opacity 0.3s ease;
+}
+
+/* Button animations */
+button {
+  transition: all 0.3s ease;
+}
+
 /* Night theme styles */
 body[data-theme="night"] {
   background-color: #111827;
@@ -54,11 +177,20 @@ body[data-theme="night"] .bg-green-50 {
   background-color: #14532d !important;
 }
 
-/* Page transitions */
-.page {
-  display: none;
+body[data-theme="night"] .bg-yellow-50 {
+  background-color: #713f12 !important;
 }
 
-.page.active {
-  display: block;
+/* Smooth transitions for theme switching */
+body,
+.bg-white,
+.text-gray-900,
+.text-gray-700,
+.text-gray-600,
+.border-gray-200,
+.bg-blue-50,
+.bg-red-50,
+.bg-green-50,
+.bg-yellow-50 {
+  transition: all 0.5s ease;
 }
