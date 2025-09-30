@@ -15,6 +15,7 @@ body {
   font-family: 'Inter', sans-serif;
   line-height: 1.6;
   background-color: white;
+  color: #1f2937; /* Добавляем цвет текста по умолчанию */
 }
 
 /* Animations */
@@ -108,6 +109,7 @@ body {
   box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
   border: 1px solid #e5e7eb;
   transition: all 0.3s ease;
+  color: #1f2937; /* Добавляем цвет текста для карточек */
 }
 
 .enhanced-card:hover {
@@ -184,8 +186,8 @@ body {
 
 /* Night theme */
 body[data-theme="night"] {
-  background-color: #000000 !important;
-  color: #ffffff;
+  background-color: #111827 !important;
+  color: #f9fafb !important;
 }
 
 body[data-theme="night"] .bg-white {
@@ -194,46 +196,66 @@ body[data-theme="night"] .bg-white {
 
 body[data-theme="night"] .enhanced-card {
   background: #374151;
-  color: #ffffff;
+  color: #f9fafb !important;
   border-color: #4b5563;
 }
 
 body[data-theme="night"] .text-gray-700,
 body[data-theme="night"] .text-gray-600,
 body[data-theme="night"] .text-gray-800 {
-  color: #ffffff !important;
+  color: #f9fafb !important;
+}
+
+body[data-theme="night"] .text-gray-500 {
+  color: #d1d5db !important;
 }
 
 body[data-theme="night"] .bg-blue-50 {
   background-color: #1e3a8a;
+  color: #f9fafb !important;
 }
 
 body[data-theme="night"] .bg-red-50 {
   background-color: #7f1d1d;
+  color: #f9fafb !important;
 }
 
 body[data-theme="night"] .bg-green-50 {
   background-color: #14532d;
+  color: #f9fafb !important;
 }
 
 body[data-theme="night"] .bg-purple-50 {
   background-color: #4c1d95;
+  color: #f9fafb !important;
 }
 
 body[data-theme="night"] .bg-blue-100 {
   background-color: #1e40af;
+  color: #f9fafb !important;
 }
 
 body[data-theme="night"] .bg-red-100 {
   background-color: #991b1b;
+  color: #f9fafb !important;
 }
 
 body[data-theme="night"] .bg-green-100 {
   background-color: #166534;
+  color: #f9fafb !important;
 }
 
 body[data-theme="night"] .bg-purple-100 {
   background-color: #5b21b6;
+  color: #f9fafb !important;
+}
+
+body[data-theme="night"] .border-gray-100 {
+  border-color: #374151 !important;
+}
+
+body[data-theme="night"] .border-gray-300 {
+  border-color: #4b5563 !important;
 }
 
 /* Page management */
@@ -270,6 +292,7 @@ body[data-theme="night"] .bg-purple-100 {
 /* Modal animations */
 .modal-content {
   transition: all 0.3s ease;
+  color: #1f2937; /* Цвет текста в модальных окнах */
 }
 
 .modal-show {
@@ -292,10 +315,21 @@ body[data-theme="night"] .bg-purple-100 {
   box-shadow: 0 5px 15px -3px rgba(59, 130, 246, 0.4);
 }
 
-/* Text emphasis */
-.text-emphasis {
-  font-weight: 600;
-  color: #1f2937;
+/* Text colors for day theme */
+.text-gray-700 {
+  color: #374151 !important;
+}
+
+.text-gray-600 {
+  color: #4b5563 !important;
+}
+
+.text-gray-800 {
+  color: #1f2937 !important;
+}
+
+.text-gray-500 {
+  color: #6b7280 !important;
 }
 
 /* Mobile responsive */
@@ -322,4 +356,45 @@ body[data-theme="night"] .bg-purple-100 {
   .class-card:hover {
     transform: none;
   }
+}
+
+/* Ensure good contrast for all text */
+h1, h2, h3, h4, h5, h6 {
+  color: #1f2937;
+}
+
+body[data-theme="night"] h1,
+body[data-theme="night"] h2,
+body[data-theme="night"] h3,
+body[data-theme="night"] h4,
+body[data-theme="night"] h5,
+body[data-theme="night"] h6 {
+  color: #f9fafb;
+}
+
+p, span, div {
+  color: inherit;
+}
+
+/* Input fields styling */
+input, select, textarea {
+  color: #1f2937 !important;
+  background-color: white !important;
+}
+
+body[data-theme="night"] input,
+body[data-theme="night"] select,
+body[data-theme="night"] textarea {
+  color: #f9fafb !important;
+  background-color: #374151 !important;
+  border-color: #4b5563 !important;
+}
+
+/* Labels */
+label {
+  color: #374151 !important;
+}
+
+body[data-theme="night"] label {
+  color: #f9fafb !important;
 }
