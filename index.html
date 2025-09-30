@@ -48,18 +48,18 @@
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Пароль</label>
                                 <input type="password" id="login-password" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                             </div>
-                            <button onclick="login()" class="w-full btn-primary py-3 rounded-xl font-medium">
+                            <button id="login-submit" class="w-full btn-primary py-3 rounded-xl font-medium">
                                 Войти
                             </button>
                             <div class="text-center">
-                                <button onclick="forgotPassword()" class="text-blue-600 hover:text-blue-700 text-sm">
+                                <button id="forgot-password" class="text-blue-600 hover:text-blue-700 text-sm">
                                     Забыли пароль?
                                 </button>
                             </div>
                             <div class="text-center pt-4 border-t border-gray-200">
                                 <p class="text-gray-600 text-sm">
                                     Нет аккаунта? 
-                                    <button onclick="openAuthModal('register')" class="text-blue-600 hover:text-blue-700 font-medium" id="switch-to-register">
+                                    <button id="switch-to-register" class="text-blue-600 hover:text-blue-700 font-medium">
                                         Зарегистрироваться
                                     </button>
                                 </p>
@@ -89,13 +89,13 @@
                                     <option value="teacher">Учитель</option>
                                 </select>
                             </div>
-                            <button onclick="register()" class="w-full btn-primary py-3 rounded-xl font-medium">
+                            <button id="register-submit" class="w-full btn-primary py-3 rounded-xl font-medium">
                                 Зарегистрироваться
                             </button>
                             <div class="text-center pt-4 border-t border-gray-200">
                                 <p class="text-gray-600 text-sm">
                                     Уже есть аккаунт? 
-                                    <button onclick="openAuthModal('login')" class="text-blue-600 hover:text-blue-700 font-medium" id="switch-to-login">
+                                    <button id="switch-to-login" class="text-blue-600 hover:text-blue-700 font-medium">
                                         Войти
                                     </button>
                                 </p>
@@ -114,7 +114,7 @@
                 <div class="p-6">
                     <div class="flex justify-between items-center mb-6">
                         <h3 class="text-2xl font-bold text-gray-800">Вопросы и ответы</h3>
-                        <button onclick="closeModal('qa-modal')" class="text-gray-400 hover:text-gray-600">
+                        <button id="close-qa-modal" class="text-gray-400 hover:text-gray-600">
                             <i data-feather="x" class="w-6 h-6"></i>
                         </button>
                     </div>
@@ -122,7 +122,7 @@
                     <!-- Ask Question -->
                     <div class="mb-6">
                         <textarea id="question-input" placeholder="Задайте свой вопрос..." class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 h-24 resize-none"></textarea>
-                        <button onclick="submitQuestion()" class="btn-primary px-6 py-3 rounded-xl font-medium mt-3">
+                        <button id="submit-question" class="btn-primary px-6 py-3 rounded-xl font-medium mt-3">
                             Отправить вопрос
                         </button>
                     </div>
@@ -173,7 +173,7 @@
                             <label class="block text-sm font-medium text-gray-700 mb-2">Предмет</label>
                             <input type="text" id="lesson-subject" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                         </div>
-                        <button onclick="addLesson()" class="w-full btn-primary py-3 rounded-xl font-medium">
+                        <button id="add-lesson-btn" class="w-full btn-primary py-3 rounded-xl font-medium">
                             Добавить занятие
                         </button>
                     </div>
@@ -207,7 +207,7 @@
                             <label class="block text-sm font-medium text-gray-700 mb-2">Ссылка</label>
                             <input type="url" id="resource-link" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                         </div>
-                        <button onclick="addResource()" class="w-full btn-primary py-3 rounded-xl font-medium">
+                        <button id="add-resource-btn" class="w-full btn-primary py-3 rounded-xl font-medium">
                             Добавить ресурс
                         </button>
                     </div>
@@ -306,6 +306,26 @@
             <p class="text-xl theme-text max-w-2xl mx-auto">Изучаем китайский язык и культуру Китая</p>
         </section>
 
+        <!-- Theme Images Section -->
+        <section class="mb-12">
+            <div class="grid md:grid-cols-2 gap-6">
+                <div class="enhanced-card theme-card p-6 text-center">
+                    <div class="w-32 h-32 bg-blue-100 rounded-full mx-auto mb-4 flex items-center justify-center">
+                        <i data-feather="sun" class="w-16 h-16 text-yellow-500"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-blue-600 mb-2">Дневная тема</h3>
+                    <p class="theme-text">Светлый интерфейс для комфортной работы днем</p>
+                </div>
+                <div class="enhanced-card theme-card p-6 text-center">
+                    <div class="w-32 h-32 bg-blue-900 rounded-full mx-auto mb-4 flex items-center justify-center">
+                        <i data-feather="moon" class="w-16 h-16 text-blue-300"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-blue-600 mb-2">Ночная тема</h3>
+                    <p class="theme-text">Темный интерфейс для работы в вечернее время</p>
+                </div>
+            </div>
+        </section>
+
         <section class="max-w-4xl mx-auto enhanced-card theme-card p-8 mb-12 facts-container">
             <div class="flex items-center mb-6">
                 <div class="bg-white/20 p-3 rounded-xl mr-4">
@@ -363,6 +383,23 @@
                 </div>
                 <h3 class="text-xl font-bold text-blue-600 mb-2">Иванова Мария Петровна</h3>
                 <p class="theme-text mb-3 font-medium">Учитель китайского языка</p>
+                <p class="text-gray-600 text-sm">Опыт работы: 8 лет</p>
+            </div>
+            <div class="enhanced-card theme-card p-6 text-center">
+                <div class="w-24 h-24 bg-green-100 rounded-full mx-auto mb-4 flex items-center justify-center">
+                    <i data-feather="user" class="w-12 h-12 text-green-600"></i>
+                </div>
+                <h3 class="text-xl font-bold text-green-600 mb-2">Петров Иван Сергеевич</h3>
+                <p class="theme-text mb-3 font-medium">Учитель китайского языка</p>
+                <p class="text-gray-600 text-sm">Опыт работы: 5 лет</p>
+            </div>
+            <div class="enhanced-card theme-card p-6 text-center">
+                <div class="w-24 h-24 bg-purple-100 rounded-full mx-auto mb-4 flex items-center justify-center">
+                    <i data-feather="user" class="w-12 h-12 text-purple-600"></i>
+                </div>
+                <h3 class="text-xl font-bold text-purple-600 mb-2">Сидорова Анна Владимировна</h3>
+                <p class="theme-text mb-3 font-medium">Учитель китайской культуры</p>
+                <p class="text-gray-600 text-sm">Опыт работы: 6 лет</p>
             </div>
         </div>
     </div>
@@ -390,13 +427,13 @@
                     <input type="text" id="student-login" class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
                 </div>
             </div>
-            <button onclick="addStudent()" class="btn-primary px-6 py-3 rounded-xl font-medium mt-4">
+            <button id="add-student-btn" class="btn-primary px-6 py-3 rounded-xl font-medium mt-4">
                 Добавить ученика
             </button>
         </div>
 
         <!-- Classes Grid -->
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6" id="classes-container">
             <!-- Classes will be loaded here -->
         </div>
     </div>
@@ -408,7 +445,7 @@
         <!-- Class Selector (for teachers/admins) -->
         <div id="class-selector" class="mb-6 hidden">
             <h3 class="text-lg font-semibold theme-text mb-3">Выберите класс:</h3>
-            <div class="flex flex-wrap gap-2">
+            <div class="flex flex-wrap gap-2" id="class-selector-buttons">
                 <!-- Class buttons will be loaded here -->
             </div>
         </div>
@@ -437,7 +474,7 @@
         <h2 class="text-3xl font-bold text-center theme-text mb-8">Полезные материалы</h2>
         
         <!-- Add Resource Button (for teachers/admins) -->
-        <div class="text-right mb-6">
+        <div class="text-right mb-6" id="add-resource-button">
             <button onclick="openModal('add-resource-modal')" class="btn-primary px-6 py-3 rounded-xl font-medium">
                 Добавить ресурс
             </button>
@@ -454,7 +491,7 @@
         <h2 class="text-3xl font-bold text-center theme-text mb-8">Дополнительные занятия</h2>
         
         <!-- Add Additional Lesson Button (for teachers/admins) -->
-        <div class="text-right mb-6">
+        <div class="text-right mb-6" id="add-additional-button">
             <button onclick="openModal('add-lesson-modal')" class="btn-primary px-6 py-3 rounded-xl font-medium">
                 Добавить доп. занятие
             </button>
