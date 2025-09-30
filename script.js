@@ -1,4 +1,4 @@
-// Data storage
+// Data storage with proper initialization
 let users = JSON.parse(localStorage.getItem('users')) || [];
 let questions = JSON.parse(localStorage.getItem('questions')) || [];
 let currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
@@ -7,7 +7,7 @@ let classes = JSON.parse(localStorage.getItem('classes')) || [];
 let lessons = JSON.parse(localStorage.getItem('lessons')) || [];
 let resources = JSON.parse(localStorage.getItem('resources')) || [];
 
-// Initialize default data if empty
+// Initialize default data
 function initializeData() {
     // Add default admin if not exists
     if (!users.find(u => u.username === 'admin')) {
@@ -58,40 +58,31 @@ const chinaFacts = [
 ];
 
 let currentFactIndex = 0;
-let selectedClass = null;
 
 // Notification system
 function showNotification(message, type = 'success') {
     const notification = document.getElementById('notification');
     const notificationText = document.getElementById('notification-text');
-    
-    if (!notification || !notificationText) {
-        console.log('Notification not found');
-        return;
-    }
+    const icon = notification.querySelector('i');
     
     notificationText.textContent = message;
     
-    // Update notification style
-    const borderElement = notification.querySelector('.border-l-4');
-    const iconElement = notification.querySelector('i');
-    
-    // Reset classes
-    borderElement.className = 'border-l-4';
-    iconElement.className = 'w-6 h-6 mr-3';
+    // Update styles based on type
+    const border = notification.querySelector('.border-l-4');
+    border.className = 'border-l-4';
     
     if (type === 'error') {
-        borderElement.classList.add('border-red-500');
-        iconElement.setAttribute('data-feather', 'alert-circle');
-        iconElement.classList.add('text-red-500');
+        border.classList.add('border-red-500');
+        icon.setAttribute('data-feather', 'alert-circle');
+        icon.className = 'w-6 h-6 text-red-500 mr-3';
     } else if (type === 'warning') {
-        borderElement.classList.add('border-yellow-500');
-        iconElement.setAttribute('data-feather', 'alert-triangle');
-        iconElement.classList.add('text-yellow-500');
+        border.classList.add('border-yellow-500');
+        icon.setAttribute('data-feather', 'alert-triangle');
+        icon.className = 'w-6 h-6 text-yellow-500 mr-3';
     } else {
-        borderElement.classList.add('border-green-500');
-        iconElement.setAttribute('data-feather', 'check-circle');
-        iconElement.classList.add('text-green-500');
+        border.classList.add('border-green-500');
+        icon.setAttribute('data-feather', 'check-circle');
+        icon.className = 'w-6 h-6 text-green-500 mr-3';
     }
     
     feather.replace();
@@ -106,15 +97,13 @@ function showNotification(message, type = 'success') {
 
 function hideNotification() {
     const notification = document.getElementById('notification');
-    if (notification) {
-        notification.querySelector('.transform').classList.add('translate-x-full');
-        setTimeout(() => {
-            notification.classList.add('hidden');
-        }, 500);
-    }
+    notification.querySelector('.transform').classList.add('translate-x-full');
+    setTimeout(() => {
+        notification.classList.add('hidden');
+    }, 500);
 }
 
-// Check permissions
+// Check if user has permission to edit
 function hasPermission() {
     return currentUser && (currentUser.role === 'teacher' || currentUser.role === 'admin');
 }
@@ -143,7 +132,7 @@ function showPage(pageId) {
         item.classList.add('active');
     });
     
-    // Load page content
+    // Load page-specific content
     loadPageContent(pageId);
     
     // Close mobile menu
@@ -164,9 +153,6 @@ function loadPageContent(pageId) {
         case 'resources':
             loadResourcesPage();
             break;
-        case 'additional':
-            loadAdditionalLessonsPage();
-            break;
     }
 }
 
@@ -176,7 +162,7 @@ function loadClassesPage() {
     const addStudentSection = document.getElementById('add-student-section');
     const studentClassSelect = document.getElementById('student-class');
     
-    // Show/hide add student section
+    // Show/hide add student section based on permissions
     if (hasPermission()) {
         addStudentSection.classList.remove('hidden');
         
@@ -198,7 +184,7 @@ function loadClassesPage() {
         const classStudents = students.filter(student => student.class === classItem.id);
         
         const classCard = document.createElement('div');
-        classCard.className = 'class-card enhanced-card p-6 text-center';
+        classCard.className = 'bg-white p-6 rounded-2xl shadow-lg border border-gray-200 text-center';
         classCard.innerHTML = `
             <div class="w-16 h-16 bg-blue-100 rounded-full mx-auto mb-4 flex items-center justify-center">
                 <i data-feather="users" class="w-8 h-8 text-blue-600"></i>
@@ -220,70 +206,10 @@ function loadClassesPage() {
 
 // Load Lessons Page
 function loadLessonsPage() {
-    const classSelector = document.getElementById('class-selector');
-    const classSelectorButtons = document.getElementById('class-selector-buttons');
-    const currentClassInfo = document.getElementById('current-class-info');
-    const lessonClassSelect = document.getElementById('lesson-class');
-    
-    // Show/hide class selector
-    if (hasPermission()) {
-        classSelector.classList.remove('hidden');
-        
-        // Populate class selector
-        classSelectorButtons.innerHTML = '';
-        classes.forEach(classItem => {
-            const button = document.createElement('button');
-            button.className = `class-badge px-4 py-2 rounded-xl font-medium transition-all duration-300 ${
-                selectedClass === classItem.id ? 'active text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-            }`;
-            button.textContent = classItem.name;
-            button.onclick = () => selectClass(classItem.id);
-            classSelectorButtons.appendChild(button);
-        });
-        
-        // Populate lesson class select
-        lessonClassSelect.innerHTML = '<option value="">Выберите класс</option>';
-        classes.forEach(classItem => {
-            const option = document.createElement('option');
-            option.value = classItem.id;
-            option.textContent = classItem.name;
-            lessonClassSelect.appendChild(option);
-        });
-    } else {
-        classSelector.classList.add('hidden');
-    }
-    
-    loadLessonsForClass();
-}
-
-function selectClass(className) {
-    selectedClass = className;
-    
-    const currentClassInfo = document.getElementById('current-class-info');
-    currentClassInfo.classList.remove('hidden');
-    document.getElementById('selected-class-name').textContent = classes.find(c => c.id === className)?.name || className;
-    
-    loadLessonsForClass();
-}
-
-function loadLessonsForClass() {
     const lessonsContainer = document.getElementById('lessons-container');
     lessonsContainer.innerHTML = '';
     
-    let classLessons = [];
-    
-    if (currentUser && currentUser.role === 'student') {
-        const student = students.find(s => s.username === currentUser.username);
-        if (student) {
-            classLessons = lessons.filter(lesson => lesson.classId === student.class);
-        }
-    } else if (selectedClass) {
-        classLessons = lessons.filter(lesson => lesson.classId === selectedClass);
-    } else {
-        classLessons = lessons;
-    }
-    
-    if (classLessons.length === 0) {
+    if (lessons.length === 0) {
         lessonsContainer.innerHTML = `
             <div class="col-span-2 text-center py-8">
                 <i data-feather="calendar" class="w-12 h-12 text-gray-400 mx-auto mb-4"></i>
@@ -291,25 +217,17 @@ function loadLessonsForClass() {
             </div>
         `;
     } else {
-        classLessons.forEach(lesson => {
+        lessons.forEach(lesson => {
             const classItem = classes.find(c => c.id === lesson.classId);
             const lessonElement = document.createElement('div');
-            lessonElement.className = 'bg-blue-50 p-4 rounded-xl border border-blue-100 transition-all duration-300 hover:scale-105';
+            lessonElement.className = 'bg-blue-50 p-4 rounded-xl border border-blue-100';
             lessonElement.innerHTML = `
-                <div class="flex items-center justify-between mb-2">
-                    <div class="flex items-center">
-                        <i data-feather="clock" class="w-4 h-4 text-blue-500 mr-2"></i>
-                        <span class="font-medium text-gray-800">${lesson.day}, ${lesson.time}</span>
-                    </div>
-                    ${hasPermission() ? `
-                        <button onclick="deleteLesson(${lesson.id})" class="text-red-500 hover:text-red-700">
-                            <i data-feather="trash-2" class="w-4 h-4"></i>
-                        </button>
-                    ` : ''}
+                <div class="flex items-center mb-2">
+                    <i data-feather="clock" class="w-4 h-4 text-blue-500 mr-2"></i>
+                    <span class="font-medium text-gray-800">${lesson.day}, ${lesson.time}</span>
                 </div>
                 <p class="text-gray-800 font-medium">${lesson.subject}</p>
-                ${hasPermission() ? 
-                    `<span class="inline-block mt-2 px-2 py-1 bg-blue-200 text-blue-700 text-xs rounded-full">${classItem?.name || lesson.classId}</span>` : ''}
+                <p class="text-sm text-gray-600 mt-1">${classItem?.name || lesson.classId} класс</p>
             `;
             lessonsContainer.appendChild(lessonElement);
         });
@@ -321,15 +239,6 @@ function loadLessonsForClass() {
 // Load Resources Page
 function loadResourcesPage() {
     const resourcesContainer = document.getElementById('resources-container');
-    const addResourceButton = document.getElementById('add-resource-button');
-    
-    // Show/hide add button
-    if (hasPermission()) {
-        addResourceButton.classList.remove('hidden');
-    } else {
-        addResourceButton.classList.add('hidden');
-    }
-    
     resourcesContainer.innerHTML = '';
     
     if (resources.length === 0) {
@@ -342,18 +251,11 @@ function loadResourcesPage() {
     } else {
         resources.forEach(resource => {
             const resourceElement = document.createElement('div');
-            resourceElement.className = 'enhanced-card p-6';
+            resourceElement.className = 'bg-white p-6 rounded-2xl shadow-lg border border-gray-200';
             resourceElement.innerHTML = `
-                <div class="flex justify-between items-start mb-3">
-                    <h3 class="text-xl font-bold text-blue-600">${resource.title}</h3>
-                    ${hasPermission() ? `
-                        <button onclick="deleteResource(${resource.id})" class="text-red-500 hover:text-red-700">
-                            <i data-feather="trash-2" class="w-4 h-4"></i>
-                        </button>
-                    ` : ''}
-                </div>
+                <h3 class="text-xl font-bold text-blue-600 mb-2">${resource.title}</h3>
                 <p class="text-gray-700 mb-4">${resource.description}</p>
-                <a href="${resource.link}" target="_blank" class="btn-primary inline-flex items-center px-4 py-2 rounded-xl text-sm">
+                <a href="${resource.link}" target="_blank" class="bg-blue-600 text-white inline-flex items-center px-4 py-2 rounded-xl text-sm hover:bg-blue-700">
                     <i data-feather="external-link" class="w-4 h-4 mr-2"></i>
                     Открыть ресурс
                 </a>
@@ -365,56 +267,7 @@ function loadResourcesPage() {
     feather.replace();
 }
 
-// Load Additional Lessons Page
-function loadAdditionalLessonsPage() {
-    const additionalContainer = document.getElementById('additional-lessons-container');
-    const addAdditionalButton = document.getElementById('add-additional-button');
-    
-    // Show/hide add button
-    if (hasPermission()) {
-        addAdditionalButton.classList.remove('hidden');
-    } else {
-        addAdditionalButton.classList.add('hidden');
-    }
-    
-    additionalContainer.innerHTML = '';
-    
-    if (lessons.length === 0) {
-        additionalContainer.innerHTML = `
-            <div class="col-span-2 text-center py-8">
-                <i data-feather="award" class="w-12 h-12 text-gray-400 mx-auto mb-4"></i>
-                <p class="text-gray-600 font-medium">Дополнительные занятия пока не добавлены</p>
-            </div>
-        `;
-    } else {
-        lessons.forEach(lesson => {
-            const classItem = classes.find(c => c.id === lesson.classId);
-            const lessonElement = document.createElement('div');
-            lessonElement.className = 'enhanced-card p-6';
-            lessonElement.innerHTML = `
-                <div class="flex justify-between items-start mb-3">
-                    <h3 class="text-xl font-bold text-blue-600">${lesson.subject}</h3>
-                    ${hasPermission() ? `
-                        <button onclick="deleteLesson(${lesson.id})" class="text-red-500 hover:text-red-700">
-                            <i data-feather="trash-2" class="w-4 h-4"></i>
-                        </button>
-                    ` : ''}
-                </div>
-                <div class="space-y-2">
-                    <p class="text-gray-700"><strong>Класс:</strong> ${classItem?.name || lesson.classId}</p>
-                    <p class="text-gray-700"><strong>День:</strong> ${lesson.day}</p>
-                    <p class="text-gray-700"><strong>Время:</strong> ${lesson.time}</p>
-                    <p class="text-gray-700"><strong>Тип:</strong> Дополнительное занятие</p>
-                </div>
-            `;
-            additionalContainer.appendChild(lessonElement);
-        });
-    }
-    
-    feather.replace();
-}
-
-// Add Student
+// Add Student Function
 function addStudent() {
     if (!hasPermission()) {
         showNotification('У вас нет прав для добавления учеников', 'error');
@@ -431,139 +284,37 @@ function addStudent() {
     }
     
     if (users.find(u => u.username === login)) {
-        showNotification('Логин уже занят', 'error');
+        showNotification('Пользователь с таким логином уже существует', 'error');
         return;
     }
     
-    // Create user
-    users.push({
+    // Create user account for student
+    const studentUser = {
         username: login,
         password: 'student123',
         role: 'student',
         name: name
-    });
+    };
     
-    // Add to students
-    students.push({
+    users.push(studentUser);
+    localStorage.setItem('users', JSON.stringify(users));
+    
+    // Add student to students list
+    const newStudent = {
         name: name,
         class: studentClass,
         username: login
-    });
+    };
     
-    localStorage.setItem('users', JSON.stringify(users));
+    students.push(newStudent);
     localStorage.setItem('students', JSON.stringify(students));
     
     // Clear form
     document.getElementById('student-name').value = '';
     document.getElementById('student-login').value = '';
     
-    showNotification('Ученик добавлен');
+    showNotification(`Ученик ${name} добавлен`);
     loadClassesPage();
-}
-
-// Add Lesson
-function addLesson() {
-    if (!hasPermission()) {
-        showNotification('У вас нет прав для добавления занятий', 'error');
-        return;
-    }
-    
-    const classId = document.getElementById('lesson-class').value;
-    const day = document.getElementById('lesson-day').value;
-    const time = document.getElementById('lesson-time').value;
-    const subject = document.getElementById('lesson-subject').value;
-    
-    if (!classId || !day || !time || !subject) {
-        showNotification('Заполните все поля', 'error');
-        return;
-    }
-    
-    lessons.push({
-        id: Date.now(),
-        classId: classId,
-        day: day,
-        time: time,
-        subject: subject
-    });
-    
-    localStorage.setItem('lessons', JSON.stringify(lessons));
-    
-    // Clear form
-    document.getElementById('lesson-time').value = '';
-    document.getElementById('lesson-subject').value = '';
-    
-    showNotification('Занятие добавлено');
-    closeModal('add-lesson-modal');
-    loadLessonsPage();
-}
-
-function deleteLesson(lessonId) {
-    if (!hasPermission()) {
-        showNotification('У вас нет прав для удаления занятий', 'error');
-        return;
-    }
-    
-    if (!confirm('Удалить занятие?')) return;
-    
-    const index = lessons.findIndex(l => l.id === lessonId);
-    if (index !== -1) {
-        lessons.splice(index, 1);
-        localStorage.setItem('lessons', JSON.stringify(lessons));
-        showNotification('Занятие удалено');
-        loadLessonsPage();
-    }
-}
-
-// Add Resource
-function addResource() {
-    if (!hasPermission()) {
-        showNotification('У вас нет прав для добавления ресурсов', 'error');
-        return;
-    }
-    
-    const title = document.getElementById('resource-title').value;
-    const description = document.getElementById('resource-description').value;
-    const link = document.getElementById('resource-link').value;
-    
-    if (!title || !description || !link) {
-        showNotification('Заполните все поля', 'error');
-        return;
-    }
-    
-    resources.push({
-        id: Date.now(),
-        title: title,
-        description: description,
-        link: link
-    });
-    
-    localStorage.setItem('resources', JSON.stringify(resources));
-    
-    // Clear form
-    document.getElementById('resource-title').value = '';
-    document.getElementById('resource-description').value = '';
-    document.getElementById('resource-link').value = '';
-    
-    showNotification('Ресурс добавлен');
-    closeModal('add-resource-modal');
-    loadResourcesPage();
-}
-
-function deleteResource(resourceId) {
-    if (!hasPermission()) {
-        showNotification('У вас нет прав для удаления ресурсов', 'error');
-        return;
-    }
-    
-    if (!confirm('Удалить ресурс?')) return;
-    
-    const index = resources.findIndex(r => r.id === resourceId);
-    if (index !== -1) {
-        resources.splice(index, 1);
-        localStorage.setItem('resources', JSON.stringify(resources));
-        showNotification('Ресурс удален');
-        loadResourcesPage();
-    }
 }
 
 // Facts rotation
@@ -585,13 +336,16 @@ function rotateFacts() {
 function toggleTheme() {
     const body = document.body;
     const themeIcon = document.querySelector('#theme-toggle i');
+    const currentTheme = body.getAttribute('data-theme');
     
-    if (body.getAttribute('data-theme') === 'day') {
+    if (currentTheme === 'day') {
         body.setAttribute('data-theme', 'night');
+        body.className = 'bg-gray-900 text-white';
         themeIcon.setAttribute('data-feather', 'sun');
         showNotification('Ночная тема включена');
     } else {
         body.setAttribute('data-theme', 'day');
+        body.className = 'bg-white text-gray-900';
         themeIcon.setAttribute('data-feather', 'moon');
         showNotification('Дневная тема включена');
     }
@@ -614,26 +368,11 @@ document.getElementById('mobile-menu-button').addEventListener('click', function
 
 // Modal functions
 function openModal(modalId) {
-    const modal = document.getElementById(modalId);
-    const modalContent = modal.querySelector('.modal-content');
-    
-    modal.classList.remove('hidden');
-    setTimeout(() => {
-        modalContent.classList.remove('scale-95');
-        modalContent.classList.add('scale-100');
-    }, 50);
+    document.getElementById(modalId).classList.remove('hidden');
 }
 
 function closeModal(modalId) {
-    const modal = document.getElementById(modalId);
-    const modalContent = modal.querySelector('.modal-content');
-    
-    modalContent.classList.remove('scale-100');
-    modalContent.classList.add('scale-95');
-    
-    setTimeout(() => {
-        modal.classList.add('hidden');
-    }, 300);
+    document.getElementById(modalId).classList.add('hidden');
 }
 
 // Auth functions
@@ -659,7 +398,7 @@ function login() {
         return;
     }
     
-    // Check admin
+    // Check for admin
     if (username === 'admin' && password === 'admin123') {
         currentUser = { username: 'admin', role: 'admin', name: 'Администратор' };
         localStorage.setItem('currentUser', JSON.stringify(currentUser));
@@ -698,7 +437,7 @@ function register() {
     }
     
     if (users.find(u => u.username === username)) {
-        showNotification('Логин уже занят', 'error');
+        showNotification('Пользователь с таким логином уже существует', 'error');
         return;
     }
     
@@ -712,25 +451,30 @@ function register() {
     users.push(newUser);
     localStorage.setItem('users', JSON.stringify(users));
     
-    showNotification('Регистрация успешна!');
+    showNotification('Регистрация выполнена успешно!');
+    
     closeModal('auth-modal');
+    document.getElementById('reg-username').value = '';
+    document.getElementById('reg-password').value = '';
+    document.getElementById('reg-confirm-password').value = '';
 }
 
 function forgotPassword() {
-    showNotification('Обратитесь к администратору для восстановления пароля', 'info');
+    showNotification('Для восстановления пароля обратитесь к администратору школы.', 'info');
 }
 
 function updateAuthUI() {
     const authButtons = document.getElementById('auth-buttons');
     const mobileAuthSection = document.querySelector('#mobile-menu .pt-4');
     const qaButton = document.getElementById('qa-button');
+    const addStudentSection = document.getElementById('add-student-section');
     
     if (currentUser) {
-        // User logged in
+        // User is logged in
         authButtons.innerHTML = `
             <div class="flex items-center space-x-3">
                 <span class="text-white">${currentUser.name || currentUser.username}</span>
-                <button onclick="logout()" class="btn-secondary px-4 py-2 rounded-xl font-medium text-sm">
+                <button onclick="logout()" class="bg-red-600 text-white px-4 py-2 rounded-xl font-medium text-sm hover:bg-red-700">
                     Выйти
                 </button>
             </div>
@@ -748,43 +492,44 @@ function updateAuthUI() {
             </div>
         `;
         
+        // Show Q&A button for all logged in users
         qaButton.classList.remove('hidden');
         
     } else {
-        // User not logged in
+        // User is not logged in
         authButtons.innerHTML = `
-            <button id="register-btn" class="btn-secondary px-5 py-2.5 rounded-xl font-medium">
+            <button onclick="openAuthModal('register')" class="bg-red-600 text-white px-5 py-2.5 rounded-xl font-medium hover:bg-red-700">
                 Регистрация
             </button>
-            <button id="login-btn" class="btn-primary px-5 py-2.5 rounded-xl font-medium">
+            <button onclick="openAuthModal('login')" class="bg-blue-700 text-white px-5 py-2.5 rounded-xl font-medium hover:bg-blue-800">
                 Войти
             </button>
         `;
         
         mobileAuthSection.innerHTML = `
             <div class="pt-4 border-t border-blue-600 space-y-3">
-                <button id="mobile-register-btn" class="w-full px-4 py-3 bg-white text-blue-600 rounded-xl font-medium flex items-center justify-center">
+                <button onclick="openAuthModal('register')" class="w-full px-4 py-3 bg-white text-blue-600 rounded-xl font-medium flex items-center justify-center">
                     <i data-feather="user-plus" class="w-4 h-4 mr-2"></i>
                     Регистрация
                 </button>
-                <button id="mobile-login-btn" class="w-full mt-2 px-4 py-3 bg-blue-800 text-white rounded-xl font-medium flex items-center justify-center">
+                <button onclick="openAuthModal('login')" class="w-full mt-2 px-4 py-3 bg-blue-700 text-white rounded-xl font-medium flex items-center justify-center">
                     <i data-feather="log-in" class="w-4 h-4 mr-2"></i>
                     Войти
                 </button>
             </div>
         `;
         
+        // Hide Q&A button for anonymous users
         qaButton.classList.add('hidden');
     }
     
     feather.replace();
-    setupAuthEvents();
 }
 
 function logout() {
     currentUser = null;
     localStorage.removeItem('currentUser');
-    showNotification('Вы вышли из системы');
+    showNotification('Вы успешно вышли из системы');
     updateAuthUI();
     showPage('main');
 }
@@ -792,7 +537,8 @@ function logout() {
 // Q&A functions
 function openQAModal() {
     if (!currentUser) {
-        showNotification('Войдите в систему', 'warning');
+        showNotification('Для доступа к вопросам и ответам необходимо войти в систему', 'warning');
+        openAuthModal('login');
         return;
     }
     
@@ -802,7 +548,7 @@ function openQAModal() {
 
 function submitQuestion() {
     if (!currentUser) {
-        showNotification('Войдите в систему', 'warning');
+        showNotification('Для отправки вопроса необходимо войти в систему', 'warning');
         return;
     }
     
@@ -810,7 +556,7 @@ function submitQuestion() {
     const question = questionInput.value.trim();
     
     if (!question) {
-        showNotification('Введите вопрос', 'error');
+        showNotification('Пожалуйста, введите вопрос', 'error');
         return;
     }
     
@@ -826,9 +572,9 @@ function submitQuestion() {
     questions.push(newQuestion);
     localStorage.setItem('questions', JSON.stringify(questions));
     
-    questionInput.value = '';
-    showNotification('Вопрос отправлен');
     loadQuestions();
+    questionInput.value = '';
+    showNotification('Ваш вопрос отправлен!');
 }
 
 function loadQuestions() {
@@ -848,22 +594,17 @@ function loadQuestions() {
     
     questions.forEach(q => {
         const questionElement = document.createElement('div');
-        questionElement.className = 'qa-item enhanced-card p-5 mb-4';
+        questionElement.className = 'bg-white p-5 rounded-2xl shadow-lg border border-gray-200 mb-4';
         questionElement.innerHTML = `
-            <div class="qa-question flex items-start mb-3">
+            <div class="flex items-start mb-3">
                 <i data-feather="help-circle" class="w-5 h-5 text-blue-500 mr-3 mt-0.5"></i>
                 <div class="flex-1">
                     <span class="font-semibold text-gray-800">${q.question}</span>
                     <p class="text-sm text-gray-600 mt-1">От: ${q.userName} • ${q.date}</p>
                 </div>
-                ${(currentUser && (currentUser.role === 'teacher' || currentUser.role === 'admin' || currentUser.username === q.user)) ? `
-                    <button onclick="deleteQuestion(${q.id})" class="text-red-500 hover:text-red-700 ml-2">
-                        <i data-feather="trash-2" class="w-4 h-4"></i>
-                    </button>
-                ` : ''}
             </div>
             ${q.answer ? `
-            <div class="qa-answer flex items-start bg-green-50 p-3 rounded-lg">
+            <div class="flex items-start bg-green-50 p-3 rounded-lg">
                 <i data-feather="check-circle" class="w-5 h-5 text-green-500 mr-3 mt-0.5"></i>
                 <div class="flex-1">
                     <span class="text-gray-800 font-medium">${q.answer}</span>
@@ -871,17 +612,9 @@ function loadQuestions() {
                 </div>
             </div>
             ` : `
-            <div class="qa-answer flex items-start bg-yellow-50 p-3 rounded-lg">
+            <div class="flex items-start bg-yellow-50 p-3 rounded-lg">
                 <i data-feather="clock" class="w-5 h-5 text-yellow-500 mr-3 mt-0.5"></i>
-                <span class="text-gray-800 font-medium">Вопрос на рассмотрении</span>
-                ${currentUser && (currentUser.role === 'teacher' || currentUser.role === 'admin') ? `
-                    <div class="ml-4 flex-1">
-                        <textarea id="answer-${q.id}" placeholder="Введите ответ..." class="w-full px-3 py-2 border border-gray-300 rounded-lg text-sm resize-none h-20"></textarea>
-                        <button onclick="submitAnswer(${q.id})" class="btn-primary px-3 py-1 rounded-lg text-sm mt-1">
-                            Ответить
-                        </button>
-                    </div>
-                ` : ''}
+                <span class="text-gray-800 font-medium">Вопрос на рассмотрении учителя</span>
             </div>
             `}
         `;
@@ -891,54 +624,7 @@ function loadQuestions() {
     feather.replace();
 }
 
-function submitAnswer(questionId) {
-    const answerText = document.getElementById(`answer-${questionId}`).value.trim();
-    
-    if (!answerText) {
-        showNotification('Введите ответ', 'error');
-        return;
-    }
-    
-    const question = questions.find(q => q.id === questionId);
-    if (question) {
-        question.answer = answerText;
-        localStorage.setItem('questions', JSON.stringify(questions));
-        showNotification('Ответ отправлен');
-        loadQuestions();
-    }
-}
-
-function deleteQuestion(questionId) {
-    if (!confirm('Удалить вопрос?')) return;
-    
-    const index = questions.findIndex(q => q.id === questionId);
-    if (index !== -1) {
-        questions.splice(index, 1);
-        localStorage.setItem('questions', JSON.stringify(questions));
-        showNotification('Вопрос удален');
-        loadQuestions();
-    }
-}
-
-function setupAuthEvents() {
-    // Desktop
-    document.getElementById('register-btn').addEventListener('click', () => openAuthModal('register'));
-    document.getElementById('login-btn').addEventListener('click', () => openAuthModal('login'));
-    
-    // Mobile
-    document.getElementById('mobile-register-btn').addEventListener('click', () => openAuthModal('register'));
-    document.getElementById('mobile-login-btn').addEventListener('click', () => openAuthModal('login'));
-    
-    // Modal
-    document.getElementById('close-auth-modal').addEventListener('click', () => closeModal('auth-modal'));
-    document.getElementById('switch-to-register').addEventListener('click', () => openAuthModal('register'));
-    document.getElementById('switch-to-login').addEventListener('click', () => openAuthModal('login'));
-    document.getElementById('login-submit').addEventListener('click', login);
-    document.getElementById('register-submit').addEventListener('click', register);
-    document.getElementById('forgot-password').addEventListener('click', forgotPassword);
-}
-
-// Initialize app
+// Initialize application
 document.addEventListener('DOMContentLoaded', function() {
     // Initialize data
     initializeData();
@@ -953,21 +639,11 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
     
-    // Auth events
-    setupAuthEvents();
-    
-    // Q&A events
-    document.getElementById('qa-button').addEventListener('click', openQAModal);
-    document.getElementById('close-qa-modal').addEventListener('click', () => closeModal('qa-modal'));
-    document.getElementById('submit-question').addEventListener('click', submitQuestion);
-    
     // Theme toggle
     document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
     
-    // Add buttons
-    document.getElementById('add-student-btn').addEventListener('click', addStudent);
-    document.getElementById('add-lesson-btn').addEventListener('click', addLesson);
-    document.getElementById('add-resource-btn').addEventListener('click', addResource);
+    // Q&A button
+    document.getElementById('qa-button').addEventListener('click', openQAModal);
     
     // Close modals on outside click
     document.addEventListener('click', function(event) {
@@ -976,12 +652,12 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    // Update UI
+    // Update UI based on current user
     updateAuthUI();
     
-    // Initialize icons
+    // Initialize feather icons
     feather.replace();
     
-    console.log('School 105 app initialized');
+    console.log('School 105 application initialized');
     console.log('Admin: admin / admin123');
 });
