@@ -1,5 +1,5 @@
 // ===============================
-// script.js (полная версия с исправлениями)
+// script.js (полная версия с исправленными ссылками)
 // ===============================
 
 // Data management with proper synchronization
@@ -114,7 +114,7 @@ function initializeData() {
             setLessons(lessons);
         }
 
-        // Initialize resources with REAL Chinese learning links
+        // Initialize resources with REAL Chinese learning links - ИСПРАВЛЕННЫЕ ССЫЛКИ
         if (resources.length === 0) {
             resources = [
                 { 
@@ -158,6 +158,48 @@ function initializeData() {
                     description: 'Интерактивное изучение иероглифов', 
                     link: 'https://www.archchinese.com/',
                     type: 'website'
+                },
+                { 
+                    id: 7, 
+                    title: 'Duolingo Китайский', 
+                    description: 'Бесплатное приложение для изучения основ', 
+                    link: 'https://www.duolingo.com/course/zh/en/learn-chinese',
+                    type: 'app'
+                },
+                { 
+                    id: 8, 
+                    title: 'ChineseForums', 
+                    description: 'Форум для изучающих китайский язык', 
+                    link: 'https://www.chinese-forums.com/',
+                    type: 'website'
+                },
+                { 
+                    id: 9, 
+                    title: 'Skritter', 
+                    description: 'Приложение для изучения написания иероглифов', 
+                    link: 'https://skritter.com/',
+                    type: 'app'
+                },
+                { 
+                    id: 10, 
+                    title: 'YouTube: Yoyo Chinese', 
+                    description: 'Канал с уроками китайского для всех уровней', 
+                    link: 'https://www.youtube.com/c/YoyoChinese',
+                    type: 'video'
+                },
+                { 
+                    id: 11, 
+                    title: 'TutorMandarin', 
+                    description: 'Платформа для занятий с репетиторами', 
+                    link: 'https://www.tutormandarin.net/',
+                    type: 'website'
+                },
+                { 
+                    id: 12, 
+                    title: 'Memrise Китайский', 
+                    description: 'Приложение для запоминания слов и фраз', 
+                    link: 'https://www.memrise.com/courses/english/chinese/',
+                    type: 'app'
                 }
             ];
             setResources(resources);
@@ -179,7 +221,7 @@ const chinaFacts = [
 
 let currentFactIndex = 0;
 
-// Notification system - ПОЛНОСТЬЮ ИСПРАВЛЕННАЯ ВЕРСИЯ
+// Notification system - ИСПРАВЛЕННАЯ ВЕРСИЯ
 function showNotification(message, type = 'success') {
     try {
         const notification = document.getElementById('notification');
