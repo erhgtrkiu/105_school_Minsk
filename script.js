@@ -1,5 +1,5 @@
 // ===============================
-// script.js (полная версия с исправленными ссылками)
+// script.js (с улучшенной системой уведомлений)
 // ===============================
 
 // Data management with proper synchronization
@@ -114,7 +114,7 @@ function initializeData() {
             setLessons(lessons);
         }
 
-        // Initialize resources with REAL Chinese learning links - ИСПРАВЛЕННЫЕ ССЫЛКИ
+        // Initialize resources with REAL Chinese learning links
         if (resources.length === 0) {
             resources = [
                 { 
@@ -221,7 +221,9 @@ const chinaFacts = [
 
 let currentFactIndex = 0;
 
-// Notification system - ИСПРАВЛЕННАЯ ВЕРСИЯ
+// УЛУЧШЕННАЯ СИСТЕМА УВЕДОМЛЕНИЙ
+let notificationTimeout = null;
+
 function showNotification(message, type = 'success') {
     try {
         const notification = document.getElementById('notification');
@@ -232,8 +234,16 @@ function showNotification(message, type = 'success') {
             // Fallback для критически важных уведомлений
             if (type === 'error') {
                 alert(`Ошибка: ${message}`);
+            } else {
+                alert(message);
             }
             return;
+        }
+        
+        // Очищаем предыдущий таймер
+        if (notificationTimeout) {
+            clearTimeout(notificationTimeout);
+            notificationTimeout = null;
         }
         
         notificationText.textContent = message;
@@ -280,26 +290,46 @@ function showNotification(message, type = 'success') {
         // Обновляем иконки feather
         feather.replace();
         
-        // Показываем уведомление
-        notification.classList.remove('hidden');
+        // Сначала скрываем уведомление, чтобы сбросить анимацию
+        notification.classList.add('hidden');
+        notification.style.display = 'none';
         
-        // Анимация появления
+        // Даем время для сброса анимации
         setTimeout(() => {
-            const transformElement = notification.querySelector('.transform');
-            if (transformElement) {
-                transformElement.classList.remove('translate-x-full');
+            // Показываем уведомление
+            notification.style.display = 'block';
+            notification.classList.remove('hidden');
+            
+            // Анимация появления
+            setTimeout(() => {
+                const transformElement = notification.querySelector('.transform');
+                if (transformElement) {
+                    transformElement.classList.remove('translate-x-full');
+                }
+            }, 50);
+            
+            // Устанавливаем разное время показа для разных типов уведомлений
+            let displayTime = 5000; // 5 секунд по умолчанию
+            
+            if (type === 'error') {
+                displayTime = 7000; // 7 секунд для ошибок
+            } else if (type === 'info') {
+                displayTime = 8000; // 8 секунд для информационных сообщений
+            } else if (type === 'warning') {
+                displayTime = 6000; // 6 секунд для предупреждений
             }
+            
+            // Автоматическое скрытие
+            notificationTimeout = setTimeout(() => {
+                hideNotification();
+            }, displayTime);
+            
         }, 100);
-        
-        // Автоматическое скрытие через 5 секунд
-        setTimeout(hideNotification, 5000);
         
     } catch (error) {
         console.error('Error in showNotification:', error);
         // Fallback для самых критичных случаев
-        if (type === 'error') {
-            alert(message);
-        }
+        alert(message);
     }
 }
 
@@ -315,6 +345,7 @@ function hideNotification() {
         
         setTimeout(() => {
             notification.classList.add('hidden');
+            notification.style.display = 'none';
         }, 500);
     } catch (error) {
         console.error('Error in hideNotification:', error);
