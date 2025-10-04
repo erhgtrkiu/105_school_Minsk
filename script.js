@@ -182,41 +182,60 @@ const chinaFacts = [
 
 let currentFactIndex = 0;
 
-// Notification system
+// Notification system - ИСПРАВЛЕННАЯ ВЕРСИЯ
 function showNotification(message, type = 'success') {
     const notification = document.getElementById('notification');
     const notificationText = document.getElementById('notification-text');
-    const icon = notification.querySelector('i');
+    
+    if (!notification || !notificationText) {
+        console.error('Notification elements not found');
+        return;
+    }
     
     notificationText.textContent = message;
     
     // Update styles based on type
     const border = notification.querySelector('.border-l-4');
-    border.className = 'border-l-4';
+    const icon = notification.querySelector('i');
     
-    if (type === 'error') {
-        border.classList.add('border-red-500');
-        icon.setAttribute('data-feather', 'alert-circle');
-        icon.className = 'w-6 h-6 text-red-500 mr-3';
-    } else if (type === 'warning') {
-        border.classList.add('border-yellow-500');
-        icon.setAttribute('data-feather', 'alert-triangle');
-        icon.className = 'w-6 h-6 text-yellow-500 mr-3';
-    } else if (type === 'info') {
-        border.classList.add('border-blue-500');
-        icon.setAttribute('data-feather', 'info');
-        icon.className = 'w-6 h-6 text-blue-500 mr-3';
-    } else {
-        border.classList.add('border-green-500');
-        icon.setAttribute('data-feather', 'check-circle');
-        icon.className = 'w-6 h-6 text-green-500 mr-3';
+    if (border) {
+        border.className = 'border-l-4';
+        
+        if (type === 'error') {
+            border.classList.add('border-red-500');
+            if (icon) {
+                icon.setAttribute('data-feather', 'alert-circle');
+                icon.className = 'w-6 h-6 text-red-500 mr-3';
+            }
+        } else if (type === 'warning') {
+            border.classList.add('border-yellow-500');
+            if (icon) {
+                icon.setAttribute('data-feather', 'alert-triangle');
+                icon.className = 'w-6 h-6 text-yellow-500 mr-3';
+            }
+        } else if (type === 'info') {
+            border.classList.add('border-blue-500');
+            if (icon) {
+                icon.setAttribute('data-feather', 'info');
+                icon.className = 'w-6 h-6 text-blue-500 mr-3';
+            }
+        } else {
+            border.classList.add('border-green-500');
+            if (icon) {
+                icon.setAttribute('data-feather', 'check-circle');
+                icon.className = 'w-6 h-6 text-green-500 mr-3';
+            }
+        }
     }
     
     feather.replace();
     notification.classList.remove('hidden');
     
     setTimeout(() => {
-        notification.querySelector('.transform').classList.remove('translate-x-full');
+        const transformElement = notification.querySelector('.transform');
+        if (transformElement) {
+            transformElement.classList.remove('translate-x-full');
+        }
     }, 100);
     
     setTimeout(hideNotification, 5000);
@@ -224,7 +243,13 @@ function showNotification(message, type = 'success') {
 
 function hideNotification() {
     const notification = document.getElementById('notification');
-    notification.querySelector('.transform').classList.add('translate-x-full');
+    if (!notification) return;
+    
+    const transformElement = notification.querySelector('.transform');
+    if (transformElement) {
+        transformElement.classList.add('translate-x-full');
+    }
+    
     setTimeout(() => {
         notification.classList.add('hidden');
     }, 500);
