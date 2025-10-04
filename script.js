@@ -1,5 +1,5 @@
 // ===============================
-// script.js (с реальными ссылками на ресурсы)
+// script.js (с простой и надежной системой уведомлений)
 // ===============================
 
 // Data management with proper synchronization
@@ -114,7 +114,7 @@ function initializeData() {
             setLessons(lessons);
         }
 
-        // Initialize resources with REAL WORKING Chinese learning links
+        // Initialize resources with REAL Chinese learning links
         if (resources.length === 0) {
             resources = [
                 { 
@@ -126,8 +126,8 @@ function initializeData() {
                 },
                 { 
                     id: 2, 
-                    title: 'Pleco Chinese Dictionary', 
-                    description: 'Самый популярный словарь китайского языка', 
+                    title: 'Pleco', 
+                    description: 'Словарь китайского языка с распознаванием иероглифов', 
                     link: 'https://www.pleco.com/',
                     type: 'app'
                 },
@@ -163,7 +163,7 @@ function initializeData() {
                     id: 7, 
                     title: 'Duolingo Китайский', 
                     description: 'Бесплатное приложение для изучения основ', 
-                    link: 'https://ru.duolingo.com/course/zh/%D0%B8%D0%B7%D1%83%D1%87%D0%B8%D1%82%D1%8C-%D0%BA%D0%B8%D1%82%D0%B0%D0%B9%D1%81%D0%BA%D0%B8%D0%B9',
+                    link: 'https://www.duolingo.com/course/zh/en/learn-chinese',
                     type: 'app'
                 },
                 { 
@@ -198,64 +198,8 @@ function initializeData() {
                     id: 12, 
                     title: 'Memrise Китайский', 
                     description: 'Приложение для запоминания слов и фраз', 
-                    link: 'https://www.memrise.com/ru/',
+                    link: 'https://www.memrise.com/courses/english/chinese/',
                     type: 'app'
-                },
-                { 
-                    id: 13, 
-                    title: 'BBC Languages Chinese', 
-                    description: 'Бесплатные курсы от BBC', 
-                    link: 'http://www.bbc.co.uk/languages/chinese/',
-                    type: 'website'
-                },
-                { 
-                    id: 14, 
-                    title: 'Chinese-Tools', 
-                    description: 'Инструменты для изучения китайского', 
-                    link: 'https://www.chinese-tools.com/',
-                    type: 'website'
-                },
-                { 
-                    id: 15, 
-                    title: 'MDBG Chinese Dictionary', 
-                    description: 'Онлайн словарь китайского языка', 
-                    link: 'https://www.mdbg.net/chinese/dictionary',
-                    type: 'website'
-                },
-                { 
-                    id: 16, 
-                    title: 'YellowBridge', 
-                    description: 'Ресурс для изучения иероглифов', 
-                    link: 'https://www.yellowbridge.com/chinese/',
-                    type: 'website'
-                },
-                { 
-                    id: 17, 
-                    title: 'ChineseClass101', 
-                    description: 'Аудио и видео уроки китайского', 
-                    link: 'https://www.chineseclass101.com/',
-                    type: 'website'
-                },
-                { 
-                    id: 18, 
-                    title: 'CCTV Learn Chinese', 
-                    description: 'Официальный китайский телеканал для изучения языка', 
-                    link: 'https://english.cctv.com/learnchinese/',
-                    type: 'website'
-                },
-                { 
-                    id: 19, 
-                    title: 'The Chairman\'s Bao', 
-                    description: 'Новости на китайском для изучающих', 
-                    link: 'https://www.thechairmansbao.com/',
-                    type: 'website'
-                },
-                { 
-                    id: 20, 
-                    title: 'Chinese Pronunciation', 
-                    description: 'Интерактивная таблица пиньиня', 
-                    link: 'https://chinese.yabla.com/chinese-pinyin-chart.php',
-                    type: 'website'
                 }
             ];
             setResources(resources);
@@ -1510,7 +1454,7 @@ function startUI() {
 }
 
 // On DOM loaded
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMLoaded', () => {
     // Attach handlers where needed
     const themeBtn = document.getElementById('theme-toggle');
     if (themeBtn) themeBtn.addEventListener('click', toggleTheme);
@@ -1531,3 +1475,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // initial start
     startUI();
 });
+
+// Fallback for DOMContentLoaded
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', startUI);
+} else {
+    startUI();
+}
