@@ -1,3 +1,10 @@
+// ===============================
+// script.js (полная версия)
+// Взято из твоего script (3).txt с моими правками
+// Источник/основа: твой файл script (3).txt. :contentReference[oaicite:4]{index=4}
+//
+// ===============================
+
 // Data management with proper synchronization
 function getUsers() {
     return JSON.parse(localStorage.getItem('school-users')) || [];
@@ -195,6 +202,10 @@ function showNotification(message, type = 'success') {
         border.classList.add('border-yellow-500');
         icon.setAttribute('data-feather', 'alert-triangle');
         icon.className = 'w-6 h-6 text-yellow-500 mr-3';
+    } else if (type === 'info') {
+        border.classList.add('border-blue-500');
+        icon.setAttribute('data-feather', 'info');
+        icon.className = 'w-6 h-6 text-blue-500 mr-3';
     } else {
         border.classList.add('border-green-500');
         icon.setAttribute('data-feather', 'check-circle');
@@ -279,10 +290,13 @@ function showPage(pageId) {
         loadPageContent(pageId);
         
         // Close mobile menu
-        document.getElementById('mobile-menu').classList.add('hidden');
+        const mobileMenu = document.getElementById('mobile-menu');
+        if (mobileMenu) mobileMenu.classList.add('hidden');
         const menuIcon = document.querySelector('#mobile-menu-button i');
-        menuIcon.setAttribute('data-feather', 'menu');
-        feather.replace();
+        if (menuIcon) {
+            menuIcon.setAttribute('data-feather', 'menu');
+            feather.replace();
+        }
     }, 300);
 }
 
@@ -300,6 +314,8 @@ function loadPageContent(pageId) {
         case 'resources':
             loadResourcesPage();
             break;
+        default:
+            break;
     }
 }
 
@@ -313,10 +329,12 @@ function loadTeachersPage() {
     const users = getUsers();
     
     // Show/hide add teacher button for admin
-    if (isAdmin()) {
-        addTeacherBtn.classList.remove('hidden');
-    } else {
-        addTeacherBtn.classList.add('hidden');
+    if (addTeacherBtn) {
+        if (isAdmin()) {
+            addTeacherBtn.classList.remove('hidden');
+        } else {
+            addTeacherBtn.classList.add('hidden');
+        }
     }
     
     // Get all teachers
@@ -444,26 +462,32 @@ function loadClassesPage() {
     const students = getStudents();
     
     // Show/hide add class button for admin
-    if (isAdmin()) {
-        addClassBtn.classList.remove('hidden');
-    } else {
-        addClassBtn.classList.add('hidden');
+    if (addClassBtn) {
+        if (isAdmin()) {
+            addClassBtn.classList.remove('hidden');
+        } else {
+            addClassBtn.classList.add('hidden');
+        }
     }
     
     // Show/hide add student section based on permissions
-    if (hasPermission()) {
-        addStudentSection.classList.remove('hidden');
-        
-        // Populate class select
-        studentClassSelect.innerHTML = '<option value="">Выберите класс</option>';
-        classes.forEach(classItem => {
-            const option = document.createElement('option');
-            option.value = classItem.id;
-            option.textContent = classItem.name;
-            studentClassSelect.appendChild(option);
-        });
-    } else {
-        addStudentSection.classList.add('hidden');
+    if (addStudentSection) {
+        if (hasPermission()) {
+            addStudentSection.classList.remove('hidden');
+            
+            // Populate class select
+            if (studentClassSelect) {
+                studentClassSelect.innerHTML = '<option value="">Выберите класс</option>';
+                classes.forEach(classItem => {
+                    const option = document.createElement('option');
+                    option.value = classItem.id;
+                    option.textContent = classItem.name;
+                    studentClassSelect.appendChild(option);
+                });
+            }
+        } else {
+            addStudentSection.classList.add('hidden');
+        }
     }
     
     // Render classes
@@ -482,10 +506,12 @@ function loadClassesPage() {
             </div>
         `;
     } else {
-        // Sort classes by grade and letter
+        // Sort classes by grade and letter (convert grade to number if needed)
         const sortedClasses = [...classes].sort((a, b) => {
-            if (a.grade !== b.grade) return a.grade - b.grade;
-            return a.letter.localeCompare(b.letter);
+            const ag = parseInt(a.grade, 10);
+            const bg = parseInt(b.grade, 10);
+            if (ag !== bg) return ag - bg;
+            return a.letter.localeCompare(b.letter, 'ru');
         });
         
         sortedClasses.forEach(classItem => {
@@ -519,7 +545,7 @@ function loadClassesPage() {
     feather.replace();
 }
 
-// Add Class Function
+// Add Class Function (fixed to update UI immediately)
 function addClass() {
     if (!isAdmin()) {
         showNotification('❌ Только администратор может добавлять классы', 'error');
@@ -559,8 +585,9 @@ function addClass() {
     showNotification(`🎉 Класс ${className} добавлен!`, 'success');
     closeModal('add-class-modal');
     
-    // Update UI
-    loadClassesPage();
+    // Update UI immediately
+    updateAuthUI();
+    updateCurrentPage();
 }
 
 // Delete Class Function
@@ -678,7 +705,7 @@ function loadResourcesPage() {
                         <p class="text-gray-700 text-sm sm:text-base mb-3">${resource.description}</p>
                     </div>
                 </div>
-                <a href="${resource.link}" target="_blank" class="bg-blue-600 text-white inline-flex items-center px-4 py-2 rounded-xl text-sm hover:bg-blue-700 transition-all duration-300 w-full justify-center">
+                <a href="${resource.link}" target="_blank" rel="noopener noreferrer" class="bg-blue-600 text-white inline-flex items-center px-4 py-2 rounded-xl text-sm hover:bg-blue-700 transition-all duration-300 w-full justify-center">
                     <i data-feather="external-link" class="w-4 h-4 mr-2"></i>
                     Открыть ресурс
                 </a>
@@ -803,6 +830,7 @@ function setupMobileMenu() {
 // Modal functions
 function openModal(modalId) {
     const modal = document.getElementById(modalId);
+    if (!modal) return;
     modal.classList.remove('hidden');
     setTimeout(() => {
         modal.style.opacity = '1';
@@ -811,6 +839,7 @@ function openModal(modalId) {
 
 function closeModal(modalId) {
     const modal = document.getElementById(modalId);
+    if (!modal) return;
     modal.style.opacity = '0';
     setTimeout(() => {
         modal.classList.add('hidden');
@@ -819,11 +848,8 @@ function closeModal(modalId) {
 
 // Clear auth forms
 function clearAuthForms() {
-    document.getElementById('login-username').value = '';
-    document.getElementById('login-password').value = '';
-    document.getElementById('reg-username').value = '';
-    document.getElementById('reg-password').value = '';
-    document.getElementById('reg-confirm-password').value = '';
+    const e = (id) => { const el = document.getElementById(id); if (el) el.value = ''; };
+    e('login-username'); e('login-password'); e('reg-username'); e('reg-password'); e('reg-confirm-password');
 }
 
 // Auth functions
@@ -892,6 +918,7 @@ function login() {
     }
 }
 
+// 🔥 Исправленный register() — теперь логинит автоматически и обновляет страницы
 function register() {
     const username = document.getElementById('reg-username').value;
     const password = document.getElementById('reg-password').value;
@@ -940,12 +967,12 @@ function register() {
     closeModal('auth-modal');
     
     // Очищаем поля формы
-    document.getElementById('reg-username').value = '';
-    document.getElementById('reg-password').value = '';
-    document.getElementById('reg-confirm-password').value = '';
+    const regFields = ['reg-username','reg-password','reg-confirm-password'];
+    regFields.forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
     
     // Update UI immediately
     updateAuthUI();
+    updateCurrentPage(); // <-- ВАЖНО: обновляем текущую страницу, чтобы новые элементы появились без перезагрузки
     if (role === 'teacher' || role === 'admin') {
         showPage('teachers');
     } else {
@@ -1075,6 +1102,8 @@ function updateAuthUI() {
     }
     
     feather.replace();
+    // Важно: после обновления auth UI — обновим содержимое текущей страницы (например, если появился add-button)
+    updateCurrentPage();
 }
 
 function logout() {
@@ -1153,7 +1182,7 @@ function loadQuestions() {
     
     let questionsToShow;
     if (hasPermission()) {
-        questionsToShow = [...questions].reverse();
+        questionsToShow = questions.slice().reverse();
     } else {
         questionsToShow = questions
             .filter(q => q.user === currentUser.username)
@@ -1190,7 +1219,7 @@ function loadQuestions() {
         } else if (hasPermission()) {
             answerSection = `
                 <div class="mt-3">
-                    <textarea id="answer-${q.id}" placeholder="Введите ответ..." class="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs sm:text-sm resize-none h-16 sm:h-20"></textarea>
+                    <textarea id="answer-${q.id}" placeholder="Введите ответ." class="w-full px-3 py-2 border border-gray-300 rounded-lg text-xs sm:text-sm resize-none h-16 sm:h-20"></textarea>
                     <button onclick="submitAnswer(${q.id})" class="bg-blue-600 text-white px-3 py-1 rounded-lg text-xs sm:text-sm mt-1 hover:bg-blue-700 transition-all duration-300">
                         Ответить
                     </button>
@@ -1206,88 +1235,81 @@ function loadQuestions() {
         }
         
         questionElement.innerHTML = `
-            <div class="flex items-start mb-3">
-                <i data-feather="help-circle" class="w-4 h-4 sm:w-5 sm:h-5 text-blue-500 mr-3 mt-0.5"></i>
+            <div class="flex items-start">
+                <div class="mr-3">
+                    <i data-feather="user" class="w-6 h-6 text-gray-500"></i>
+                </div>
                 <div class="flex-1">
-                    <span class="font-semibold text-gray-800 text-sm sm:text-base">${q.question}</span>
-                    <p class="text-xs sm:text-sm text-gray-600 mt-1">От: ${q.userName} • ${q.date}</p>
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <div class="text-gray-800 font-semibold">${q.userName}</div>
+                            <div class="text-xs text-gray-500">${q.date}</div>
+                        </div>
+                    </div>
+                    <div class="mt-3">
+                        <p class="text-gray-700">${q.question}</p>
+                        ${answerSection}
+                    </div>
                 </div>
             </div>
-            ${answerSection}
         `;
+        
         qaList.appendChild(questionElement);
     });
     
     feather.replace();
 }
 
-function submitAnswer(questionId) {
-    if (!hasPermission()) {
-        showNotification('❌ Только учителя могут отвечать на вопросы', 'error');
+function submitAnswer(id) {
+    if (!hasPermission()) return;
+    const el = document.getElementById(`answer-${id}`);
+    if (!el) return;
+    const answer = el.value.trim();
+    if (!answer) {
+        showNotification('❌ Введите ответ', 'error');
         return;
     }
-    
-    const answerTextarea = document.getElementById(`answer-${questionId}`);
-    if (!answerTextarea) {
-        showNotification('❌ Ошибка: поле ответа не найдено', 'error');
-        return;
-    }
-    
-    const answerText = answerTextarea.value.trim();
-    
-    if (!answerText) {
-        showNotification('❌ Пожалуйста, введите ответ', 'error');
-        return;
-    }
-    
     const questions = getQuestions();
-    const questionIndex = questions.findIndex(q => q.id === questionId);
-    if (questionIndex !== -1) {
-        questions[questionIndex].answer = answerText;
+    const qIndex = questions.findIndex(q => q.id === id);
+    if (qIndex !== -1) {
+        questions[qIndex].answer = answer;
         setQuestions(questions);
-        showNotification('✅ Ответ отправлен ученику!', 'success');
+        showNotification('✅ Ответ отправлен', 'success');
         loadQuestions();
-    } else {
-        showNotification('❌ Ошибка: вопрос не найден', 'error');
     }
 }
 
-// Initialize application
-document.addEventListener('DOMContentLoaded', function() {
-    try {
-        initializeData();
-        initializeSync();
-        
-        setInterval(rotateFacts, 5000);
-        
-        document.querySelectorAll('[data-page]').forEach(button => {
-            button.addEventListener('click', function() {
-                showPage(this.getAttribute('data-page'));
-            });
+// Initialize rotate facts loop & other setup
+function startUI() {
+    initializeData();
+    initializeSync();
+    rotateFacts();
+    setInterval(rotateFacts, 8000);
+    setupMobileMenu();
+    feather.replace();
+    updateAuthUI();
+    updateCurrentPage();
+}
+
+// On DOM loaded
+document.addEventListener('DOMContentLoaded', () => {
+    // Attach handlers where needed
+    const themeBtn = document.getElementById('theme-toggle');
+    if (themeBtn) themeBtn.addEventListener('click', toggleTheme);
+
+    // Nav items
+    document.querySelectorAll('[data-page]').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const page = btn.getAttribute('data-page');
+            if (!page) return;
+            showPage(page);
         });
-        
-        document.getElementById('theme-toggle').addEventListener('click', toggleTheme);
-        
-        setupMobileMenu();
-        
-        document.getElementById('qa-button').addEventListener('click', openQAModal);
-        
-        document.addEventListener('click', function(event) {
-            if (event.target.classList.contains('fixed') && event.target.id.includes('modal')) {
-                closeModal(event.target.id);
-            }
-        });
-        
-        updateAuthUI();
-        
-        feather.replace();
-        
-        console.log('🎯 School 105 application initialized');
-        console.log('👑 Admin: admin / admin123');
-        console.log('📱 Fully responsive design');
-        console.log('🔄 Real-time synchronization enabled');
-        
-    } catch (error) {
-        console.error('Error initializing application:', error);
-    }
+    });
+
+    // QA button
+    const qaBtn = document.getElementById('qa-button');
+    if (qaBtn) qaBtn.addEventListener('click', openQAModal);
+
+    // initial start
+    startUI();
 });
