@@ -1,8 +1,5 @@
 // ===============================
-// script.js (полная версия)
-// Взято из твоего script (3).txt с моими правками
-// Источник/основа: твой файл script (3).txt. :contentReference[oaicite:4]{index=4}
-//
+// script.js (полная версия с исправлениями)
 // ===============================
 
 // Data management with proper synchronization
@@ -182,77 +179,104 @@ const chinaFacts = [
 
 let currentFactIndex = 0;
 
-// Notification system - ИСПРАВЛЕННАЯ ВЕРСИЯ
+// Notification system - ПОЛНОСТЬЮ ИСПРАВЛЕННАЯ ВЕРСИЯ
 function showNotification(message, type = 'success') {
-    const notification = document.getElementById('notification');
-    const notificationText = document.getElementById('notification-text');
-    
-    if (!notification || !notificationText) {
-        console.error('Notification elements not found');
-        return;
-    }
-    
-    notificationText.textContent = message;
-    
-    // Update styles based on type
-    const border = notification.querySelector('.border-l-4');
-    const icon = notification.querySelector('i');
-    
-    if (border) {
-        border.className = 'border-l-4';
+    try {
+        const notification = document.getElementById('notification');
+        const notificationText = document.getElementById('notification-text');
         
+        if (!notification || !notificationText) {
+            console.warn('Notification elements not found, using fallback');
+            // Fallback для критически важных уведомлений
+            if (type === 'error') {
+                alert(`Ошибка: ${message}`);
+            }
+            return;
+        }
+        
+        notificationText.textContent = message;
+        
+        // Обновляем стили в зависимости от типа
+        const border = notification.querySelector('.border-l-4');
+        const icon = notification.querySelector('i');
+        
+        // Сбрасываем стили
+        if (border) {
+            border.className = 'border-l-4';
+            
+            switch(type) {
+                case 'error':
+                    border.classList.add('border-red-500');
+                    if (icon) {
+                        icon.setAttribute('data-feather', 'alert-circle');
+                        icon.className = 'w-6 h-6 text-red-500 mr-3';
+                    }
+                    break;
+                case 'warning':
+                    border.classList.add('border-yellow-500');
+                    if (icon) {
+                        icon.setAttribute('data-feather', 'alert-triangle');
+                        icon.className = 'w-6 h-6 text-yellow-500 mr-3';
+                    }
+                    break;
+                case 'info':
+                    border.classList.add('border-blue-500');
+                    if (icon) {
+                        icon.setAttribute('data-feather', 'info');
+                        icon.className = 'w-6 h-6 text-blue-500 mr-3';
+                    }
+                    break;
+                default: // success
+                    border.classList.add('border-green-500');
+                    if (icon) {
+                        icon.setAttribute('data-feather', 'check-circle');
+                        icon.className = 'w-6 h-6 text-green-500 mr-3';
+                    }
+            }
+        }
+        
+        // Обновляем иконки feather
+        feather.replace();
+        
+        // Показываем уведомление
+        notification.classList.remove('hidden');
+        
+        // Анимация появления
+        setTimeout(() => {
+            const transformElement = notification.querySelector('.transform');
+            if (transformElement) {
+                transformElement.classList.remove('translate-x-full');
+            }
+        }, 100);
+        
+        // Автоматическое скрытие через 5 секунд
+        setTimeout(hideNotification, 5000);
+        
+    } catch (error) {
+        console.error('Error in showNotification:', error);
+        // Fallback для самых критичных случаев
         if (type === 'error') {
-            border.classList.add('border-red-500');
-            if (icon) {
-                icon.setAttribute('data-feather', 'alert-circle');
-                icon.className = 'w-6 h-6 text-red-500 mr-3';
-            }
-        } else if (type === 'warning') {
-            border.classList.add('border-yellow-500');
-            if (icon) {
-                icon.setAttribute('data-feather', 'alert-triangle');
-                icon.className = 'w-6 h-6 text-yellow-500 mr-3';
-            }
-        } else if (type === 'info') {
-            border.classList.add('border-blue-500');
-            if (icon) {
-                icon.setAttribute('data-feather', 'info');
-                icon.className = 'w-6 h-6 text-blue-500 mr-3';
-            }
-        } else {
-            border.classList.add('border-green-500');
-            if (icon) {
-                icon.setAttribute('data-feather', 'check-circle');
-                icon.className = 'w-6 h-6 text-green-500 mr-3';
-            }
+            alert(message);
         }
     }
-    
-    feather.replace();
-    notification.classList.remove('hidden');
-    
-    setTimeout(() => {
-        const transformElement = notification.querySelector('.transform');
-        if (transformElement) {
-            transformElement.classList.remove('translate-x-full');
-        }
-    }, 100);
-    
-    setTimeout(hideNotification, 5000);
 }
 
 function hideNotification() {
-    const notification = document.getElementById('notification');
-    if (!notification) return;
-    
-    const transformElement = notification.querySelector('.transform');
-    if (transformElement) {
-        transformElement.classList.add('translate-x-full');
+    try {
+        const notification = document.getElementById('notification');
+        if (!notification) return;
+        
+        const transformElement = notification.querySelector('.transform');
+        if (transformElement) {
+            transformElement.classList.add('translate-x-full');
+        }
+        
+        setTimeout(() => {
+            notification.classList.add('hidden');
+        }, 500);
+    } catch (error) {
+        console.error('Error in hideNotification:', error);
     }
-    
-    setTimeout(() => {
-        notification.classList.add('hidden');
-    }, 500);
 }
 
 // Check if user has permission to edit
