@@ -384,51 +384,44 @@
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-2">Класс</label>
                     <select id="student-class" class="w-full px-3 py-2 sm:px-4 sm:py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm sm:text-base">
-                        <option value="">Выберите класс</option>
+                        <!-- options will be populated -->
                     </select>
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-2">Логин</label>
-                    <input type="text" id="student-login" class="w-full px-3 py-2 sm:px-4 sm:py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm sm:text-base" placeholder="Логин для входа">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Логин ученика</label>
+                    <input type="text" id="student-login" class="w-full px-3 py-2 sm:px-4 sm:py-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-sm sm:text-base" placeholder="логин для входа">
                 </div>
             </div>
-            <button onclick="addStudent()" class="bg-blue-600 text-white px-4 py-2 sm:px-6 sm:py-3 rounded-xl font-medium mt-3 sm:mt-4 hover:bg-blue-700 transition-all duration-300 w-full text-sm sm:text-base">
-                👨‍🎓 Добавить ученика
-            </button>
+            <div class="mt-3">
+                <button onclick="addStudent()" class="bg-green-600 text-white px-4 py-2 rounded-xl hover:bg-green-700 transition-all duration-300">Добавить ученика</button>
+            </div>
         </div>
-
-        <!-- Classes Grid -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6" id="classes-container">
-            <!-- Classes will be loaded here -->
+        
+        <div id="classes-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <!-- Class cards injected by JS -->
         </div>
     </div>
 
     <!-- Lessons Page -->
     <div id="lessons-page" class="page container mx-auto px-4 py-6 sm:py-8 hidden">
-        <h2 class="text-2xl sm:text-3xl font-bold text-center text-gray-900 mb-6 sm:mb-8">Расписание занятий</h2>
-
-        <!-- Lessons Grid -->
-        <div id="lessons-container" class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
-            <!-- Lessons will be loaded here -->
+        <div class="flex items-center justify-between mb-6">
+            <h2 class="text-2xl sm:text-3xl font-bold text-gray-900">Занятия</h2>
+            <!-- optionally add controls -->
+        </div>
+        <div id="lessons-container" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <!-- lessons loaded by JS -->
         </div>
     </div>
 
     <!-- Resources Page -->
     <div id="resources-page" class="page container mx-auto px-4 py-6 sm:py-8 hidden">
-        <h2 class="text-2xl sm:text-3xl font-bold text-center text-gray-900 mb-6 sm:mb-8">Полезные материалы</h2>
-
-        <!-- Resources Grid -->
-        <div id="resources-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-            <!-- Resources will be loaded here -->
+        <div class="flex items-center justify-between mb-6">
+            <h2 class="text-2xl sm:text-3xl font-bold text-gray-900">Ресурсы</h2>
+        </div>
+        <div id="resources-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <!-- resources injected by JS -->
         </div>
     </div>
-
-    <!-- Footer -->
-    <footer class="bg-blue-800 text-white py-8 sm:py-12">
-        <div class="container mx-auto px-4 text-center">
-            <p class="text-sm sm:text-base">© 2024 Школа №105. Все права защищены.</p>
-        </div>
-    </footer>
 
     <script src="script.js"></script>
 </body>
