@@ -1,5 +1,5 @@
 // ===============================
-// script.js (с улучшенной системой уведомлений)
+// script.js (с простой и надежной системой уведомлений)
 // ===============================
 
 // Data management with proper synchronization
@@ -221,135 +221,175 @@ const chinaFacts = [
 
 let currentFactIndex = 0;
 
-// УЛУЧШЕННАЯ СИСТЕМА УВЕДОМЛЕНИЙ
-let notificationTimeout = null;
-
+// ПРОСТАЯ И НАДЕЖНАЯ СИСТЕМА УВЕДОМЛЕНИЙ
 function showNotification(message, type = 'success') {
-    try {
-        const notification = document.getElementById('notification');
-        const notificationText = document.getElementById('notification-text');
-        
-        if (!notification || !notificationText) {
-            console.warn('Notification elements not found, using fallback');
-            // Fallback для критически важных уведомлений
-            if (type === 'error') {
-                alert(`Ошибка: ${message}`);
-            } else {
-                alert(message);
-            }
-            return;
-        }
-        
-        // Очищаем предыдущий таймер
-        if (notificationTimeout) {
-            clearTimeout(notificationTimeout);
-            notificationTimeout = null;
-        }
-        
-        notificationText.textContent = message;
-        
-        // Обновляем стили в зависимости от типа
-        const border = notification.querySelector('.border-l-4');
-        const icon = notification.querySelector('i');
-        
-        // Сбрасываем стили
-        if (border) {
-            border.className = 'border-l-4';
-            
-            switch(type) {
-                case 'error':
-                    border.classList.add('border-red-500');
-                    if (icon) {
-                        icon.setAttribute('data-feather', 'alert-circle');
-                        icon.className = 'w-6 h-6 text-red-500 mr-3';
-                    }
-                    break;
-                case 'warning':
-                    border.classList.add('border-yellow-500');
-                    if (icon) {
-                        icon.setAttribute('data-feather', 'alert-triangle');
-                        icon.className = 'w-6 h-6 text-yellow-500 mr-3';
-                    }
-                    break;
-                case 'info':
-                    border.classList.add('border-blue-500');
-                    if (icon) {
-                        icon.setAttribute('data-feather', 'info');
-                        icon.className = 'w-6 h-6 text-blue-500 mr-3';
-                    }
-                    break;
-                default: // success
-                    border.classList.add('border-green-500');
-                    if (icon) {
-                        icon.setAttribute('data-feather', 'check-circle');
-                        icon.className = 'w-6 h-6 text-green-500 mr-3';
-                    }
-            }
-        }
-        
-        // Обновляем иконки feather
-        feather.replace();
-        
-        // Сначала скрываем уведомление, чтобы сбросить анимацию
-        notification.classList.add('hidden');
-        notification.style.display = 'none';
-        
-        // Даем время для сброса анимации
-        setTimeout(() => {
-            // Показываем уведомление
-            notification.style.display = 'block';
-            notification.classList.remove('hidden');
-            
-            // Анимация появления
-            setTimeout(() => {
-                const transformElement = notification.querySelector('.transform');
-                if (transformElement) {
-                    transformElement.classList.remove('translate-x-full');
-                }
-            }, 50);
-            
-            // Устанавливаем разное время показа для разных типов уведомлений
-            let displayTime = 5000; // 5 секунд по умолчанию
-            
-            if (type === 'error') {
-                displayTime = 7000; // 7 секунд для ошибок
-            } else if (type === 'info') {
-                displayTime = 8000; // 8 секунд для информационных сообщений
-            } else if (type === 'warning') {
-                displayTime = 6000; // 6 секунд для предупреждений
-            }
-            
-            // Автоматическое скрытие
-            notificationTimeout = setTimeout(() => {
-                hideNotification();
-            }, displayTime);
-            
-        }, 100);
-        
-    } catch (error) {
-        console.error('Error in showNotification:', error);
-        // Fallback для самых критичных случаев
+    console.log('🔔 Notification:', message, 'Type:', type);
+    
+    // Всегда показываем alert для важных сообщений
+    if (type === 'error' || type === 'warning' || message.includes('выход') || message.includes('войти')) {
         alert(message);
+    }
+    
+    // Создаем простое уведомление
+    const simpleNotification = document.createElement('div');
+    
+    // Определяем стили в зависимости от типа
+    let bgColor, borderColor, icon;
+    switch(type) {
+        case 'error':
+            bgColor = '#fef2f2';
+            borderColor = '#ef4444';
+            icon = '❌';
+            break;
+        case 'warning':
+            bgColor = '#fffbeb';
+            borderColor = '#f59e0b';
+            icon = '⚠️';
+            break;
+        case 'info':
+            bgColor = '#eff6ff';
+            borderColor = '#3b82f6';
+            icon = 'ℹ️';
+            break;
+        default: // success
+            bgColor = '#f0fdf4';
+            borderColor = '#22c55e';
+            icon = '✅';
+    }
+    
+    simpleNotification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: ${bgColor};
+        border: 2px solid ${borderColor};
+        border-left: 6px solid ${borderColor};
+        padding: 16px 20px;
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        z-index: 10000;
+        max-width: 500px;
+        min-width: 300px;
+        font-family: system-ui, -apple-system, sans-serif;
+        font-size: 16px;
+        color: #1f2937;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        animation: slideIn 0.5s ease-out;
+    `;
+    
+    const iconSpan = document.createElement('span');
+    iconSpan.textContent = icon;
+    iconSpan.style.fontSize = '20px';
+    
+    const textSpan = document.createElement('span');
+    textSpan.textContent = message;
+    textSpan.style.flex = '1';
+    textSpan.style.lineHeight = '1.4';
+    
+    const closeBtn = document.createElement('button');
+    closeBtn.textContent = '×';
+    closeBtn.style.cssText = `
+        background: none;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+        padding: 0;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #6b7280;
+        border-radius: 50%;
+        transition: background-color 0.2s;
+    `;
+    closeBtn.onmouseover = function() {
+        this.style.backgroundColor = 'rgba(0,0,0,0.1)';
+    };
+    closeBtn.onmouseout = function() {
+        this.style.backgroundColor = 'transparent';
+    };
+    closeBtn.onclick = function() {
+        simpleNotification.style.animation = 'slideOut 0.5s ease-in';
+        setTimeout(() => {
+            if (simpleNotification.parentNode) {
+                simpleNotification.remove();
+            }
+        }, 500);
+    };
+    
+    simpleNotification.appendChild(iconSpan);
+    simpleNotification.appendChild(textSpan);
+    simpleNotification.appendChild(closeBtn);
+    
+    // Добавляем в тело документа
+    document.body.appendChild(simpleNotification);
+    
+    // Автоудаление через 8 секунд
+    const autoRemove = setTimeout(() => {
+        if (simpleNotification.parentNode) {
+            simpleNotification.style.animation = 'slideOut 0.5s ease-in';
+            setTimeout(() => {
+                if (simpleNotification.parentNode) {
+                    simpleNotification.remove();
+                }
+            }, 500);
+        }
+    }, 8000);
+    
+    // Останавливаем автоудаление при наведении
+    simpleNotification.onmouseenter = function() {
+        clearTimeout(autoRemove);
+    };
+    
+    // Возобновляем автоудаление при уходе курсора
+    simpleNotification.onmouseleave = function() {
+        setTimeout(() => {
+            if (simpleNotification.parentNode) {
+                simpleNotification.style.animation = 'slideOut 0.5s ease-in';
+                setTimeout(() => {
+                    if (simpleNotification.parentNode) {
+                        simpleNotification.remove();
+                    }
+                }, 500);
+            }
+        }, 3000);
+    };
+    
+    // Добавляем CSS анимации если их нет
+    if (!document.getElementById('notification-animations')) {
+        const style = document.createElement('style');
+        style.id = 'notification-animations';
+        style.textContent = `
+            @keyframes slideIn {
+                from {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+                to {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+            }
+            @keyframes slideOut {
+                from {
+                    transform: translateX(0);
+                    opacity: 1;
+                }
+                to {
+                    transform: translateX(100%);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
     }
 }
 
 function hideNotification() {
-    try {
-        const notification = document.getElementById('notification');
-        if (!notification) return;
-        
-        const transformElement = notification.querySelector('.transform');
-        if (transformElement) {
-            transformElement.classList.add('translate-x-full');
-        }
-        
-        setTimeout(() => {
-            notification.classList.add('hidden');
-            notification.style.display = 'none';
-        }, 500);
-    } catch (error) {
-        console.error('Error in hideNotification:', error);
-    }
+    // Эта функция больше не используется в новой системе
 }
 
 // Check if user has permission to edit
@@ -1414,7 +1454,7 @@ function startUI() {
 }
 
 // On DOM loaded
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMLoaded', () => {
     // Attach handlers where needed
     const themeBtn = document.getElementById('theme-toggle');
     if (themeBtn) themeBtn.addEventListener('click', toggleTheme);
@@ -1435,3 +1475,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // initial start
     startUI();
 });
+
+// Fallback for DOMContentLoaded
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', startUI);
+} else {
+    startUI();
+}
