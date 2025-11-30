@@ -266,6 +266,90 @@
         .teacher-details p {
           margin-bottom: 0.5rem;
         }
+        
+        /* Practice page styles */
+        .practice-level {
+          background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+          color: white;
+          border-radius: 12px;
+          padding: 1.5rem;
+          margin-bottom: 1.5rem;
+          transition: all 0.3s ease;
+          cursor: pointer;
+        }
+        
+        .practice-level:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.2);
+        }
+        
+        .practice-level.locked {
+          background: linear-gradient(135deg, #9ca3af 0%, #6b7280 100%);
+          cursor: not-allowed;
+        }
+        
+        .practice-exercise {
+          background: white;
+          border-radius: 12px;
+          padding: 1.5rem;
+          margin-bottom: 1.5rem;
+          box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+          border: 1px solid #e5e7eb;
+        }
+        
+        .character-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+          gap: 1rem;
+          margin: 1rem 0;
+        }
+        
+        .character-card {
+          background: #f3f4f6;
+          border-radius: 8px;
+          padding: 1rem;
+          text-align: center;
+          font-size: 1.5rem;
+          cursor: pointer;
+          transition: all 0.2s ease;
+        }
+        
+        .character-card:hover {
+          background: #e5e7eb;
+          transform: scale(1.05);
+        }
+        
+        .character-card.correct {
+          background: #10b981;
+          color: white;
+        }
+        
+        .character-card.incorrect {
+          background: #ef4444;
+          color: white;
+        }
+        
+        .progress-bar {
+          height: 10px;
+          background: #e5e7eb;
+          border-radius: 5px;
+          overflow: hidden;
+          margin: 1rem 0;
+        }
+        
+        .progress-fill {
+          height: 100%;
+          background: #10b981;
+          transition: width 0.3s ease;
+        }
+        
+        .exercise-complete {
+          text-align: center;
+          padding: 2rem;
+          background: #f0fdf4;
+          border-radius: 12px;
+          border: 2px solid #10b981;
+        }
     </style>
 </head>
 <body class="bg-white text-gray-900" data-theme="day">
@@ -543,6 +627,7 @@
                     <button data-page="teachers" class="nav-item px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl font-medium text-white text-sm sm:text-base">Учителя</button>
                     <button data-page="classes" class="nav-item px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl font-medium text-white text-sm sm:text-base">Классы</button>
                     <button data-page="lessons" class="nav-item px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl font-medium text-white text-sm sm:text-base">Занятия</button>
+                    <button data-page="practice" class="nav-item px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl font-medium text-white text-sm sm:text-base">Практика</button>
                     <button data-page="resources" class="nav-item px-4 py-2 sm:px-5 sm:py-2.5 rounded-xl font-medium text-white text-sm sm:text-base">Ресурсы</button>
                 </div>
             </nav>
@@ -563,6 +648,9 @@
             </button>
             <button data-page="lessons" class="px-4 py-3 rounded-xl hover:bg-white/10 flex items-center transition-all duration-300 text-base">
                 <i data-feather="clock" class="w-4 h-4 mr-3"></i>Занятия
+            </button>
+            <button data-page="practice" class="px-4 py-3 rounded-xl hover:bg-white/10 flex items-center transition-all duration-300 text-base">
+                <i data-feather="activity" class="w-4 h-4 mr-3"></i>Практика
             </button>
             <button data-page="resources" class="px-4 py-3 rounded-xl hover:bg-white/10 flex items-center transition-all duration-300 text-base">
                 <i data-feather="book" class="w-4 h-4 mr-3"></i>Ресурсы
@@ -625,6 +713,40 @@
                 <p class="text-gray-800 font-medium text-sm sm:text-base">5 преподавателей с опытом работы в Китае</p>
             </div>
         </div>
+        
+        <!-- China Images Section -->
+        <section class="mt-12">
+            <h2 class="text-2xl sm:text-3xl font-bold text-center mb-8 text-gray-900">Китайская культура</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                    <div class="h-48 bg-gradient-to-br from-red-500 to-yellow-500 flex items-center justify-center">
+                        <i data-feather="home" class="w-16 h-16 text-white"></i>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-bold text-lg mb-2">Великая Китайская стена</h3>
+                        <p class="text-gray-600">Крупнейший памятник архитектуры, протяженностью более 21 000 км</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                    <div class="h-48 bg-gradient-to-br from-green-500 to-blue-500 flex items-center justify-center">
+                        <i data-feather="book" class="w-16 h-16 text-white"></i>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-bold text-lg mb-2">Китайская письменность</h3>
+                        <p class="text-gray-600">Одна из древнейших систем письма, насчитывающая более 50 000 иероглифов</p>
+                    </div>
+                </div>
+                <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                    <div class="h-48 bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
+                        <i data-feather="coffee" class="w-16 h-16 text-white"></i>
+                    </div>
+                    <div class="p-4">
+                        <h3 class="font-bold text-lg mb-2">Китайская чайная церемония</h3>
+                        <p class="text-gray-600">Традиционное искусство приготовления и подачи чая</p>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 
     <!-- Teachers Page -->
@@ -688,6 +810,93 @@
         </div>
         <div id="lessons-container" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <!-- lessons loaded by JS -->
+        </div>
+    </div>
+
+    <!-- Practice Page -->
+    <div id="practice-page" class="page container mx-auto px-4 py-6 sm:py-8 hidden">
+        <div class="flex items-center justify-between mb-6">
+            <h2 class="text-2xl sm:text-3xl font-bold text-gray-900">Практика китайского языка</h2>
+        </div>
+        
+        <div class="mb-8 bg-white p-6 rounded-2xl shadow-lg">
+            <h3 class="text-xl font-bold text-blue-600 mb-4">Ваш прогресс</h3>
+            <div class="flex items-center">
+                <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mr-4">
+                    <span class="text-blue-600 font-bold text-xl">25%</span>
+                </div>
+                <div class="flex-1">
+                    <div class="flex justify-between mb-1">
+                        <span class="text-sm font-medium">Уровень 1 из 4</span>
+                        <span class="text-sm font-medium">5/20 уроков</span>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 25%"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="practice-level" onclick="startPractice('beginner')">
+                <div class="flex items-center mb-2">
+                    <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center mr-3">
+                        <span class="text-white font-bold">1</span>
+                    </div>
+                    <h3 class="text-xl font-bold">Начальный уровень</h3>
+                </div>
+                <p class="mb-3">Основы китайского языка: приветствия, числа, основные фразы</p>
+                <div class="flex justify-between items-center">
+                    <span>5 уроков</span>
+                    <i data-feather="play" class="w-5 h-5"></i>
+                </div>
+            </div>
+            
+            <div class="practice-level" onclick="startPractice('basic')">
+                <div class="flex items-center mb-2">
+                    <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center mr-3">
+                        <span class="text-white font-bold">2</span>
+                    </div>
+                    <h3 class="text-xl font-bold">Базовый уровень</h3>
+                </div>
+                <p class="mb-3">Простые диалоги, основные иероглифы, грамматика</p>
+                <div class="flex justify-between items-center">
+                    <span>5 уроков</span>
+                    <i data-feather="play" class="w-5 h-5"></i>
+                </div>
+            </div>
+            
+            <div class="practice-level locked">
+                <div class="flex items-center mb-2">
+                    <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center mr-3">
+                        <span class="text-white font-bold">3</span>
+                    </div>
+                    <h3 class="text-xl font-bold">Средний уровень</h3>
+                </div>
+                <p class="mb-3">Сложные предложения, расширенный словарный запас</p>
+                <div class="flex justify-between items-center">
+                    <span>5 уроков</span>
+                    <i data-feather="lock" class="w-5 h-5"></i>
+                </div>
+            </div>
+            
+            <div class="practice-level locked">
+                <div class="flex items-center mb-2">
+                    <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center mr-3">
+                        <span class="text-white font-bold">4</span>
+                    </div>
+                    <h3 class="text-xl font-bold">Продвинутый уровень</h3>
+                </div>
+                <p class="mb-3">Свободное общение, сложные тексты, идиомы</p>
+                <div class="flex justify-between items-center">
+                    <span>5 уроков</span>
+                    <i data-feather="lock" class="w-5 h-5"></i>
+                </div>
+            </div>
+        </div>
+        
+        <div id="practice-exercises" class="mt-8 hidden">
+            <!-- Practice exercises will be loaded here -->
         </div>
     </div>
 
@@ -801,15 +1010,15 @@
                 // Initialize classes with proper structure
                 if (classes.length === 0) {
                     classes = [
-                        { id: '3A', name: '3А', grade: '3', letter: 'А', students: [], teacher: 'Кназкая Анна Олеговна' },
-                        { id: '3B', name: '3Б', grade: '3', letter: 'Б', students: [], teacher: 'Кназкая Анна Олеговна' },
-                        { id: '3V', name: '3В', grade: '3', letter: 'В', students: [], teacher: 'Кназкая Анна Олеговна' },
-                        { id: '3G', name: '3Г', grade: '3', letter: 'Г', students: [], teacher: 'Кназкая Анна Олеговна' },
-                        { id: '4B', name: '4Б', grade: '4', letter: 'Б', students: [], teacher: 'Кназкая Анна Олеговна' },
+                        { id: '3A', name: '3А', grade: '3', letter: 'А', students: [], teacher: 'Князская Анна Олеговна' },
+                        { id: '3B', name: '3Б', grade: '3', letter: 'Б', students: [], teacher: 'Князская Анна Олеговна' },
+                        { id: '3V', name: '3В', grade: '3', letter: 'В', students: [], teacher: 'Князская Анна Олеговна' },
+                        { id: '3G', name: '3Г', grade: '3', letter: 'Г', students: [], teacher: 'Князская Анна Олеговна' },
+                        { id: '4B', name: '4Б', grade: '4', letter: 'Б', students: [], teacher: 'Вероника Яновна' },
                         { id: '4V', name: '4В', grade: '4', letter: 'В', students: [], teacher: 'Вероника Яновна' },
-                        { id: '5G', name: '5Г', grade: '5', letter: 'Г', students: [], teacher: 'Кназкая Анна Олеговна' },
-                        { id: '6A', name: '6А', grade: '6', letter: 'А', students: [], teacher: 'Кназкая Анна Олеговна' },
-                        { id: '7G', name: '7Г', grade: '7', letter: 'Г', students: [], teacher: 'Кназкая Анна Олеговна' }
+                        { id: '5G', name: '5Г', grade: '5', letter: 'Г', students: [], teacher: 'Князская Анна Олеговна' },
+                        { id: '6A', name: '6А', grade: '6', letter: 'А', students: [], teacher: 'Князская Анна Олеговна' },
+                        { id: '7G', name: '7Г', grade: '7', letter: 'Г', students: [], teacher: 'Князская Анна Олеговна' }
                     ];
                     setClasses(classes);
                 }
@@ -1184,6 +1393,9 @@
                 case 'lessons':
                     loadLessonsPage();
                     break;
+                case 'practice':
+                    loadPracticePage();
+                    break;
                 case 'resources':
                     loadResourcesPage();
                     break;
@@ -1429,19 +1641,20 @@
         function showTeacherInfo(teacherName, className) {
             let teacherInfo = '';
             
-            if (teacherName === 'Кназкая Анна Олеговна') {
+            if (teacherName === 'Князская Анна Олеговна') {
                 teacherInfo = `
                     <div class="teacher-info">
                         <div class="w-32 h-32 bg-blue-100 rounded-full flex items-center justify-center mb-4">
                             <i data-feather="user" class="w-16 h-16 text-blue-600"></i>
                         </div>
                         <h3 class="text-xl font-bold text-gray-800 mb-2">${teacherName}</h3>
-                        <p class="text-gray-600 mb-4">Учитель китайского языка</p>
+                        <p class="text-gray-600 mb-4">Учитель английского и китайского языков</p>
                         <div class="teacher-details">
                             <p><strong>Класс:</strong> ${className}</p>
-                            <p><strong>Образование:</strong> Высшее педагогическое образование, специализация - китайский язык</p>
-                            <p><strong>Опыт работы:</strong> 8 лет преподавания китайского языка</p>
-                            <p><strong>Достижения:</strong> Подготовка призеров олимпиад по китайскому языку</p>
+                            <p><strong>Образование:</strong> Высшее</p>
+                            <p><strong>Учебное заведение:</strong> Минский государственный лингвистический университет</p>
+                            <p><strong>Стаж:</strong> Менее года</p>
+                            <p><strong>Категория:</strong> Молодой специалист</p>
                             <p><strong>Контакты:</strong> Доступны через администрацию школы</p>
                         </div>
                     </div>
@@ -1517,7 +1730,7 @@
                 grade: grade,
                 letter: letter,
                 students: [],
-                teacher: 'Кназкая Анна Олеговна' // Default teacher
+                teacher: 'Князская Анна Олеговна' // Default teacher
             };
             
             classes.push(newClass);
@@ -1600,6 +1813,209 @@
             }
             
             feather.replace();
+        }
+
+        // Load Practice Page
+        function loadPracticePage() {
+            // This function just ensures the practice page is loaded correctly
+            // The actual practice content is loaded when a level is selected
+            feather.replace();
+        }
+
+        // Start practice function
+        function startPractice(level) {
+            const exercisesContainer = document.getElementById('practice-exercises');
+            exercisesContainer.classList.remove('hidden');
+            
+            let exercisesHTML = '';
+            
+            if (level === 'beginner') {
+                exercisesHTML = `
+                    <div class="practice-exercise">
+                        <h3 class="text-xl font-bold text-blue-600 mb-4">Урок 1: Приветствия</h3>
+                        <p class="mb-4">Выберите правильный перевод для фразы:</p>
+                        <div class="bg-blue-50 p-4 rounded-lg mb-4">
+                            <p class="text-lg font-bold text-center">你好</p>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <button class="bg-white border border-blue-300 p-3 rounded-lg hover:bg-blue-50 transition-all" onclick="checkAnswer(this, 'correct')">Привет</button>
+                            <button class="bg-white border border-blue-300 p-3 rounded-lg hover:bg-blue-50 transition-all" onclick="checkAnswer(this, 'incorrect')">Спасибо</button>
+                            <button class="bg-white border border-blue-300 p-3 rounded-lg hover:bg-blue-50 transition-all" onclick="checkAnswer(this, 'incorrect')">Пока</button>
+                            <button class="bg-white border border-blue-300 p-3 rounded-lg hover:bg-blue-50 transition-all" onclick="checkAnswer(this, 'incorrect')">Извините</button>
+                        </div>
+                    </div>
+                    
+                    <div class="practice-exercise">
+                        <h3 class="text-xl font-bold text-blue-600 mb-4">Урок 2: Числа</h3>
+                        <p class="mb-4">Сопоставьте китайские числа с их значениями:</p>
+                        <div class="character-grid">
+                            <div class="character-card" data-char="一" data-value="1">一</div>
+                            <div class="character-card" data-char="二" data-value="2">二</div>
+                            <div class="character-card" data-char="三" data-value="3">三</div>
+                            <div class="character-card" data-char="四" data-value="4">四</div>
+                            <div class="character-card" data-char="五" data-value="5">五</div>
+                            <div class="character-card" data-char="六" data-value="6">六</div>
+                        </div>
+                        <div class="mt-4">
+                            <p>Перетащите числа к их значениям:</p>
+                            <div class="grid grid-cols-2 gap-4 mt-2" id="number-targets">
+                                <div class="bg-gray-100 p-3 rounded-lg text-center" data-value="1">1</div>
+                                <div class="bg-gray-100 p-3 rounded-lg text-center" data-value="2">2</div>
+                                <div class="bg-gray-100 p-3 rounded-lg text-center" data-value="3">3</div>
+                                <div class="bg-gray-100 p-3 rounded-lg text-center" data-value="4">4</div>
+                                <div class="bg-gray-100 p-3 rounded-lg text-center" data-value="5">5</div>
+                                <div class="bg-gray-100 p-3 rounded-lg text-center" data-value="6">6</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else if (level === 'basic') {
+                exercisesHTML = `
+                    <div class="practice-exercise">
+                        <h3 class="text-xl font-bold text-blue-600 mb-4">Урок 1: Основные фразы</h3>
+                        <p class="mb-4">Составьте правильное предложение из данных слов:</p>
+                        <div class="bg-blue-50 p-4 rounded-lg mb-4">
+                            <p class="text-lg text-center">我 / 叫 / 小明</p>
+                        </div>
+                        <div class="flex gap-2 justify-center mb-4" id="sentence-builder">
+                            <!-- Words will be added here by JS -->
+                        </div>
+                        <div class="grid grid-cols-3 gap-2" id="word-options">
+                            <button class="bg-white border border-blue-300 p-2 rounded hover:bg-blue-50" data-word="我">我</button>
+                            <button class="bg-white border border-blue-300 p-2 rounded hover:bg-blue-50" data-word="叫">叫</button>
+                            <button class="bg-white border border-blue-300 p-2 rounded hover:bg-blue-50" data-word="小明">小明</button>
+                            <button class="bg-white border border-blue-300 p-2 rounded hover:bg-blue-50" data-word="是">是</button>
+                            <button class="bg-white border border-blue-300 p-2 rounded hover:bg-blue-50" data-word="学生">学生</button>
+                            <button class="bg-white border border-blue-300 p-2 rounded hover:bg-blue-50" data-word="你">你</button>
+                        </div>
+                        <button class="mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg" onclick="checkSentence()">Проверить</button>
+                    </div>
+                `;
+            }
+            
+            exercisesHTML += `
+                <div class="exercise-complete hidden" id="exercise-complete">
+                    <i data-feather="check-circle" class="w-16 h-16 text-green-500 mx-auto mb-4"></i>
+                    <h3 class="text-xl font-bold text-green-600 mb-2">Отлично!</h3>
+                    <p class="mb-4">Вы успешно завершили этот урок.</p>
+                    <button class="bg-blue-600 text-white px-4 py-2 rounded-lg" onclick="document.getElementById('exercise-complete').classList.add('hidden')">Продолжить</button>
+                </div>
+            `;
+            
+            exercisesContainer.innerHTML = exercisesHTML;
+            feather.replace();
+            
+            // Initialize drag and drop for numbers exercise
+            if (level === 'beginner') {
+                initializeNumberDragDrop();
+            }
+            
+            // Initialize sentence builder for basic level
+            if (level === 'basic') {
+                initializeSentenceBuilder();
+            }
+        }
+
+        // Check answer function
+        function checkAnswer(button, result) {
+            const buttons = button.parentElement.querySelectorAll('button');
+            buttons.forEach(btn => {
+                btn.disabled = true;
+                if (btn === button) {
+                    if (result === 'correct') {
+                        btn.classList.add('bg-green-500', 'text-white');
+                        showNotification('✅ Правильно!', 'success');
+                    } else {
+                        btn.classList.add('bg-red-500', 'text-white');
+                        showNotification('❌ Неправильно, попробуйте еще раз', 'error');
+                    }
+                }
+            });
+            
+            // Show completion message after a delay
+            setTimeout(() => {
+                document.getElementById('exercise-complete').classList.remove('hidden');
+            }, 1500);
+        }
+
+        // Initialize number drag and drop
+        function initializeNumberDragDrop() {
+            const characterCards = document.querySelectorAll('.character-card');
+            const targets = document.querySelectorAll('#number-targets > div');
+            
+            characterCards.forEach(card => {
+                card.setAttribute('draggable', 'true');
+                card.addEventListener('dragstart', handleDragStart);
+            });
+            
+            targets.forEach(target => {
+                target.addEventListener('dragover', handleDragOver);
+                target.addEventListener('drop', handleDrop);
+            });
+        }
+
+        // Drag and drop handlers
+        function handleDragStart(e) {
+            e.dataTransfer.setData('text/plain', e.target.getAttribute('data-char'));
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            const char = e.dataTransfer.getData('text/plain');
+            const charValue = document.querySelector(`[data-char="${char}"]`).getAttribute('data-value');
+            const targetValue = e.target.getAttribute('data-value');
+            
+            if (charValue === targetValue) {
+                e.target.textContent = char;
+                e.target.classList.add('bg-green-100');
+                document.querySelector(`[data-char="${char}"]`).classList.add('correct');
+                showNotification('✅ Правильно!', 'success');
+            } else {
+                e.target.classList.add('bg-red-100');
+                document.querySelector(`[data-char="${char}"]`).classList.add('incorrect');
+                showNotification('❌ Неправильно, попробуйте еще раз', 'error');
+                
+                // Reset after a delay
+                setTimeout(() => {
+                    e.target.classList.remove('bg-red-100');
+                    document.querySelector(`[data-char="${char}"]`).classList.remove('incorrect');
+                }, 1000);
+            }
+        }
+
+        // Initialize sentence builder
+        function initializeSentenceBuilder() {
+            const wordOptions = document.querySelectorAll('#word-options button');
+            const sentenceBuilder = document.getElementById('sentence-builder');
+            
+            wordOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    const word = this.getAttribute('data-word');
+                    const wordElement = document.createElement('span');
+                    wordElement.className = 'bg-blue-100 px-3 py-1 rounded';
+                    wordElement.textContent = word;
+                    sentenceBuilder.appendChild(wordElement);
+                });
+            });
+        }
+
+        // Check sentence function
+        function checkSentence() {
+            const sentenceBuilder = document.getElementById('sentence-builder');
+            const words = Array.from(sentenceBuilder.children).map(el => el.textContent).join('');
+            
+            if (words === '我叫小明') {
+                showNotification('✅ Правильно! "我叫小明" означает "Меня зовут Сяомин"', 'success');
+                document.getElementById('exercise-complete').classList.remove('hidden');
+            } else {
+                showNotification('❌ Неправильно, попробуйте еще раз', 'error');
+                // Clear the sentence builder
+                sentenceBuilder.innerHTML = '';
+            }
         }
 
         // Load Resources Page
